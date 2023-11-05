@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon> Logout
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ parentFullName }}'s Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+ <div class="wholeBody">
+    <div class="cardwImg1">
+     
+        <ion-card class="cardImg1">
+          <img alt="daily task" src="assets/Frame 2.png" />
+          <ion-card-header>
+            <ion-button routerLink="/kids-progress">
+            <ion-card-subtitle>Kids Progress</ion-card-subtitle>
+            </ion-button>
+          </ion-card-header>
+        </ion-card>
+   
+
+      <ion-card class="cardImg2">
+        <img alt="daily task" src="assets/image 4.png" />
+        <ion-card-header>
+          <ion-button routerLink="/consultation">
+          <ion-card-subtitle>Consultation</ion-card-subtitle>
+        </ion-button>
+        </ion-card-header>
+      </ion-card>
+    </div>
+
+    <div class="cardwImg2">
+      <ion-card class="cardImg3">
+        <img alt="daily task" src="assets/image 1.png" />
+        <ion-card-header>
+          <ion-button routerLink="/vaccination">
+           <ion-card-subtitle>Vaccination List</ion-card-subtitle>
+          </ion-button>
+        </ion-card-header>
+      </ion-card>
+
+      <ion-card class="cardImg4">
+        <img alt="daily task" src="assets/image 2.png" />
+        <ion-card-header>
+          <ion-button routerLink="/kids-progress">
+          <ion-card-subtitle>Acitivity</ion-card-subtitle>
+        </ion-button>
+        </ion-card-header>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

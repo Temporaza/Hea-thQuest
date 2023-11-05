@@ -1,0 +1,106 @@
+
+.curved2{
+    background-color: #1A535C;
+    padding: 25px;
+}
+
+.curved2 svg {
+    position: absolute;
+    top: 0;/* Adjust the position to your liking */
+    left: 0; /* Adjust the position to your liking */
+    transform: scaleX(-1); /* This flips the SVG horizontally */
+    filter: drop-shadow(5px 35px 1px #1A535C);
+    
+   
+}
+
+
+.input{
+    font-size: 14px;
+   
+}
+
+ion-item{
+    --background:#f1f1f1;
+    border-radius: 15px;
+    margin: 0 auto; /* Center horizontally */
+    border: 2px solid black;
+    margin-bottom: 16px;
+    width: 80%;
+}
+
+.header {
+    margin-top: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+  }
+  
+  .header .subTitle {
+    color: gray;
+    font-size: 0.9rem; /* Adjust the font size as needed */
+    margin-top: 0px; /* Adjust the margin to align with the input field */
+    width: 70%;
+  }
+  
+  .header .title {
+    color: black;
+    font-size: 2rem; /* Adjust the font size as needed */
+    margin-top: 0px; /* Adjust the margin to align with the input field */
+    width: 47%;
+  }
+  
+.signupLink{
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    align-content: center;
+    position: absolute;
+    justify-content: center;
+    left: 0;
+    bottom: 0;
+    width: 80%;
+    right: 0;
+    p{
+        font-size: 0.9rem;
+    }
+    a{
+        text-decoration: none;
+    }
+}
+
+.forgotPassword{
+    display: flex;
+    justify-content: center;
+    a{
+        font-weight: 400;
+        font-size: 0.8rem;
+        text-decoration: none;
+        color: #1A535C;
+    }
+
+}
+
+.center-button {
+    background-color: #1A535C;
+    border: none;
+    color: white;
+    padding: 15px 60px;
+    text-align: center;
+    text-decoration: none;
+    display: block; 
+    font-size: 16px;
+    margin: 4px auto; 
+    cursor: pointer;
+    border-radius: 20px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 16px;
+    opacity: 2;
+    transition: opacity 0.3s ease-in-out; /* Add a smooth transition effect */
+  }

@@ -1,0 +1,92 @@
+<ion-content [fullscreen]="true">
+  <div class="curved2">
+    <svg xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 1440 320">
+      <path fill="#4ECDC4" fill-opacity="1" d="M0,192L30,165.3C60,139,120,85,180,64C240,43,300,53,360,74.7C420,96,480,128,540,154.7C600,181,660,203,720,197.3C780,192,840,160,900,176C960,192,1020,256,1080,277.3C1140,299,1200,277,1260,229.3C1320,181,1380,107,1410,69.3L1440,32L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z"></path>
+    </svg>
+  </div>
+  <div class="header">
+    <h1 class="title">Create Account as Doctor</h1>
+  </div>
+
+  <form [formGroup]="formReg" novalidate>
+    <div class="ion-padding">
+      <!-- Fullname -->
+      <ion-item>
+        <ion-input formControlName="fullname" placeholder="name" class="input"></ion-input>
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-item>
+      <div *ngIf="this.formReg.controls?.['fullname'].touched && this.formReg.controls?.['fullname'].invalid">
+        <ion-text *ngIf="errorControl['fullname'].errors?.['required']" color="danger">
+          <ion-icon name="warning"></ion-icon>Fullname is required
+        </ion-text>
+      </div>
+
+        <!-- Contact-->
+        <ion-item>
+        <ion-input formControlName="contact" placeholder="Contact" class="input"></ion-input>
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-item>
+      <div *ngIf="this.formReg.controls?.['contact'].touched && this.formReg.controls?.['contact'].invalid">
+        <ion-text *ngIf="errorControl['contact'].errors?.['required']" color="danger">
+          <ion-icon name="warning"></ion-icon>contact is required
+        </ion-text>
+      </div>
+
+      <!-- ClinicAddress -->
+      <ion-item>
+        <ion-input formControlName="ClinicAddress" placeholder="ClinicAddress" class="input"></ion-input>
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-item>
+      <div *ngIf="this.formReg.controls?.['ClinicAddress'].touched && this.formReg.controls?.['ClinicAddress'].invalid">
+        <ion-text *ngIf="errorControl['ClinicAddress'].errors?.['required']" color="danger">
+          <ion-icon name="warning"></ion-icon>ClinicAddress is required
+        </ion-text>
+      </div>
+
+      <!-- Email -->
+      <ion-item>
+        <ion-input formControlName="email" placeholder="email" class="input"></ion-input>
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-item>
+      <div *ngIf="this.formReg.controls?.['email'].touched && this.formReg.controls?.['email'].invalid" >
+        <ion-text *ngIf="errorControl['email'].errors?.['required']" color="danger">
+          <ion-icon name="warning"></ion-icon>Email is required
+        </ion-text>
+        <ion-text *ngIf="errorControl['email'].errors?.['pattern']" color="danger">
+          <ion-icon name="warning"></ion-icon>Email should be valid
+        </ion-text>
+      </div>
+
+      <!-- Password -->
+      <ion-item>
+        <ion-input formControlName="password" placeholder="password" type="password" class="input"></ion-input>
+        <ion-icon name="lock-closed-outline"></ion-icon>
+      </ion-item>
+      <div *ngIf="this.formReg.controls?.['password'].touched && this.formReg.controls?.['password'].invalid" >
+        <ion-text *ngIf="errorControl['password'].errors?.['required']" color="danger">
+          <ion-icon name="warning"></ion-icon>Password is required
+        </ion-text>
+        <ion-text *ngIf="errorControl['password'].errors?.['pattern']" color="danger">
+          <ion-icon name="warning"></ion-icon>
+          Password must atleast have 
+          One Character
+          One Capital
+          One Number
+          Contain 8 digit
+        </ion-text>
+      </div>
+
+      <div class="signinLink">
+        <p>Already a Member?<a  style="color:#ffc33f" [routerLink]="['/doctor-login']">Signin Now</a></p>
+      </div>
+    </div>
+    <!-- <ion-fab vertical="bottom" horizontal="end" style="margin-bottom: 30px;">
+      <ion-fab-button (click)="signUp()">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-fab-button>
+    </ion-fab> -->
+    <button class="center-button" (click)="signUp()">
+      Sign Up
+   </button>
+  </form>
+</ion-content>

@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Vaccine Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ vaccineDetails.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ vaccineDetails.description }}</p>
+      <!-- Add more details here, e.g., date, dosage, etc. -->
+    </ion-card-content>
+  </ion-card>
+</ion-content>

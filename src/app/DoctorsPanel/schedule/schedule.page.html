@@ -1,0 +1,69 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main-menu"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Set Schedule</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-card>
+      <ion-item>
+        <ion-input type="date" [(ngModel)]="mondayDate">Monday Date</ion-input>
+      </ion-item>
+      <ion-item>
+        <!-- <ion-label position="stacked">Monday Opening Time</ion-label> -->
+        <ion-input aria-label="Monday Opening Time" type="time" [(ngModel)]="mondayOpeningTime">Opening Time</ion-input>
+        <ion-input aria-label="Monday Closing Time" type="time" [(ngModel)]="mondayClosingTime">Closing Time</ion-input>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-input type="date" [(ngModel)]="tuesdayDate">Tuesday Date</ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input aria-label="tuesday Opening Time" type="time" [(ngModel)]="tuesdayOpeningTime"></ion-input>
+        <ion-input aria-label="tuesday Closing Time" type="time" [(ngModel)]="tuesdayClosingTime"></ion-input>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-input type="date" [(ngModel)]="wednesdayDate">Wednesday Date</ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input aria-label="wednesday Opening Time" type="time" [(ngModel)]="wednesdayOpeningTime"></ion-input>
+        <ion-input aria-label="wednesday Closing Time" type="time" [(ngModel)]="wednesdayClosingTime"></ion-input>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-input type="date" [(ngModel)]="thursdayDate">Thursday Date</ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input aria-label="thursday Opening Time" type="time" [(ngModel)]="thursdayOpeningTime"></ion-input>
+        <ion-input aria-label="thursday Closing Time" type="time" [(ngModel)]="thursdayClosingTime"></ion-input>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-input type="date" [(ngModel)]="fridayDate">Friday Date</ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input aria-label="friday Opening Time" type="time" [(ngModel)]="fridayOpeningTime"></ion-input>
+        <ion-input aria-label="friday Closing Time" type="time" [(ngModel)]="fridayClosingTime"></ion-input>
+      </ion-item>
+    </ion-card>
+    <!-- Repeat the above two items for Tuesday to Friday -->
+    <!-- ... -->
+
+
+    <ion-button expand="full" (click)="saveAvailability()">Save Availability</ion-button>
+  </ion-list>
+  
+</ion-content>

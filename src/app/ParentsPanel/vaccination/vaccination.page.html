@@ -1,0 +1,83 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home-parent"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Vaccination</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list lines="full">
+    <!-- Vaccine 1 -->
+    <ion-item>
+      <ion-checkbox (ionChange)="updateCheckedVaccines($event, 1)" [checked]="checkedVaccines.includes(1)" aria-label="Label" Slot="start">Vaccine 1</ion-checkbox>
+      <ion-button fill="clear" slot="end" (click)="showDetails(1)">Details</ion-button>
+    </ion-item>
+    
+    <!-- Vaccine 2 -->
+    <ion-item>
+      <ion-checkbox (ionChange)="updateCheckedVaccines($event, 2)" [checked]="checkedVaccines.includes(2)" aria-label="Label" Slot="start">Vaccine 2</ion-checkbox>
+      <ion-button fill="clear" slot="end" (click)="showDetails(2)">Details</ion-button>
+    </ion-item>
+    
+    <!-- Vaccine 3 -->
+    <ion-item>
+      <ion-checkbox (ionChange)="updateCheckedVaccines($event, 3)" [checked]="checkedVaccines.includes(3)" aria-label="Label" Slot="start">Vaccine 3</ion-checkbox>
+      <ion-button fill="clear" slot="end" (click)="showDetails(3)">Details</ion-button>
+    </ion-item>
+    
+    <!-- Vaccine 4 -->
+    <ion-item>
+      <ion-checkbox (ionChange)="updateCheckedVaccines($event, 4)" [checked]="checkedVaccines.includes(4)" aria-label="Label" Slot="start">Vaccine 4</ion-checkbox>
+      <ion-button fill="clear" slot="end" (click)="showDetails(4)">Details</ion-button>
+    </ion-item>
+
+    <!-- Vaccine 5 -->
+    <ion-item>
+      <ion-checkbox (ionChange)="updateCheckedVaccines($event, 5)" [checked]="checkedVaccines.includes(5)" aria-label="Label" Slot="start">Vaccine 5</ion-checkbox>
+      <ion-button fill="clear" slot="end" (click)="showDetails(5)">Details</ion-button>
+    </ion-item>
+
+    <!-- Vaccine 6 -->
+    <ion-item>
+      <ion-checkbox (ionChange)="updateCheckedVaccines($event, 6)" [checked]="checkedVaccines.includes(6)" aria-label="Label" Slot="start">Vaccine 6</ion-checkbox>
+      <ion-button fill="clear" slot="end" (click)="showDetails(6)">Details</ion-button>
+    </ion-item>
+
+    <!-- Vaccine 7 -->
+    <ion-item>
+      <ion-checkbox (ionChange)="updateCheckedVaccines($event, 7)" [checked]="checkedVaccines.includes(7)" aria-label="Label" Slot="start">Vaccine 7</ion-checkbox>
+      <ion-button fill="clear" slot="end" (click)="showDetails(7)">Details</ion-button>
+    </ion-item>
+
+    <!-- Vaccine 8 -->
+    <ion-item>
+      <ion-checkbox (ionChange)="updateCheckedVaccines($event, 8)" [checked]="checkedVaccines.includes(8)" aria-label="Label" Slot="start">Vaccine 8</ion-checkbox>
+      <ion-button fill="clear" slot="end" (click)="showDetails(8)">Details</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Vaccine Details Modal -->
+
+    <!-- (click)="showDetails(1)">Vaccine Details 1</ion-button>
+    <ion-button expand="full" (click)="showDetails(2)">Vaccine Details 2</ion-button>
+    <ion-button expand="full" (click)="showDetails(3)">Vaccine Details 3</ion-button> -->
+ 
+</ion-content>
+<ion-footer>
+  <div class="foot-btn">
+    <ion-row>
+      <ion-col class="save" size="auto">
+        <ion-button (click)="saveCheckedVaccines()" color="secondary">
+          Save
+        </ion-button>
+      </ion-col>
+      <ion-col class="reg" size="auto">
+        <ion-button [disabled]="isRegisterButtonDisabled()" color="success" (click)="navigateToSignup()">
+          Register Now <ion-icon name="lock-open-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-footer>
