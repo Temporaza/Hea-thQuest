@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-patient-data',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PatientDataPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
 
+
+  pending(){
+    this.router.navigate(['pending-doc']);
+  }
 }

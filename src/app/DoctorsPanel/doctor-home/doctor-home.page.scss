@@ -2,7 +2,7 @@
     text-align: center; /* Center horizontally */
     display: flex;
     justify-content: center; /* Center vertically */
-    padding-top: 50px;
+    padding-top: 30px;
   }
 
 .card1{
@@ -24,4 +24,8 @@ img{
 ion-toolbar{
     --background: #ff8200;
 
+}
+
+ion-card-content{
+  margin-top: 10px;
 }

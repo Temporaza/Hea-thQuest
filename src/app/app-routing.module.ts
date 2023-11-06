@@ -116,7 +116,11 @@ const routes: Routes = [
     path: 'doctor-consult',
     loadChildren: () => import('./DoctorsPanel/doctor-consult/doctor-consult.module').then( m => m.DoctorConsultPageModule)
   },
-  
+  {
+    path: 'pending-doc',
+    loadChildren: () => import('./DoctorsPanel/pending-doc/pending-doc.module').then( m => m.PendingDocPageModule)
+  },
+ 
 
 ];
 

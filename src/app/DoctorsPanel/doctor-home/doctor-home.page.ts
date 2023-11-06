@@ -29,22 +29,23 @@ export class DoctorHomePage implements OnInit {
     window.onpopstate = function(event: PopStateEvent) {
     history.go(1);
     };
-
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         const doctorId = user.uid;
-
+  
         this.firestore.collection('doctors').doc(doctorId).valueChanges().subscribe((data: DoctorAvailability | undefined) => {
           this.doctorAvailability = data;
-
-          // Fetch available dates from doctor's availability data
+  
           if (this.doctorAvailability) {
+            // Fetch available dates from doctor's availability data
             this.availableDates = this.getAvailableDates(this.doctorAvailability);
             this.highlightedDates = this.availableDates.map(date => ({
               date: date,
-              textColor: '#ffffff', // change as needed
-              backgroundColor: '#FFA140' // change as needed
+              textColor: '#ffffff',
+              backgroundColor: '#FFA140'
             }));
+          } else {
+            console.log('Doctor availability data is undefined.');
           }
         });
       } else {
@@ -66,18 +67,17 @@ export class DoctorHomePage implements OnInit {
   // Define the getAvailableDates method here
   getAvailableDates(doctorAvailability: DoctorAvailability): string[] {
     const availableDates: string[] = [];
-
-    // Iterate through the availability data and collect available dates
-    for (const day of Object.values(doctorAvailability.availability)) {
-      if (day.date) {
-        availableDates.push(day.date);
+  
+    if (doctorAvailability && doctorAvailability.availability) {
+      // Iterate through the availability data and collect available dates
+      for (const day of Object.values(doctorAvailability.availability)) {
+        if (day.date) {
+          availableDates.push(day.date);
+        }
       }
     }
-
+  
     return availableDates;
-  }
-  isAvailable(date: string): boolean {
-    return this.availableDates.includes(date);
   }
  
 }
