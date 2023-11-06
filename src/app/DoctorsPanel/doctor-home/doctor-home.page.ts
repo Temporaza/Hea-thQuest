@@ -14,6 +14,7 @@ export class DoctorHomePage implements OnInit {
 
   doctorAvailability: DoctorAvailability | undefined;
   availableDates: string[] = [];
+  highlightedDates: any[] = [];
 
   constructor(
     private authService: AuthenticationForDoctorsService,
@@ -39,6 +40,11 @@ export class DoctorHomePage implements OnInit {
           // Fetch available dates from doctor's availability data
           if (this.doctorAvailability) {
             this.availableDates = this.getAvailableDates(this.doctorAvailability);
+            this.highlightedDates = this.availableDates.map(date => ({
+              date: date,
+              textColor: '#ffffff', // change as needed
+              backgroundColor: '#FFA140' // change as needed
+            }));
           }
         });
       } else {
@@ -69,6 +75,9 @@ export class DoctorHomePage implements OnInit {
     }
 
     return availableDates;
+  }
+  isAvailable(date: string): boolean {
+    return this.availableDates.includes(date);
   }
  
 }

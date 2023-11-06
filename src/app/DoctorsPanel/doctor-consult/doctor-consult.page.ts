@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
 
 export interface DoctorAvailability {
   availability: {
@@ -45,7 +46,8 @@ export class DoctorConsultPage implements OnInit {
   
   constructor(
     private firestore: AngularFirestore,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private router: Router
     ) { }
 
     ngOnInit() {
@@ -61,7 +63,20 @@ export class DoctorConsultPage implements OnInit {
           console.log('User is not authenticated.');
         }
       });
-}
+  }
+
+  formatTime(time: string | undefined): string {
+    if (!time) {
+      return 'N/A';
+    }
+  
+    const formattedTime = new Date(`2000-01-01T${time}`);
+    return formattedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  navigateToSched(){
+    this.router.navigate(['schedule'])
+  }
 }
 
 

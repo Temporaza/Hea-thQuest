@@ -1,3 +1,17 @@
 ion-card-content{
     display: flex;
+    justify-content: center;
+}
+ion-toolbar{
+    --background: #ff8200;
+
+}
+
+ion-card{
+    background: linear-gradient(to bottom, #3DE9E9, #3DE9E9 10%, white 90%);
+}
+
+ion-button{
+    margin-top: 20px;
+    margin-left: 75%;
 }
