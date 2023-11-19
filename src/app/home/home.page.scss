@@ -1,16 +1,203 @@
-h1{
-  text-align: center;
+// h1{
+//   text-align: center;
+// }
+
+// .header{
+//   margin-top: 200px;
+//   margin-bottom: 80px;
+//   text-align: center;
+//   display: flex;
+//   justify-content: center;
+//   align-items: flex-end;
+//   title{
+//       font-size: 2rem;
+//   }
+// }
+
+ion-toolbar{
+  --background: #ff8200;
+
 }
 
-.header{
-  margin-top: 200px;
-  margin-bottom: 80px;
-  text-align: center;
+.background {
+  --background: url('/assets/download.jpg') no-repeat center center fixed;
+  --background-size: cover;
+}
+
+.Pages {
   display: flex;
-  justify-content: center;
   align-items: flex-end;
-  title{
-      font-size: 2rem;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+
+ion-button {
+  background-color: transparent; /* Set the background color of ion-button to transparent */
+  border: none; /* Remove the border if present */
+  padding: 0px;
+  margin: 0px;
+}
+
+ion-card {
+  background-color: transparent; /* Set the background color to transparent */
+  border: none; /* Remove the border if present */
+}
+
+.cardImg1, .cardImg2 {
+  width: 30%; /* Adjust the width as needed */
+  margin-bottom: -30px;
+}
+
+.music{
+  margin: 8% 5%;
+  position: absolute;
+}
+
+
+//pet style
+.pet-container {
+  position: relative;
+  animation: floatAnimation 1s ease-in-out infinite alternate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pet-body {
+  width: 300px; /* Adjust the size as needed */
+  height: auto; /* Maintain aspect ratio */
+  margin: 120px auto; /* Centers the body horizontally */
+}
+
+.pet-eyes {
+  width: 300px; /* Adjust the size as needed */
+  height: auto; /* Maintain aspect ratio */
+  position: absolute;
+  top: 27%;
+  left: 16%;
+  animation: blinkAnimation 3.5s infinite alternate; /* Blinking animation */
+  transition: height 2s ease-in-out; /* Smooth transition for height changes */
+  
+}
+
+.pet-mouth {
+  width: 300px; /* Adjust the size as needed */
+  height: auto; /* Maintain aspect ratio */
+  position: absolute;
+  top: 32%;
+  left: 17%;
+  animation: MouthAnimation 3.5s infinite alternate; /* Blinking animation */
+  transition: height 2s ease-in-out; /* Smooth transition for height changes */
+}
+
+
+@keyframes floatAnimation {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10px);
   }
 }
 
+@keyframes blinkAnimation {
+  60% {
+    height: auto;
+    content: url('/assets/mata/One.png');
+  }
+
+  65% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/mata/Two.png');
+  }
+
+  70% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/mata/Three.png');
+  }
+
+  75% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/mata/Four.png');
+  }
+
+  80% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/mata/Five.png');
+  }
+
+  85% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/mata/Six.png'); 
+   
+  }
+  95% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/mata/Seven.png'); 
+   
+  }
+  100% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/mata/Eight.png'); 
+   
+  }
+  
+}
+
+@keyframes MouthAnimation {
+  60% {
+    height: auto;
+    content: url('/assets/Mouth/M1.png'); /* Open eyes image */
+  }
+
+  65% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M2.png');
+  }
+
+  70% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M3.png');
+  }
+
+  75% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M4.png');
+  }
+
+  80% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M5.png');
+  }
+
+  85% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M6.png'); /* Closed eyes image */
+   
+  }
+  95% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M7.png'); /* Closed eyes image */
+   
+  }
+  100% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M8.png'); 
+   
+  }
+  
+}

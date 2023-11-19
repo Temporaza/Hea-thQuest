@@ -24,7 +24,8 @@ export class AuthenticationService {
 
       const userData = {
         email: user.email,
-        fullname: fullname
+        fullname: fullname,
+        role: 'user' // Assign the 'doctor' role
       }
 
       await this.addUserDataToFirestore(user.uid, userData);
@@ -44,6 +45,23 @@ export class AuthenticationService {
     } catch (error) {
       console.error('Error adding user data to Firestore:', error);
       throw error;
+    }
+  }
+
+   //check doctor's role
+   async checkUserRole(userId: string): Promise<string | null> {
+    const userDoc = await this.firestore.collection('users').doc(userId).get().toPromise();
+    const doctorDoc = await this.firestore.collection('doctors').doc(userId).get().toPromise();
+    const parentDoc = await this.firestore.collection('parents').doc(userId).get().toPromise();
+
+    if (userDoc.exists) {
+      return 'user';
+    } else if (doctorDoc.exists) {
+      return 'doctor';
+    }else if (parentDoc.exists) {
+      return 'parent';
+    }else {
+      return null; // User does not exist in either role
     }
   }
 

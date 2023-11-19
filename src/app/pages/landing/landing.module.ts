@@ -4,9 +4,11 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
+
 import { LandingPageRoutingModule } from './landing-routing.module';
 
 import { LandingPage } from './landing.page';
+
 
 @NgModule({
   imports: [
@@ -14,6 +16,7 @@ import { LandingPage } from './landing.page';
     FormsModule,
     IonicModule,
     LandingPageRoutingModule
+  
   ],
   declarations: [LandingPage]
 })

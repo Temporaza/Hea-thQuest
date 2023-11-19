@@ -38,26 +38,6 @@ const routes: Routes = [
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },
   {
-    path: 'daily-task',
-    loadChildren: () => import('./pages/daily-task/daily-task.module').then( m => m.DailyTaskPageModule)
-  },
-  {
-    path: 'pet',
-    loadChildren: () => import('./pages/pet/pet.module').then( m => m.PetPageModule)
-  },
-  {
-    path: 'upcoming-task',
-    loadChildren: () => import('./pages/upcoming-task/upcoming-task.module').then( m => m.UpcomingTaskPageModule)
-  },
-  {
-    path: 'finished-task',
-    loadChildren: () => import('./pages/finished-task/finished-task.module').then( m => m.FinishedTaskPageModule)
-  },
-  {
-    path: 'shop',
-    loadChildren: () => import('./pages/shop/shop.module').then( m => m.ShopPageModule)
-  },
-  {
     path: 'parent-login',
     loadChildren: () => import('./ParentsPanel/parent-login/parent-login.module').then( m => m.ParentLoginPageModule),
 
@@ -119,6 +99,14 @@ const routes: Routes = [
   {
     path: 'pending-doc',
     loadChildren: () => import('./DoctorsPanel/pending-doc/pending-doc.module').then( m => m.PendingDocPageModule)
+  },
+  {
+    path: 'market',
+    loadChildren: () => import('./pages/market/market.module').then( m => m.MarketPageModule)
+  },
+  {
+    path: 'activities',
+    loadChildren: () => import('./pages/activities/activities.module').then( m => m.ActivitiesPageModule)
   },
  
 

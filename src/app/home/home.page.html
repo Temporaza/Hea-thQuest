@@ -1,13 +1,51 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Home</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon> Logout
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Kid Home's</ion-title>
   </ion-toolbar>
 </ion-header>
 
+<ion-content [fullscreen]="true" class="background">
+
+  <!-- Add the audio element with controls -->
+  <audio id="backgroundMusic" autoplay loop controls style="display:none">
+    <source src="/assets/Happy Short 1.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+
+   <!-- Toggle button for audio control -->
+   <ion-button class="music" (click)="toggleAudio()">
+    <ion-icon name="volume-mute" *ngIf="!isAudioPlaying"></ion-icon>
+    <ion-icon name="volume-high" *ngIf="isAudioPlaying"></ion-icon>
+  </ion-button>
 
 
-<ion-content [fullscreen]="true">
-  <div class="header">
-    <ion-button (click)="logout()">Sign out</ion-button>
+   <!-- Clickable images -->
+  <div class="Pages"> 
+
+    <ion-card class="cardImg1">
+      <ion-button fill="clear" routerLink="/market">
+        <img alt="daily task" src="assets/Market.png" />
+      </ion-button>
+    </ion-card>
+
+    <ion-card class="cardImg2">
+      <ion-button fill="clear" routerLink="/activities">
+        <img alt="daily task" src="assets/activities.png" />
+      </ion-button>
+  </ion-card>
   </div>
+
+
+  <div class="pet-container">
+    <img [src]="petEyesUrl" alt="Pet Eyes" class="pet-eyes blinking" />
+    <img [src]="petMouthUrl" alt="Pet Mouth" class="pet-mouth talking" />
+    <img [src]="petBodyUrl" alt="Pet Body" class="pet-body" />
+  </div>
+  
+
 </ion-content>
