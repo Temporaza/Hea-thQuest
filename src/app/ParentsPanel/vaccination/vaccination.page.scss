@@ -23,3 +23,18 @@ ion-row{
 .reg{
     margin-left: 10px;
 }
+
+@media (min-width: 600px) {
+    .center-container {
+        margin-left: 80vh;
+        margin-top: 10vh;
+
+      }
+      ion-list {
+        max-width: 500px; /* Set your desired maximum height */
+       
+        }
+
+      
+     
+}

@@ -1,0 +1,64 @@
+.activity-card {
+    background-color: #fff; /* Card background color */
+    border-radius: 10px; /* Rounded corners */
+    margin-bottom: 10px; /* Margin between cards */
+    
+  }
+  
+  .activity-title {
+    font-size: 18px; /* Title font size */
+    font-weight: bold; /* Bold text */
+  }
+  
+  .activity-content {
+    padding: 10px; /* Padding inside the card content */
+  }
+  
+  .star-icon {
+    width: 32px; /* Adjust the star icon size */
+    height: 32px;
+  }
+  
+  .points-label {
+    font-size: 14px; /* Points label font size */
+  }
+  
+  .icon-button {
+    font-size: 24px; /* Edit and Delete icon size */
+    color: #3498db; /* Icon color */
+  }
+
+  // ion-card {
+  //   max-width: 400px; /* Set a maximum width for the card */
+  //   width: 100%; /* Make the card take 100% width initially */
+
+  // }
+  
+  ion-card-content {
+    padding: 10px;
+  }
+  
+  ion-card-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  ion-item {
+    margin-bottom: 10px; /* Optional: Add margin between items inside the card */
+  }
+  
+  ion-button {
+    width: 100%;
+  }
+
+  @media (min-width: 680px) {
+    ion-card {
+      max-width: 500px; /* Set a maximum width for the card */
+      width: 100%; /* Make the card take 100% width initially */
+    }
+    .Tasks{
+      margin-left: 80vh;
+      margin-top: 10vh;
+    }
+    
+ }

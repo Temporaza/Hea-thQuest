@@ -1,11 +1,49 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home-parent"></ion-back-button>
+    </ion-buttons>
     <ion-title>Kids Progress</ion-title>
-    
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
- 
+  <!-- Display Created Tasks with Slide-In Animation -->
+  <ion-card *ngFor="let task of tasks$ | async" class="task-card custom-card">
+
+    <ion-card-header>
+      <ion-card-title class="task-title">{{ task.description }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content class="task-content">
+      <!-- Add other task details as needed -->
+
+      <ion-row class="ion-align-items-center">
+        <ion-col size="auto">
+          <!-- Set a specific size for the image -->
+          <ion-img src="assets/Star.png" alt="Star Icon" class="star-icon" style="width: 24px; height: 24px;"></ion-img>
+        </ion-col>
+        <ion-col size="auto">
+          <!-- Display the points text next to the star image -->
+          <ion-label class="points-label">100 points</ion-label>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <!-- Display "Done!" if the task is completed -->
+        <ion-label *ngIf="task.status === 'Completed'" class="completed-label">Done!</ion-label>
+
+        <!-- Display the button for task confirmation if the task is not completed -->
+        <ion-button *ngIf="task.status !== 'Completed'" (click)="confirmTaskCompletion(task)" color="success">
+          Confirm
+      </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-label>Status: {{ task.status }}</ion-label><br>
+      <!-- Add a button to delete the task -->
+      <!-- <ion-button color="danger" (click)="deleteTask(task)">Delete Task</ion-button> -->
+    </ion-card-content>
+
+  </ion-card>
+
 </ion-content>

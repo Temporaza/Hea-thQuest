@@ -1,0 +1,15 @@
+.custom-card {
+    max-width: 400px; /* Set your desired maximum width */
+    width: 100%; /* Ensure the card takes full width if the content is smaller than max-width */
+    margin: 10px auto; /* Adjust margin as needed for spacing */
+    margin-top: 8vh;
+  }
+
+  @media (min-width: 680px) {
+    .custom-card {
+        max-width: 800px; /* Set your desired maximum width */
+        width: 100%; /* Ensure the card takes full width if the content is smaller than max-width */
+        margin: 10px auto; /* Adjust margin as needed for spacing */
+        margin-top: 8vh;
+      }
+ }

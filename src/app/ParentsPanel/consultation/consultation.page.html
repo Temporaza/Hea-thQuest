@@ -9,7 +9,7 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <ion-card>
+    <ion-card class="custom-card">
       <ion-card-header>
         <ion-card-title>Set Your Preference</ion-card-title>
       </ion-card-header>
@@ -20,7 +20,7 @@
       </ion-card-content>
     </ion-card>
   </ion-list>
-  <ion-button expand="full" (click)="findMatchingDoctors()">Find Matching Doctors</ion-button>
+  <ion-button class="findBtn" color="warning" (click)="findMatchingDoctors()">Find Matching Doctors</ion-button>
 
   <!-- Display matching doctors here -->
   <ion-list *ngIf="matchingDoctors.length > 0">

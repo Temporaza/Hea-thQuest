@@ -51,18 +51,22 @@ export class AuthenticationService {
    //check doctor's role
    async checkUserRole(userId: string): Promise<string | null> {
     const userDoc = await this.firestore.collection('users').doc(userId).get().toPromise();
-    const doctorDoc = await this.firestore.collection('doctors').doc(userId).get().toPromise();
-    const parentDoc = await this.firestore.collection('parents').doc(userId).get().toPromise();
-
+  
     if (userDoc.exists) {
       return 'user';
-    } else if (doctorDoc.exists) {
-      return 'doctor';
-    }else if (parentDoc.exists) {
-      return 'parent';
-    }else {
-      return null; // User does not exist in either role
     }
+  
+    const doctorDoc = await this.firestore.collection('doctors').doc(userId).get().toPromise();
+    if (doctorDoc.exists) {
+      return 'doctor';
+    }
+  
+    const parentDoc = await this.firestore.collection('parents').doc(userId).get().toPromise();
+    if (parentDoc.exists) {
+      return 'parent';
+    }
+  
+    return null; // User does not exist in either role
   }
 
   async loginUser(email: string, password: string) {

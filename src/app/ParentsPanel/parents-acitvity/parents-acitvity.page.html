@@ -1,0 +1,63 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home-parent"></ion-back-button>
+    </ion-buttons>
+    <ion-title>parents-acitvity</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Task Creation Form -->
+  <ion-card class="Tasks">
+    <ion-card-header>
+      <ion-card-title>Task Details</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">User's Email</ion-label>
+        <ion-input type="email" [(ngModel)]="userEmail"></ion-input>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label position="floating">Task Details</ion-label>
+        <ion-input type="text" [(ngModel)]="taskDetails"></ion-input>
+      </ion-item>
+
+      <ion-button expand="full" (click)="createTask()">Create Task</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Display Created Tasks -->
+  <!-- <ion-card *ngFor="let task of tasks$ | async" class="task-card">
+
+      <ion-card-header>
+        <ion-card-title class="task-title">{{ task.description }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="task-content">
+       
+
+        <ion-row class="ion-align-items-center">
+          <ion-col size="auto">
+            <ion-img src="assets/Star.png" alt="Star Icon" class="star-icon"></ion-img>
+          </ion-col>
+          <ion-col size="auto">
+          
+            <ion-label class="points-label">100 points</ion-label>
+          </ion-col>
+          <ion-col size="auto">
+            <ion-label class="points-label">{{ task.status === 'completed' ? 'Completed' : 'Pending' }}</ion-label>
+          </ion-col>
+          <ion-col class="ion-text-end">
+            <ion-icon name="trash" (click)="deleteTask(task)" class="icon-button"></ion-icon>
+            <ion-icon name="create" (click)="editTask(task)" class="icon-button"></ion-icon>
+          </ion-col>
+        </ion-row>
+
+        <ion-label>Status: {{ task.status }}</ion-label><br>
+        <ion-label>Assigned to: {{ task.userEmail }}</ion-label>
+      </ion-card-content>
+  </ion-card> -->
+
+
+</ion-content>

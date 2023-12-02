@@ -12,6 +12,9 @@ import { SignupPage } from './signup.page';
   imports: [
     CommonModule,
     FormsModule,
+    IonicModule.forRoot({
+      scrollAssist: false,
+    }),
     IonicModule,
     ReactiveFormsModule,
     SignupPageRoutingModule

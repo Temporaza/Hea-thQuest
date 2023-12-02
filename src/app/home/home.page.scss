@@ -19,6 +19,10 @@ ion-toolbar{
 
 }
 
+ion-router-outlet {
+  z-index: 1; /* Ensure that this value is not higher than the z-index of clickable images */
+}
+
 .background {
   --background: url('/assets/download.jpg') no-repeat center center fixed;
   --background-size: cover;
@@ -27,8 +31,11 @@ ion-toolbar{
 .Pages {
   display: flex;
   align-items: flex-end;
-  flex-direction: column;
+  flex-direction: row;
   margin-bottom: 50px;
+  margin-left: 120px;
+  position: absolute;
+  z-index: 3;
 }
 
 ion-button {
@@ -36,6 +43,7 @@ ion-button {
   border: none; /* Remove the border if present */
   padding: 0px;
   margin: 0px;
+ 
 }
 
 ion-card {
@@ -46,34 +54,40 @@ ion-card {
 .cardImg1, .cardImg2 {
   width: 30%; /* Adjust the width as needed */
   margin-bottom: -30px;
+  z-index: 2;
 }
 
 .music{
   margin: 8% 5%;
   position: absolute;
+  z-index: 3;
 }
 
 
 //pet style
 .pet-container {
   position: relative;
+  cursor: grab; /* Set cursor to grab when hovering over the draggable area */
   animation: floatAnimation 1s ease-in-out infinite alternate;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 }
+
+
 
 .pet-body {
   width: 300px; /* Adjust the size as needed */
   height: auto; /* Maintain aspect ratio */
-  margin: 120px auto; /* Centers the body horizontally */
+  margin: 320px auto; /* Centers the body horizontally */
 }
 
 .pet-eyes {
   width: 300px; /* Adjust the size as needed */
   height: auto; /* Maintain aspect ratio */
   position: absolute;
-  top: 27%;
+  top: 37%;
   left: 16%;
   animation: blinkAnimation 3.5s infinite alternate; /* Blinking animation */
   transition: height 2s ease-in-out; /* Smooth transition for height changes */
@@ -84,7 +98,7 @@ ion-card {
   width: 300px; /* Adjust the size as needed */
   height: auto; /* Maintain aspect ratio */
   position: absolute;
-  top: 32%;
+  top: 39%;
   left: 17%;
   animation: MouthAnimation 3.5s infinite alternate; /* Blinking animation */
   transition: height 2s ease-in-out; /* Smooth transition for height changes */
@@ -110,6 +124,7 @@ ion-card {
     width: 300px;
     height: auto; 
     content: url('/assets/mata/Two.png');
+    // background-image: url('{{ petEyesUrl }}/Two.png');
   }
 
   70% {
@@ -152,52 +167,52 @@ ion-card {
 }
 
 @keyframes MouthAnimation {
-  60% {
-    height: auto;
-    content: url('/assets/Mouth/M1.png'); /* Open eyes image */
-  }
-
-  65% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M2.png');
-  }
-
-  70% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M3.png');
-  }
-
-  75% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M4.png');
-  }
-
-  80% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M5.png');
-  }
-
-  85% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M6.png'); /* Closed eyes image */
-   
-  }
-  95% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M7.png'); /* Closed eyes image */
-   
-  }
   100% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M8.png'); 
-   
+    height: auto;
+    content: url('/assets/Mouth/M3.png'); /* Open eyes image */
   }
+
+  // 65% {
+  //   width: 300px;
+  //   height: auto; 
+  //   content: url('/assets/Mouth/M2.png');
+  // }
+
+  // 70% {
+  //   width: 300px;
+  //   height: auto; 
+  //   content: url('/assets/Mouth/M3.png');
+  // }
+
+  // 75% {
+  //   width: 300px;
+  //   height: auto; 
+  //   content: url('/assets/Mouth/M4.png');
+  // }
+
+  // 80% {
+  //   width: 300px;
+  //   height: auto; 
+  //   content: url('/assets/Mouth/M5.png');
+  // }
+
+  // 85% {
+  //   width: 300px;
+  //   height: auto; 
+  //   content: url('/assets/Mouth/M6.png'); /* Closed eyes image */
+   
+  // }
+  // 95% {
+  //   width: 300px;
+  //   height: auto; 
+  //   content: url('/assets/Mouth/M7.png'); /* Closed eyes image */
+   
+  // }
+  // 100% {
+  //   width: 300px;
+  //   height: auto; 
+  //   content: url('/assets/Mouth/M8.png'); 
+   
+  // }
   
 }

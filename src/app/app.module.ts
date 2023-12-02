@@ -12,6 +12,9 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from 'src/environments/environment';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // import { FirestoreModule } from '@angular/fire/firestore';
@@ -24,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     IonicModule.forRoot(), 
     AppRoutingModule,
     AngularFireModule, 
+    DragDropModule,
     AngularFireAuthModule, 
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule

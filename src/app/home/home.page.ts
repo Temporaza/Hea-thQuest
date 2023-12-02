@@ -1,8 +1,7 @@
-import { Component, Renderer2, ElementRef } from '@angular/core';
+import { Component} from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-
 
 
 @Component({
@@ -15,35 +14,37 @@ export class HomePage {
   user: any;
   isAudioPlaying: boolean = true;
 
-    // Properties to store download URLs
+  // Properties to store download URLs
   petEyesUrl: string;
   petMouthUrl: string;
   petBodyUrl: string;
 
   constructor(
-
     public authService:AuthenticationService,
     public route: Router,
     private storage: AngularFireStorage,
-
-  
   ) {  
   
     this.user = authService.getProfile
+
+  }
+  ionViewDidEnter() {
+    // Get the audio element and play the music
+    this.playBackgroundMusic();
   }
 
   //fetching the images in fireabase storage
   async ngOnInit() {
     // Fetch download URLs for pet images from Firebase Storage
-    this.petEyesUrl = await this.getDownloadUrl('mata', 'One.png');
-    this.petMouthUrl = await this.getDownloadUrl('Mouth', 'M1.png');
-    this.petBodyUrl = await this.getDownloadUrl('Body', 'body.png');
 
+      this.petEyesUrl = await this.getDownloadUrl('mata', 'One.png');
+      this.petMouthUrl = await this.getDownloadUrl('Mouth', 'M1.png');
+      this.petBodyUrl = await this.getDownloadUrl('Body', 'body.png');
+   
     // Other initialization code
-
-    
+   
   }
-
+   
   async getDownloadUrl(part: string, imageName: string): Promise<string> {
     const imagePath = `PetDefault/${part}/${imageName}`;
     const storageRef = this.storage.ref(imagePath);
@@ -63,10 +64,7 @@ export class HomePage {
     })
   }
 
-  ionViewDidEnter() {
-    // Get the audio element and play the music
-    this.playBackgroundMusic();
-  }
+
 
   toggleAudio() {
     const audio = document.getElementById('backgroundMusic') as HTMLAudioElement;

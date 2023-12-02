@@ -1,3 +1,12 @@
+ion-toolbar{
+    --background: #ff8200;
+ 
+}
+
+// ion-content {
+//   --background: url('/assets/parentBG.jpg') center center / cover no-repeat;
+// }
+
 *{
     font-family: Arial, Helvetica, sans-serif;
     padding: 0;
@@ -7,51 +16,88 @@ ion-title{
     text-align: center;
 }
 
+ion-card {
+    --background: transparent;
+}
 
-.cardwImg1{
+.cardwImg1 {
     display: flex;
-    justify-content: center;
-    text-align: center;
-}
-
-.cardwImg2{
-    display: flex;
-    justify-content: center;
-    text-align: center;
-
-
-}
-
-.cardImg1{
+    justify-content: space-between; /* Adjust the spacing between cards */
+    overflow: hidden; /* Hide overflow to prevent unwanted scrolling during animation */
+  }
+  
+  .cardImg1,
+  .cardImg2 {
     width: 50%;
-    margin: 10px 10px;
-    border-radius: 15px;
-}
-.cardImg2{
-    width: 50%;
-    margin: 10px 10px;
-    border-radius: 15px;
-
-    ion-button{
-        margin-top: 5px;
+    animation: slideInFromLeft 1.5s ease-out; /* Adjust animation duration and easing */
+  }
+  
+  @keyframes slideInFromLeft {
+    from {
+      transform: translateX(-100%); /* Start off-screen to the left */
     }
-}
-.cardImg3{
-    width: 50%;
-    margin: 10px 10px;
-    border-radius: 15px;
-}
-.cardImg4{
-    width: 50%;
-    margin: 10px 10px;
-    border-radius: 15px;
-    ion-button{
-        margin-top: 5px;
+    to {
+      transform: translateX(0); /* Move to the original position */
     }
+  }
+
+.cardwImg2 {
+display: flex;
+justify-content: space-between; /* Adjust the spacing between cards */
+overflow: hidden; /* Hide overflow to prevent unwanted scrolling during animation */
 }
+
+.cardImg3,
+.cardImg4 {
+width: 50%;
+animation: slideInFromRight 1.5s ease-out; /* Adjust animation duration and easing */
+}
+
+@keyframes slideInFromRight {
+from {
+    transform: translateX(100%); /* Start off-screen to the left */
+}
+to {
+    transform: translateX(0); /* Move to the original position */
+}
+}
+
+.cardwImg1,
+.cardwImg2 {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  .cardImg1,
+  .cardImg2,
+  .cardImg3,
+  .cardImg4 {
+    width: 50%;
+    max-width: 300px;
+    margin: 10px;
+    border-radius: 15px;
+
+    ion-button {
+      margin-top: 5px;
+    }
+  }
+}
+
+@media (min-width: 1050px) {
+    .wholeBody{
+        margin-top: 1vh; /* Responsive vertical centering */
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
+    ion-button {
+        margin-top: 5px;
+      }
+  }
 
 .wholeBody{
-    margin-top: 20%;
+    margin-top: 10vh; /* Responsive vertical centering */
+
 }
 
 ion-button{
@@ -61,3 +107,63 @@ ion-button{
 ion-card-subtitle{
     color: white;
 }
+
+// .fam {
+//     display: flex;
+//     justify-content: center;
+//     align-items: flex-start; /* Align items at the start (top) vertically */
+//     text-align: left; /* Align text to the left within .Content */
+//     padding-top: 100px;
+//   }
+  
+//   .imageContainer {
+//     margin-left: 20px; /* Adjust the margin between Content and imageContainer */
+//     background-color: aqua;
+//     border-radius: 30px;
+//   }
+  
+//   .imageContent {
+//     display: flex;
+//     flex-direction: column; /* Stack image and text vertically */
+    
+//   }
+  
+//   .imageContent img {
+//     max-width: 600px; /* Set the maximum width as needed */
+//     max-height: 800px; /* Set the maximum height as needed */
+//     width: auto; /* Ensure the image maintains its aspect ratio */
+//     height: auto; /* Ensure the image maintains its aspect ratio */
+//     margin-top: 50px;
+//   }
+
+  
+//   .imageContainer2 {
+//     margin-left: 20px; /* Adjust the margin between Content and imageContainer */
+//     background-color: aqua;
+//     border-radius: 30px;
+//   }
+  
+//   .imageContent2 {
+//     display: flex;
+//     flex-direction: column; /* Stack image and text vertically */
+    
+//   }
+  
+//   .imageContent2 img {
+//     max-width: 600px; /* Set the maximum width as needed */
+//     max-height: 800px; /* Set the maximum height as needed */
+//     width: auto; /* Ensure the image maintains its aspect ratio */
+//     height: auto; /* Ensure the image maintains its aspect ratio */
+//     margin-top: 50px;
+//   }
+
+  
+  
+//   .imageContent img {
+//     max-width: 100%; /* Set the maximum width as a percentage of the container */
+//     max-height: 100%; /* Set the maximum height as a percentage of the container */
+//     // object-fit: contain; /* Maintain aspect ratio and fit within the container */
+//   }
+
+
+

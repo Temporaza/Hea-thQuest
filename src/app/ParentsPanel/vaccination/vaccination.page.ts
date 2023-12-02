@@ -4,6 +4,7 @@ import { VaccineDetailsModalPage } from 'src/app/modals/vaccine-details-modal/va
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthenticationForParentsService } from 'src/app/authenticationParents/authentication-for-parents.service';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-vaccination',
@@ -14,19 +15,31 @@ export class VaccinationPage implements OnInit {
 
   checkedVaccines: number[] = []; //for saving checklist
 
-  ngOnInit() {
+  async ngOnInit() {
+    const loading = await this.loadingControler.create({
+      message: 'Loading...',  // Customize the loading message
+    });
+    
      // Retrieve the checked state from Firestore
-     this.authService.getProfile().then(user => {
+     try {
+      await loading.present();
+  
+      const user = await this.authService.getProfile();
       if (user) {
         const userId = user.uid;
-        this.firestore.collection('parents').doc(userId).get().subscribe(parentDoc => {
-          if (parentDoc.exists) {
-            const data = parentDoc.data() as { checkedVaccines: number[] }; // Type assertion
-            this.checkedVaccines = data.checkedVaccines || [];
-          }
-        });
+  
+        const parentDoc = await this.firestore.collection('parents').doc(userId).get().toPromise();
+  
+        if (parentDoc.exists) {
+          const data = parentDoc.data() as { checkedVaccines: number[] };
+          this.checkedVaccines = data.checkedVaccines || [];
+        }
       }
-    });
+    } catch (error) {
+      console.error('Error fetching parent document:', error);
+    } finally {
+      await loading.dismiss();  // Dismiss the loading indicator regardless of success or error
+    }
   }
   private vaccineDetailsData = [
     {
@@ -76,7 +89,8 @@ export class VaccinationPage implements OnInit {
     private modalController: ModalController,
     private firestore: AngularFirestore,
     private authService: AuthenticationForParentsService,
-    private router: Router
+    private router: Router,
+    private loadingControler: LoadingController
     ) { }
 
     navigateToSignup() {
@@ -121,24 +135,30 @@ export class VaccinationPage implements OnInit {
         this.checkedVaccines.splice(index, 1);
       }
     }
+
   }
 
   async saveCheckedVaccines() {
     const user = await this.authService.getProfile();
     const userId = user.uid;
+    
+    // Show loading indicator
+    const loading = await this.loadingControler.create({
+      message: 'Saving...',
+    });
+    await loading.present();
   
-    //   // Count the number of checked vaccines
-    // const checkedVaccinesCount = this.checkedVaccines.length;
-
-    // // Update the parent's document in Firestore
-    // const parentDoc = this.firestore.collection('parents').doc(userId);
-    // parentDoc.update({ checkedVaccinesCount: checkedVaccinesCount });
-
-    // Update the parent's document in Firestore with the checked vaccines
-    const parentDoc = this.firestore.collection('parents').doc(userId);
-    parentDoc.update({ checkedVaccines: this.checkedVaccines });
+    try {
+      // Update the parent's document in Firestore with the checked vaccines
+      const parentDoc = this.firestore.collection('parents').doc(userId);
+      await parentDoc.update({ checkedVaccines: this.checkedVaccines });
+    } catch (error) {
+      console.error('Error saving checked vaccines:', error);
+      // Handle the error, e.g., show an alert to the user
+    } finally {
+      // Dismiss the loading indicator
+      await loading.dismiss();
+    }
   }
 
 }
-
-// To be continue im trying to make the checked boxes to persist even if logout or navigate to another pages.

@@ -108,6 +108,10 @@ const routes: Routes = [
     path: 'activities',
     loadChildren: () => import('./pages/activities/activities.module').then( m => m.ActivitiesPageModule)
   },
+  {
+    path: 'parents-acitvity',
+    loadChildren: () => import('./ParentsPanel/parents-acitvity/parents-acitvity.module').then( m => m.ParentsAcitvityPageModule)
+  },
  
 
 ];
