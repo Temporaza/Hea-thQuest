@@ -17,6 +17,7 @@ export class ParentsAcitvityPage implements OnInit {
 
   userEmail: string = ''; // Variable to store the kid's email
   taskDetails: string = '';
+  points: string = '50';
   createdActivities$: Observable<any[]>;
   tasks$: Observable<any>;
   taskStatus: string;
@@ -27,20 +28,25 @@ export class ParentsAcitvityPage implements OnInit {
     private loadingController: LoadingController,
     private alertController: AlertController,
     private taskStatusService: TaskStatusService
+
     ) { }
 
-  ngOnInit() {
-    this.taskStatusService.getTaskStatus().subscribe((status: string) => {
-      this.taskStatus = status;
-    });
-    this.loadTasks();
-  }
+    ngOnInit() {
+      this.taskStatusService.getTaskStatus().subscribe((statusWithPoints) => {
+        const { status, points } = statusWithPoints;
+    
+        // Now you can use both status and points
+        this.taskStatus = status;
+        // You might also want to use points here if needed
+    
+        // Continue with the rest of your code...
+        this.loadTasks();
+      });
+    }
+    
 
   async loadTasks() {
-    const loading = await this.loadingController.create({
-      message: 'Loading Tasks...',
-      duration: 5000, // Set a maximum duration for the loading indicator
-    });
+   const loading = await this.showLoading('Loading Tasks...');
 
     try {
       await loading.present();
@@ -74,6 +80,7 @@ export class ParentsAcitvityPage implements OnInit {
       );
     } catch (error) {
       console.error('Error loading tasks:', error);
+      this.showErrorAlert('Error creating task. Please try again.');
     } finally {
       // Dismiss the loading indicator regardless of success or failure
       await loading.dismiss();
@@ -81,10 +88,7 @@ export class ParentsAcitvityPage implements OnInit {
   }
 
   async createTask() {
-    const loading = await this.loadingController.create({
-      message: 'Creating Task...',
-      duration: 5000, // Set a maximum duration for the loading indicator
-    });
+    const loading = await this.showLoading('Creating Task...');
   
     try {
       await loading.present();
@@ -104,6 +108,7 @@ export class ParentsAcitvityPage implements OnInit {
             parentId: parentId, // Add parentId here
             description: this.taskDetails,
             status: 'pending',
+            points: parseInt(this.points, 10),
             timestamp: new Date(),
           };
   
@@ -113,18 +118,24 @@ export class ParentsAcitvityPage implements OnInit {
           // Get the generated task ID
           const taskId = parentTaskRef.id;
   
-          // Add the task to the corresponding user's collection with the assigned UID
-          await this.firestore.collection('users').doc(userId).collection('tasks').doc(taskId).set(task);
+          // Add the task to the corresponding user's collection with the assigned UID and points
+          await this.firestore.collection('users').doc(userId).collection('tasks').doc(taskId).set({
+            ...task,
+            points: parseInt(this.points, 10),
+          });
   
           this.taskDetails = '';
+          this.points = '50';
         } else {
           console.error('User not logged in.');
         }
       } else {
         console.log('There is no kid with the email:', this.userEmail);
       }
+      this.showSuccessAlert('Task created successfully!');
     } catch (error) {
       console.error('Error creating task:', error);
+      this.showErrorAlert('Error creating task. Please try again.');
     } finally {
       // Dismiss the loading indicator regardless of success or failure
       await loading.dismiss();
@@ -146,6 +157,33 @@ export class ParentsAcitvityPage implements OnInit {
     }
     console.log('Deleting task:', task);
     // Add your deletion logic, e.g., showing a confirmation dialog or making an API call
+  }
+
+  private async showLoading(message: string) {
+    const loading = await this.loadingController.create({
+      message,
+      duration: 5000,
+    });
+    await loading.present();
+    return loading;
+  }
+
+  private async showSuccessAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Success',
+      message,
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  private async showErrorAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
 

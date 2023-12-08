@@ -3,9 +3,10 @@ import { FirebaseApp } from '@angular/fire/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { ModalController, NavController } from '@ionic/angular'; // Import NavController
+import { ModalController, NavController, ToastController } from '@ionic/angular'; // Import NavController
 import { AuthenticationForParentsService } from 'src/app/authenticationParents/authentication-for-parents.service';
 import { VaccineDetailsModalPage } from 'src/app/modals/vaccine-details-modal/vaccine-details-modal.page';
+
 
 
 @Component({
@@ -17,6 +18,7 @@ export class HomeParentPage implements OnInit {
 
   parentFullName: string = '';
   checkedVaccines: number[] = []; // Add this line to declare the property
+  appointments: any[] = [];
 
   constructor(
     
@@ -24,12 +26,14 @@ export class HomeParentPage implements OnInit {
     private navCtrl: NavController,
     private router: Router,
     private firestore: AngularFirestore,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private toastController: ToastController
   ) { }
 
   ngOnInit() {
     console.log('ngOnInit called');
     this.fetchParentName();
+    this.fetchAppointments()
     // Retrieve the checked state from Firestore
     this.authService.authState.subscribe(user => {
       if (user) {
@@ -51,7 +55,7 @@ export class HomeParentPage implements OnInit {
         this.fetchParentName();
       } else {
         console.log('User not authenticated.');
-        this.router.navigate(['/login']);
+        this.router.navigate(['/landing']);
       }
     });
   }
@@ -93,4 +97,55 @@ export class HomeParentPage implements OnInit {
         // Handle any logout error, if needed
       });
   }
+
+  private fetchAppointments() {
+    this.authService.authState.subscribe(async (user) => {
+      if (user) {
+        const parentUID = user.uid;
+        const appointmentsCollection = this.firestore.collection(`parents/${parentUID}/appointments`);
+
+        appointmentsCollection.valueChanges().subscribe((appointments: any[]) => {
+          this.appointments = appointments.map(appointment => ({ ...appointment, status: appointment.status || 'Pending' }));
+        });
+      }
+    });
+  }
+
+  async deleteAppointment(appointment: any, parentUID: string) {
+    try {
+      // Delete the appointment from Firestore
+      await this.firestore.collection('parents').doc(parentUID).collection('appointments').doc(appointment.id).delete();
+  
+      // Update the appointments array in your component to reflect the changes
+      this.appointments = this.appointments.filter((a) => a !== appointment);
+  
+      // Show a success message
+      this.presentSuccessMessage('Appointment deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting appointment:', error);
+      this.presentErrorMessage('Error deleting appointment');
+    }
+  }
+
+  private async presentSuccessMessage(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'top',
+      color: 'success',
+    });
+    await toast.present();
+  }
+
+  private async presentErrorMessage(message: string) {
+    const toast = await this.toastController.create({
+      message: `Error: ${message}`,
+      duration: 2000,
+      position: 'top',
+      color: 'danger',
+    });
+    await toast.present();
+  }
+
+
 }

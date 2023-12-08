@@ -24,8 +24,67 @@ ion-router-outlet {
 }
 
 .background {
-  --background: url('/assets/download.jpg') no-repeat center center fixed;
+  --background: url('/assets/house.png') no-repeat center center fixed;
   --background-size: cover;
+  position: relative;
+}
+
+.points-container {
+  position: absolute;
+  margin-top: 7vh;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  background-color: rgb(52, 181, 213);
+}
+
+.points-icon {
+  font-size: 2.4rem; // Adjust the icon size
+  color: #f5ce0b; // Adjust the icon color
+  margin-right: 5px; // Adjust the space between icon and points
+}
+
+.points {
+  font-size: 2.4rem; // Adjust the font size
+  color: #f5ce0b; // Adjust the text color
+}
+
+ion-fab{
+  margin-top: 15vh;
+  margin-left: 3vh
+}
+
+.audio{
+  margin-left: 2vh;
+}
+
+@media screen and (min-width: 620px) {
+  ion-fab{
+    margin-top: 10vh;
+    margin-left: 30vh
+  }
+
+  ion-button {
+    background-color: transparent; /* Set the background color of ion-button to transparent */
+    border: none; /* Remove the border if present */
+    padding: 0px;
+    margin: 0px;
+    top: 0;
+  }
+
+  .audio .music ion-icon {
+    font-size: 3em; /* Adjust the size as needed */
+  }
+
+  ion-fab-button ion-icon {
+    font-size: 4em; /* Adjust the size as needed */
+  }
+
+  ion-fab-list ion-fab-button{
+    width: 100px; /* Adjust the width as needed */
+    height: 100px; /* Adjust the height as needed */
+  }
+  
 }
 
 .Pages {
@@ -73,33 +132,36 @@ ion-card {
   align-items: center;
   justify-content: center;
   z-index: 2;
+  margin-top: 35vh;
+  border: 2px solid violet;
 }
 
 
 
 .pet-body {
-  width: 300px; /* Adjust the size as needed */
-  height: auto; /* Maintain aspect ratio */
-  margin: 320px auto; /* Centers the body horizontally */
+  width: 320px; /* Adjust the size as needed */
+  border: 2px solid green;
 }
 
 .pet-eyes {
+  border: 2px solid red;
   width: 300px; /* Adjust the size as needed */
   height: auto; /* Maintain aspect ratio */
   position: absolute;
-  top: 37%;
-  left: 16%;
+  margin-top: 1vh;
+  margin-left: 2vh;
   animation: blinkAnimation 3.5s infinite alternate; /* Blinking animation */
   transition: height 2s ease-in-out; /* Smooth transition for height changes */
   
 }
 
 .pet-mouth {
+  border: 2px solid blue;
   width: 300px; /* Adjust the size as needed */
   height: auto; /* Maintain aspect ratio */
   position: absolute;
-  top: 39%;
-  left: 17%;
+  margin-top: 4vh;
+  margin-left: 2vh;
   animation: MouthAnimation 3.5s infinite alternate; /* Blinking animation */
   transition: height 2s ease-in-out; /* Smooth transition for height changes */
 }
@@ -167,52 +229,52 @@ ion-card {
 }
 
 @keyframes MouthAnimation {
-  100% {
+  60% {
     height: auto;
     content: url('/assets/Mouth/M3.png'); /* Open eyes image */
   }
 
-  // 65% {
-  //   width: 300px;
-  //   height: auto; 
-  //   content: url('/assets/Mouth/M2.png');
-  // }
+  65% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M2.png');
+  }
 
-  // 70% {
-  //   width: 300px;
-  //   height: auto; 
-  //   content: url('/assets/Mouth/M3.png');
-  // }
+  70% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M3.png');
+  }
 
-  // 75% {
-  //   width: 300px;
-  //   height: auto; 
-  //   content: url('/assets/Mouth/M4.png');
-  // }
+  75% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M4.png');
+  }
 
-  // 80% {
-  //   width: 300px;
-  //   height: auto; 
-  //   content: url('/assets/Mouth/M5.png');
-  // }
+  80% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M5.png');
+  }
 
-  // 85% {
-  //   width: 300px;
-  //   height: auto; 
-  //   content: url('/assets/Mouth/M6.png'); /* Closed eyes image */
+  85% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M6.png'); /* Closed eyes image */
    
-  // }
-  // 95% {
-  //   width: 300px;
-  //   height: auto; 
-  //   content: url('/assets/Mouth/M7.png'); /* Closed eyes image */
+  }
+  95% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M7.png'); /* Closed eyes image */
    
-  // }
-  // 100% {
-  //   width: 300px;
-  //   height: auto; 
-  //   content: url('/assets/Mouth/M8.png'); 
+  }
+  100% {
+    width: 300px;
+    height: auto; 
+    content: url('/assets/Mouth/M8.png'); 
    
-  // }
+  }
   
 }

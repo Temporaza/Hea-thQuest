@@ -107,7 +107,7 @@ export class VaccinationPage implements OnInit {
 
     if (!vaccineDetails) {
       // Handle the case where vaccine details are not found
-      console.error('Vaccine details not found for vaccine number:', vaccineNumber);
+      // console.error('Vaccine details not found for vaccine number:', vaccineNumber);
       return;
     }  
 

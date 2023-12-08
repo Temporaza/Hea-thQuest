@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './Guards/auth.guard';
-
 
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
   },
   {
     path: '',
@@ -66,7 +64,7 @@ const routes: Routes = [
   {
     path: 'doctor-home',
     loadChildren: () => import('./DoctorsPanel/doctor-home/doctor-home.module').then( m => m.DoctorHomePageModule),
-    canActivate: [AuthGuard]
+
   },
   {
     path: 'kids-progress',
@@ -112,6 +110,23 @@ const routes: Routes = [
     path: 'parents-acitvity',
     loadChildren: () => import('./ParentsPanel/parents-acitvity/parents-acitvity.module').then( m => m.ParentsAcitvityPageModule)
   },
+  {
+    path: 'doctor-details-modal',
+    loadChildren: () => import('./modals/doctor-details-modal/doctor-details-modal.module').then( m => m.DoctorDetailsModalPageModule)
+  },
+  {
+    path: 'appointment',
+    loadChildren: () => import('./modals/appointment/appointment.module').then( m => m.AppointmentPageModule)
+  },
+  {
+    path: 'trash-game',
+    loadChildren: () => import('./pages/trash-game/trash-game.module').then( m => m.TrashGamePageModule)
+  },
+  {
+    path: 'welcome-modal-page',
+    loadChildren: () => import('./modals/welcome-modal-page/welcome-modal-page.module').then( m => m.WelcomeModalPagePageModule)
+  },
+  
  
 
 ];

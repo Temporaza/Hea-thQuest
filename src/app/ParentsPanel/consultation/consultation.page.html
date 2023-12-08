@@ -19,16 +19,31 @@
         </ion-item>
       </ion-card-content>
     </ion-card>
+    <ion-button class="findBtn" color="warning" (click)="findMatchingDoctors()">Find Matching Doctors</ion-button>
   </ion-list>
-  <ion-button class="findBtn" color="warning" (click)="findMatchingDoctors()">Find Matching Doctors</ion-button>
+  
 
   <!-- Display matching doctors here -->
-  <ion-list *ngIf="matchingDoctors.length > 0">
-    <ion-card *ngFor="let doctorName of matchingDoctors">
-      <ion-card-content>
-        <h2>{{ doctorName }}</h2>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
-
+  <div class="result">
+    <ion-list *ngIf="(matchingDoctors$ | async)?.length > 0">
+      <ion-card *ngFor="let doctor of matchingDoctors$ | async">
+        <ion-card-content *ngIf="doctor">
+          <h2>{{ doctor.fullname || 'No Name Available' }}</h2>
+          <p>Clinic Address: {{ doctor.ClinicAddress || 'No Address Available' }}</p>
+          <p>Contact: {{ doctor.contact || 'No Contact Available' }}</p>
+          <p>Email: {{ doctor.email || 'No Email Available' }}</p>
+          <p>Availability:</p>
+          <ion-list *ngIf="doctor.preferredDayAvailability">
+            <ion-item>
+              {{ doctor.preferredDayFormatted }}: 
+              {{ formatTime(doctor.preferredDayAvailability.openingTime) || 'N/A' }} - 
+              {{ formatTime(doctor.preferredDayAvailability.closingTime) || 'N/A' }}
+            </ion-item>
+          </ion-list>
+          <!-- Add a Schedule button on the right side -->
+        <ion-button expand="full" color="primary" (click)="makeAppointment(doctor)">Make an Appointment</ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </div>
 </ion-content>

@@ -54,21 +54,31 @@
         </ion-card>
       </div>
     </div>
-      <!-- New container for the image -->
-      <!-- <div class="fam">
-        <div class="imageContainer2">
-          <div class="imageContent2">
-            <img src="assets/family.png" alt="Description" />
-          </div>
-        </div>
-      
-        <div class="imageContainer">
-          <div class="imageContent">
-            <img src="assets/family.png" alt="Description" />
-          </div>
-        </div>
-      </div> -->
 
+
+    <div *ngIf="appointments.length > 0">
+      <ion-card *ngFor="let appointment of appointments">
+        <ion-card-header>
+          <ion-card-title>Appointment</ion-card-title>
+        </ion-card-header>
+  
+        <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <ion-label>
+                <ion-label>Date: {{ appointment.date }}</ion-label>
+                <ion-label>Time: {{ appointment.time }}</ion-label>
+                <ion-label>Doctor: {{ appointment.doctorFullName }}</ion-label>
+                <ion-label>Status: {{ appointment.status || 'Pending' }}</ion-label>
+              </ion-label>
+              <ion-button color="danger" (click)="deleteAppointment(appointment)">
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </div>
 
 </ion-content>
 

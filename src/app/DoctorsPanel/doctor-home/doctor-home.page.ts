@@ -4,6 +4,9 @@ import { AuthenticationForDoctorsService } from 'src/app/authenticationDoctors/a
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { DoctorAvailability } from '../doctor-consult/doctor-consult.page';
+import { NavController } from '@ionic/angular';
+
+
 
 @Component({
   selector: 'app-doctor-home',
@@ -20,7 +23,8 @@ export class DoctorHomePage implements OnInit {
     private authService: AuthenticationForDoctorsService,
     private router: Router,
     private firestore: AngularFirestore,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private navCtrl: NavController,
   ) { }
 
   ngOnInit() {
@@ -56,13 +60,14 @@ export class DoctorHomePage implements OnInit {
 
   signOut() {
     this.authService.signOut()
-    .then(() => {
-      // Successful sign-out, navigate to the 'doctor-login' page
-      this.router.navigate(['/doctor-login'], { replaceUrl: true });
-    })
-    .catch((error) => {
-      console.error('Error signing out:', error);
-    });
+      .then(() => {
+        // After logging out, navigate to the login page and clear history
+        this.router.navigate(['/landing'], { replaceUrl: true });
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+        // Handle any logout error, if needed
+      });
   }
   // Define the getAvailableDates method here
   getAvailableDates(doctorAvailability: DoctorAvailability): string[] {

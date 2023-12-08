@@ -9,4 +9,61 @@
 
 <ion-content [fullscreen]="true" class="background">
  
+  <div class="pet-container">
+    <img [src]="petEyesUrl" alt="Pet Eyes" class="pet-eyes blinking" />
+    <img [src]="petMouthUrl" alt="Pet Mouth" class="pet-mouth talking" />
+    <img [src]="petBodyUrl" alt="Pet Body" class="pet-body" />
+  </div>
+
+   <!-- Save button centered below pet-container -->
+   <div class="save-button">
+    <ion-button (click)="save()">Select</ion-button>
+  </div>
+
+  
+    <div class="pet_Bodies">
+      <div class="duzzy">
+        <img [src]="duzzyUrl" alt="Duzzy" />
+        <div class="pet-info">
+          <button (click)="equipPetBody(duzzyUrl)">Equip</button>
+          <span class="pet-name">Duzzy</span>
+        </div>
+      </div>
+      <div class="duzzy">
+        <img [src]="big_YakUrl" alt="Duzzy"/>
+        <div class="pet-info">
+          <button (click)="equipPetBody(big_YakUrl)">Equip</button>
+          <span class="pet-name">Big Yuck</span>
+        </div>
+      </div>
+      <div class="duzzy">
+        <img [src]="curlyUrl" alt="Duzzy"/>
+        <div class="pet-info">
+          <button (click)="equipPetBody(curlyUrl)">Equip</button>
+          <span class="pet-name">Curly</span>
+        </div>
+      </div>
+      <div class="duzzy">
+        <img [src]="spikeyUrl" alt="Duzzy"/>
+        <div class="pet-info">
+          <button (click)="equipPetBody(spikeyUrl)">Equip</button>
+          <span class="pet-name">Spikey</span>
+        </div>
+      </div>
+      <div class="duzzy">
+        <img [src]="sumoUrl" alt="Duzzy"/>
+        <div class="pet-info">
+          <button (click)="equipPetBody(sumoUrl)">Equip</button>
+          <span class="pet-name">Sumo</span>
+        </div>
+      </div>
+      <div class="duzzy">
+        <img [src]="wet_dogUrl" alt="Duzzy"/>
+        <div class="pet-info">
+          <button (click)="equipPetBody(wet_dogUrl)">Equip</button>
+          <span class="pet-name">Wet_Dog</span>
+        </div>
+      </div>
+    </div>
+
 </ion-content>

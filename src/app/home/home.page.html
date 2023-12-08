@@ -5,7 +5,6 @@
         <ion-icon name="log-out"></ion-icon> Logout
       </ion-button>
     </ion-buttons>
-    <ion-title>Kid Home's</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -18,15 +17,37 @@
   </audio>
 
    <!-- Toggle button for audio control -->
-   <ion-button class="music" (click)="toggleAudio()">
-    <ion-icon name="volume-mute" *ngIf="!isAudioPlaying"></ion-icon>
-    <ion-icon name="volume-high" *ngIf="isAudioPlaying"></ion-icon>
-  </ion-button>
+   <div class="audio">
+    <ion-button class="music" (click)="toggleAudio()">
+      <ion-icon name="volume-mute" *ngIf="!isAudioPlaying"></ion-icon>
+      <ion-icon name="volume-high" *ngIf="isAudioPlaying"></ion-icon>
+    </ion-button>
+  </div>
+    
+  <ion-fab slot="fixed" vertical="top" horizontal="start">
+      <ion-fab-button>
+        <ion-icon name="chevron-forward-circle"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="end">
+        <ion-fab-button routerLink="/market">
+          <img alt="daily task" src="assets/Market.png" />
+        </ion-fab-button>
+        <ion-fab-button routerLink="/activities">
+          <img alt="daily task" src="assets/activities.png" />
+        </ion-fab-button>
+        <ion-fab-button routerLink="/trash-game">
+          <ion-icon name="game-controller-sharp"></ion-icon>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
 
+    <div class="points-container">
+      <ion-icon name="star" class="points-icon"></ion-icon>
+      <span class="points">{{ totalPoints }}</span>
+    </div>
 
    <!-- Clickable images -->
-  <div class="Pages"> 
-
+  <!-- <div class="Pages"> 
     <ion-card class="cardImg1">
       <ion-button fill="clear" routerLink="/market">
         <img alt="daily task" src="assets/Market.png" />
@@ -38,13 +59,14 @@
         <img alt="daily task" src="assets/activities.png" />
       </ion-button>
   </ion-card>
-  </div>
+  </div> -->
 
 
   <div class="pet-container">
     <img [src]="petEyesUrl" alt="Pet Eyes" class="pet-eyes blinking" />
     <img [src]="petMouthUrl" alt="Pet Mouth" class="pet-mouth talking" />
     <img [src]="petBodyUrl" alt="Pet Body" class="pet-body" />
+
   </div>
   
   <!-- Disable swipe gesture for the home page -->

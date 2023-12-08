@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 // import firebase from 'firebase/compat/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
 
 
 
@@ -15,6 +16,11 @@ export class AuthenticationService {
     public ngFireAuth: AngularFireAuth,
     private firestore: AngularFirestore
     ) { }
+
+    async isAuthenticated(): Promise<boolean> {
+      const user = await this.ngFireAuth.currentUser;
+      return !!user;
+    }
 
   async registerUser(email: string, password:string, fullname:string){
     // return await this.ngFireAuth.createUserWithEmailAndPassword(email, password)
@@ -98,5 +104,19 @@ export class AuthenticationService {
       console.error('Error fetching user data:', error);
       throw error;
     } 
+  }
+
+  async getCurrentUser() {
+    try {
+      const user = await this.ngFireAuth.currentUser;
+      if (user) {
+        return user;
+      } else {
+        throw new Error('User not found.');
+      }
+    } catch (error) {
+      console.error('Error fetching current user:', error);
+      throw error;
+    }
   }
 }

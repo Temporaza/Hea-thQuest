@@ -3,9 +3,9 @@ ion-toolbar{
  
 }
 
-// ion-content {
-//   --background: url('/assets/parentBG.jpg') center center / cover no-repeat;
-// }
+ion-content {
+  --background: url('/assets/parents.jpg') center center / cover no-repeat;
+}
 
 *{
     font-family: Arial, Helvetica, sans-serif;
@@ -16,9 +16,9 @@ ion-title{
     text-align: center;
 }
 
-ion-card {
-    --background: transparent;
-}
+// ion-card {
+//   --background: transparent;
+// }
 
 .cardwImg1 {
     display: flex;
@@ -67,6 +67,8 @@ to {
   display: flex;
   justify-content: center;
   text-align: center;
+  background-color: #ff8200;
+
 
   .cardImg1,
   .cardImg2,
@@ -83,6 +85,7 @@ to {
   }
 }
 
+
 @media (min-width: 1050px) {
     .wholeBody{
         margin-top: 1vh; /* Responsive vertical centering */
@@ -97,6 +100,7 @@ to {
 
 .wholeBody{
     margin-top: 10vh; /* Responsive vertical centering */
+    margin-bottom: 40px;
 
 }
 

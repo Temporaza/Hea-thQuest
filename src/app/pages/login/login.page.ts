@@ -53,29 +53,45 @@ export class LoginPage implements OnInit {
     return this.loginForm?.controls;
   }
 
-  async signUp(){
+  async signUp() {
     const loading = await this.loadingCtrl.create();
     await loading.present();
-    if(this.loginForm?.valid){
-      if(this.loginForm?.valid){
-        const user = await this.authService.loginUser(this.loginForm.value.email, this.loginForm.value.password).catch((error)=>{
-          console.log(error);
-          loading.dismiss()
-          this.showErrorMessage();
-        });
-
-        if(user){
-          loading.dismiss()
-          this.clearFormFields();
-          this.router.navigate(['/home'])
   
-        }else{
-          console.log('provide correct values');
-        }
+    if (this.loginForm?.valid) {
+      try {
+        const email = this.loginForm.value.email;
+        const password = this.loginForm.value.password;
+  
+        // Authenticate the user
+        const userCredential = await this.authService.loginUser(email, password);
         
+        // Access the User object from the UserCredential
+        const user = userCredential.user;
+  
+        // Check the role of the authenticated user
+        const userRole = await this.authService.checkUserRole(user.uid);
+  
+        // Check if the user has the required role (e.g., 'user')
+        if (userRole === 'user') {
+          loading.dismiss();
+          this.clearFormFields();
+          this.router.navigate(['/home']);
+        } else {
+          // If the user doesn't have the required role, display an error message
+          loading.dismiss();
+          this.showErrorMessage();
+          this.authService.signOut(); // Sign out the user to prevent unauthorized access
+          // Display a message indicating unauthorized access
+          console.log('Unauthorized access. You do not have the required role.');
+        }
+      } catch (error) {
+        console.log(error);
+        loading.dismiss();
+        this.showErrorMessage();
       }
     }
   }
+
   clearFormFields(){
     this.loginForm.reset();
   }

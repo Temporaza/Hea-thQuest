@@ -8,35 +8,21 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-searchbar animated="true" placeholder="Search"></ion-searchbar>
+  <ion-list *ngIf="appointments.length > 0">
+    <ion-item *ngFor="let appointment of appointments">
+      <ion-label>
+        Date: {{ appointment.date }}<br>
+        Time: {{ appointment.time }}<br>
+        Patient: {{ appointment.doctorFullName }}<br>
+        Status: {{ appointment.status }}
+      </ion-label>
+      <ion-button *ngIf="appointment.status === 'Pending'" (click)="confirmAppointment(appointment)">
+        Confirm
+      </ion-button>
+    </ion-item>
+  </ion-list>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Patient List</ion-card-title>
-    </ion-card-header>
+  <ion-note *ngIf="appointments.length === 0">No pending appointments.</ion-note>
 
-    <ion-list>
-      <ion-item>
-        <ion-avatar slot="start">
-          <img src="assets/image 1.png">
-        </ion-avatar>
-        <ion-label>
-          <h2>Raven</h2>
-          <p>healthy</p>
-        </ion-label>
-      </ion-item>
-
-      <ion-item>
-        <ion-avatar slot="start">
-          <img src="assets/image 1.png">
-        </ion-avatar>
-
-        <ion-label>
-          <h2>Koby</h2>
-          <p>healthy</p>
-        </ion-label>
-        
-      </ion-item>
-    </ion-list>
-  </ion-card>
+  
 </ion-content>

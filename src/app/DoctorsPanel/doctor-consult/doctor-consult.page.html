@@ -14,58 +14,14 @@
     Edit
   </ion-button>
 
-  <ion-card *ngIf="doctorAvailability">
+  <ion-card *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']">
     <ion-card-header>
-      <ion-card-title>Monday</ion-card-title>
+      <ion-card-title>{{ day }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      Date: {{ doctorAvailability.availability?.monday?.date || 'N/A' }}<br>
-      Opening Time: {{ formatTime(doctorAvailability.availability?.monday?.openingTime) || 'N/A' }}<br>
-      Closing Time: {{ formatTime(doctorAvailability.availability?.monday?.closingTime) || 'N/A' }}
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card *ngIf="doctorAvailability">
-    <ion-card-header>
-      <ion-card-title>Tuesday</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      Date: {{ doctorAvailability.availability?.tuesday?.date || 'N/A' }}<br>
-      Opening Time: {{ formatTime(doctorAvailability.availability?.tuesday?.openingTime) || 'N/A' }}<br>
-      Closing Time: {{ formatTime(doctorAvailability.availability?.tuesday?.closingTime) || 'N/A' }}
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card *ngIf="doctorAvailability">
-    <ion-card-header>
-      <ion-card-title>Wednesday</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      Date: {{ doctorAvailability.availability?.wednesday?.date || 'N/A' }}<br>
-      Opening Time: {{ formatTime(doctorAvailability.availability?.wednesday?.openingTime) || 'N/A' }}<br>
-      Closing Time: {{ formatTime(doctorAvailability.availability?.wednesday?.closingTime) || 'N/A' }}
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card *ngIf="doctorAvailability">
-    <ion-card-header>
-      <ion-card-title>Thursday</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      Date: {{ doctorAvailability.availability?.thursday?.date || 'N/A' }}<br>
-      Opening Time: {{ formatTime(doctorAvailability.availability?.thursday?.openingTime) || 'N/A' }}<br>
-      Closing Time: {{ formatTime(doctorAvailability.availability?.thursday?.closingTime) || 'N/A' }}
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card *ngIf="doctorAvailability">
-    <ion-card-header>
-      <ion-card-title>Friday</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      Date: {{ doctorAvailability.availability?.friday?.date || 'N/A' }}<br>
-      Opening Time: {{ formatTime(doctorAvailability.availability?.friday?.openingTime) || 'N/A' }}<br>
-      Closing Time: {{ formatTime(doctorAvailability.availability?.wednesday?.closingTime) || 'N/A' }}
+      Date: {{ doctorAvailability?.availability?.[day.toLowerCase()]?.date || 'N/A' }}<br>
+      Opening Time: {{ formatTime(doctorAvailability?.availability?.[day.toLowerCase()]?.openingTime) || 'N/A' }}<br>
+      Closing Time: {{ formatTime(doctorAvailability?.availability?.[day.toLowerCase()]?.closingTime) || 'N/A' }}
     </ion-card-content>
   </ion-card>
   <!-- Repeat the above structure for Tuesday to Friday -->

@@ -1,10 +1,18 @@
 <ion-content [fullscreen]="true">
-  <div class="container">
+  <div class="logo-container">
+    <img class="logo" src="assets/petPal.png" alt="Your Logo">
   </div>
-
-  <div class="logNav">
-    <ion-button color="light" [routerLink]="['/login']" fill="outline">Kids Login</ion-button>
-    <ion-button color="light" [routerLink]="['/parent-login']" fill="outline">Parents Login</ion-button>
-    <ion-button color="light" [routerLink]="['/doctor-login']" fill="outline">Doctors Login</ion-button>
+  <div class="container">
+    <div class="logNav">
+      <div class="slide" [routerLink]="['/login']">
+        <ion-button color="dark" >Kids Login</ion-button>
+      </div>
+      <div class="slide" [routerLink]="['/parent-login']">
+        <ion-button color="dark" >Parents Login</ion-button>
+      </div>
+      <div class="slide" [routerLink]="['/doctor-login']">
+        <ion-button color="dark" >Doctors Login</ion-button>
+      </div>
+    </div>
   </div>
 </ion-content>

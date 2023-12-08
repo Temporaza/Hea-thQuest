@@ -2,5 +2,161 @@
 .background {
     --background: url('/assets/Child_room2.jpg') no-repeat center center;
     --background-size: 50% 60%;
+    height: 100%;
   }
   
+
+  //pet style
+.pet-container {
+  position: relative;
+  cursor: grab; /* Set cursor to grab when hovering over the draggable area */
+  animation: floatAnimation 1s ease-in-out infinite alternate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  margin-top: 5vh;
+  border: 2px solid violet;
+}
+
+
+
+
+.pet-body {
+  width: 220px; /* Adjust the size as needed */
+  border: 2px solid green;
+}
+
+.pet-eyes {
+  border: 2px solid red;
+  width: 250px; /* Adjust the size as needed */
+  height: auto; /* Maintain aspect ratio */
+  position: absolute;
+  margin-top: 1vh;
+  margin-left: 2vh;
+  animation: blinkAnimation 3.5s infinite alternate; /* Blinking animation */
+  transition: height 2s ease-in-out; /* Smooth transition for height changes */
+
+}
+
+.pet-mouth {
+  border: 2px solid blue;
+  width: 250px; /* Adjust the size as needed */
+  height: auto; /* Maintain aspect ratio */
+  position: absolute;
+  margin-top: 4vh;
+  margin-left: 2vh;
+  animation: MouthAnimation 3.5s infinite alternate; /* Blinking animation */
+  transition: height 2s ease-in-out; /* Smooth transition for height changes */
+}
+
+@keyframes floatAnimation {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10px);
+  }
+}
+//save
+.save-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 35px; /* Adjust as needed */
+}
+
+ion-button {
+  width: 30%; /* Adjust the width as needed */
+}
+
+//pet bodies
+
+.pet_Bodies{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 90px; /* Adjust the gap between items as needed */
+  justify-content: center;
+  margin-top: 12vh;
+  // border: 2px solid black;
+
+}
+
+.duzzy {
+  width: 100%; /* Ensure each item takes the full width of its grid cell */
+  height: 0; /* Ensure the height is calculated based on the aspect ratio of the image */
+  padding-bottom: 100%; /* Assuming square images, adjust as needed */
+  position: relative;
+  background-color: white;
+  
+}
+
+.pet_Bodies img {
+  position: absolute;
+  width: 100%; /* Adjust the size as needed */
+  height: 100%;
+  // border: 2px solid yellow;
+  transition: padding 0.3s ease; /* Add transition effect */
+  padding: 5px;
+}
+
+.pet_Bodies img:hover {
+  padding: 10px; /* Adjust the padding on hover */
+}
+
+button {
+  margin-top: 10px;
+  padding: 5px;
+  background-color: #4285f4;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.pet-info {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 1px;
+  // background-color: rgba(255, 255, 255, 0.8); /* Adjust the background color and opacity */
+  height:3px;
+}
+
+.pet-name {
+  display: block;
+  font-size: 14px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+@media screen and (min-width: 620px) {
+  .pet_Bodies {
+    margin-top: 30vh;
+    max-width: 700px;
+    margin: 40px auto; /* Center horizontally */
+  }
+ 
+  .save-button{
+    max-width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pet_Bodies img{
+    padding: 30px;
+  }
+
+  .pet-info button{
+    padding: 15px; // Increase the padding for the button
+      font-size: 16px;
+      border-radius: 15px;
+  }
+  .pet-name{
+    font-size: 20px;
+  }
+
+  .duzzy {
+    border-radius: 0px 70px 0 70px;
+    
+  }
+}

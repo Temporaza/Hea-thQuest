@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -36,10 +36,16 @@ export class ActivitiesPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.taskStatusService.getTaskStatus().subscribe((status: string) => {
+    this.taskStatusService.getTaskStatus().subscribe((statusWithPoints) => {
+      const { status, points } = statusWithPoints;
+  
+      // Now you can use both status and points
       this.taskStatus = status;
+      // You might also want to use points here if needed
+  
+      // Continue with the rest of your code...
+      this.loadUserTasks();
     });
-    this.loadUserTasks();
   }
 
   async loadUserTasks() {
@@ -68,9 +74,21 @@ export class ActivitiesPage implements OnInit {
                    // Ensure 'completed' property is defined in each task
                   const task = { id, ...data, completed: false };
               
-                  return task;
+                  // Assuming you have a 'points' field in the task documen
+                  return this.firestore
+                    .collection('parents')
+                    .doc(task.parentId)
+                    .collection('tasks')
+                    .doc(id)
+                    .valueChanges()
+                    .pipe(
+                      map((parentTask: any) => {
+                        return { ...task, points: parentTask.points };
+                      })
+                    );
                 });
               }),
+              switchMap((taskObservables) => combineLatest(taskObservables))
             );
         } else {
           return [];
@@ -84,11 +102,14 @@ export class ActivitiesPage implements OnInit {
 
   async updateTaskStatus(task: any) {
     task.status = task.status === 'Pending' ? 'Waiting' : 'Pending';
+
+    let userId: string | null = null;  // Declare userId variable
   
     // Update the status in Firestore
-    const currentUser = this.afAuth.currentUser;
+    const currentUser = await this.afAuth.currentUser;
+
     if (currentUser) {
-      const userId = (await currentUser).uid;
+      const userId = currentUser.uid;
       const parentId = task.parentId; // Add this line to get the parentId
 
       this.firestore
@@ -109,7 +130,7 @@ export class ActivitiesPage implements OnInit {
 
 
       // Update the task status in the service
-      this.taskStatusService.setTaskStatus(task.status);
+      this.taskStatusService.setTaskStatus(task.status, task.points, userId);
   }
 
   async deleteTask(task: any) {

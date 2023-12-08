@@ -30,8 +30,21 @@ ion-item{
     max-width: 400px; // Adjust the max-width based on your design
 }
 
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10vh;
+  }
+  
+  .logo {
+    width: 150px; /* Set the width to your desired size */
+    height: 150px; /* Automatically adjust the height while maintaining the aspect ratio */
+  }
+
+
 .header {
-    margin-top: 30vh; /* Responsive vertical centering */
+    // margin-top: 30vh; /* Responsive vertical centering */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -103,4 +116,18 @@ ion-item{
     margin-top: 16px;
     opacity: 2;
     transition: opacity 0.3s ease-in-out; /* Add a smooth transition effect */
+  }
+
+  @media (min-width: 900px) {
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10vh;
+      }
+      
+      .logo {
+        width: 250px; /* Set the width to your desired size */
+        height: 250px; /* Automatically adjust the height while maintaining the aspect ratio */
+      }
   }
