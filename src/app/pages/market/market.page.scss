@@ -16,7 +16,7 @@
   justify-content: center;
   z-index: 2;
   margin-top: 5vh;
-  border: 2px solid violet;
+  // border: 2px solid violet;
 }
 
 
@@ -24,11 +24,11 @@
 
 .pet-body {
   width: 220px; /* Adjust the size as needed */
-  border: 2px solid green;
+  // border: 2px solid green;
 }
 
 .pet-eyes {
-  border: 2px solid red;
+  // border: 2px solid red;
   width: 250px; /* Adjust the size as needed */
   height: auto; /* Maintain aspect ratio */
   position: absolute;
@@ -40,7 +40,7 @@
 }
 
 .pet-mouth {
-  border: 2px solid blue;
+  // border: 2px solid blue;
   width: 250px; /* Adjust the size as needed */
   height: auto; /* Maintain aspect ratio */
   position: absolute;

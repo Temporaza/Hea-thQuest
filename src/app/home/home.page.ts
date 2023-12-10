@@ -6,6 +6,8 @@ import { LoadingController } from '@ionic/angular';
 import { PetBodyServiceService } from '../services/pet-body.service.service';
 import { TaskStatusService } from '../services/task-status.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ChangeDetectorRef } from '@angular/core';
 import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
 
 @Component({
@@ -34,7 +36,8 @@ export class HomePage {
     private loadingController: LoadingController,
     private petBodyService: PetBodyServiceService,
     private taskStatusService: TaskStatusService,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private firestore: AngularFirestore,
   ) {  
   
     this.user = authService.getProfile
@@ -59,49 +62,60 @@ export class HomePage {
   ionViewDidEnter() {
     // Get the audio element and play the music
     this.playBackgroundMusic();
+    // Fetch download URLs for pet images from Firebase Storage
+    this.fetchPetImages();
    
     // Get the audio element and play the music
 
   }
 
-  //fetching the images in fireabase storage
-  async ngOnInit() {
+  ngAfterViewInit() {
     this.taskStatusService.getTotalPoints().subscribe((totalPoints) => {
       this.totalPoints = totalPoints;
     });
-  
+
+    this.checkUser();
+  }
+
+  async checkUser() {
     try {
       const user = await this.afAuth.currentUser;
-  
+
       if (user) {
         const userId = user.uid;
-  
+
         // Pass the userId to fetchTotalPoints
         await this.fetchTotalPoints(userId);
-  
+
         // Log the user ID for debugging
         console.log('User ID:', userId);
-  
+
         // Fetch total points using the user ID
         const totalPoints = await this.taskStatusService.getTotalPointsFromFirestore(userId);
-  
+
         // Update the total points in the local subject
         this.taskStatusService.setTotalPoints(totalPoints);
-  
+
         // Load saved pet body URL from local storage
-        const savedPetBodyUrl = localStorage.getItem('selectedPetBodyUrl');
-  
-        // If a saved URL exists, use it; otherwise, fetch the default URL
-        this.petBodyUrl = savedPetBodyUrl;
-  
-        // Subscribe to changes in the selected pet body URL
-        this.petBodyService.selectedPetBodyUrl$.subscribe((url) => {
-          this.petBodyUrl = url;
-        });
-  
+        const userDoc = await this.firestore.collection('users').doc(userId).get().toPromise();
+
+        if (userDoc.exists) {
+          // Get the 'petBodyUrl' field from the user document
+          this.petBodyUrl = userDoc.get('petBodyUrl');
+
+          console.log('Selected PetBodyImage URL:', this.petBodyUrl);
+
+          // Subscribe to changes in the selected pet body URL
+          this.petBodyService.setSelectedPetBodyUrl(this.petBodyUrl);
+        } else {
+          console.error('User document not found.');
+          // Handle the case when the user document is not found
+          // For example, redirect to a different page or show an error message
+        }
+
         // Fetch download URLs for pet images from Firebase Storage
         await this.fetchPetImages();
-  
+
         // Other initialization code
       } else {
         console.error('User not authenticated.');

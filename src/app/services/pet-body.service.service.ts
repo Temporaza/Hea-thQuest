@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,17 +7,22 @@ import { BehaviorSubject } from 'rxjs';
 export class PetBodyServiceService {
 
   private selectedPetBodyUrlSubject = new BehaviorSubject<string>(null);
-  selectedPetBodyUrl$ = this.selectedPetBodyUrlSubject.asObservable();
 
-  setSelectedPetBodyUrl(url: string) {
-    localStorage.setItem('selectedPetBodyUrl', url);
-    this.selectedPetBodyUrlSubject.next(url);
-  }
+    selectedPetBodyUrl$: Observable<string | null> = this.selectedPetBodyUrlSubject.asObservable();
+
+    constructor() { }
+
+
+    setSelectedPetBodyUrl(url: string) {
+      this.selectedPetBodyUrlSubject.next(url);
+    }
+  
   
   // Get the selected pet body URL from local storage
   getSelectedPetBodyUrl(): string {
-    return localStorage.getItem('selectedPetBodyUrl') || null;
+    const firestorePetBodyUrl = this.selectedPetBodyUrlSubject.getValue();
+    return firestorePetBodyUrl || localStorage.getItem('selectedPetBodyUrl') || null;
   }
 
-  constructor() { }
+
 }

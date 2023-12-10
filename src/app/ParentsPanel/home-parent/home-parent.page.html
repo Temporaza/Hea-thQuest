@@ -55,6 +55,7 @@
       </div>
     </div>
 
+    <br>
 
     <div *ngIf="appointments.length > 0">
       <ion-card *ngFor="let appointment of appointments">
@@ -69,7 +70,7 @@
                 <ion-label>Date: {{ appointment.date }}</ion-label>
                 <ion-label>Time: {{ appointment.time }}</ion-label>
                 <ion-label>Doctor: {{ appointment.doctorFullName }}</ion-label>
-                <ion-label>Status: {{ appointment.status || 'Pending' }}</ion-label>
+                <!-- <ion-label>Status: {{ appointment.status || 'Pending' }}</ion-label> -->
               </ion-label>
               <ion-button color="danger" (click)="deleteAppointment(appointment)">
                 <ion-icon name="trash"></ion-icon>
