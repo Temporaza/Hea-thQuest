@@ -15,6 +15,8 @@ export class DocAppointmentService {
 
    // Adjust the method to accept a doctorUID parameter
    getDoctorAppointments(doctorUID: string): Observable<any[]> {
+    console.log('Doctor UID in getDoctorAppointments:', doctorUID);
+    
     const appointmentsCollection = this.firestore.collection(`doctors/${doctorUID}/appointments`);
     return appointmentsCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {

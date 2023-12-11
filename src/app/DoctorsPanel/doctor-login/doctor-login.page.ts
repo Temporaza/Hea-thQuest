@@ -13,6 +13,7 @@ export class DoctorLoginPage implements OnInit {
   formLog: FormGroup;
   errorMessage: string = '';
   notAuthorizedMessage: string=''
+  alertController: any;
 
   constructor(
     public formBuilder: FormBuilder, 
@@ -57,22 +58,23 @@ export class DoctorLoginPage implements OnInit {
   get errorControl(){
     return this.formLog?.controls;
   }
+
   async signUp() {
     const loading = await this.loadingCtrl.create();
     await loading.present();
-  
+
     if (this.formLog?.valid) {
       try {
         const userCredential = await this.authService.loginDoctor(
           this.formLog.value.email,
           this.formLog.value.password
         );
-  
+
         const user = userCredential.user; // Access the user object
-  
+
         // Determine the user's role
         const role = await this.authService.checkUserRole(user.uid);
-  
+
         if (role === 'doctor') {
           loading.dismiss();
           this.clearFormFields();
@@ -85,8 +87,19 @@ export class DoctorLoginPage implements OnInit {
         console.log(error);
         loading.dismiss();
         this.showErrorMessage();
+        this.presentErrorAlert(); // Display error alert
       }
     }
+  }
+
+  async presentErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Login Failed',
+      message: 'Invalid email or password. Please try again.',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
   clearFormFields(){

@@ -5,7 +5,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { DoctorAvailability } from '../doctor-consult/doctor-consult.page';
 import { NavController } from '@ionic/angular';
-
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -25,6 +25,7 @@ export class DoctorHomePage implements OnInit {
     private firestore: AngularFirestore,
     private afAuth: AngularFireAuth,
     private navCtrl: NavController,
+    private alertController: AlertController,
   ) { }
 
   ngOnInit() {
@@ -58,16 +59,33 @@ export class DoctorHomePage implements OnInit {
     });
   }
 
-  signOut() {
-    this.authService.signOut()
-      .then(() => {
-        // After logging out, navigate to the login page and clear history
-        this.router.navigate(['/landing'], { replaceUrl: true });
-      })
-      .catch((error) => {
-        console.error('Error logging out:', error);
-        // Handle any logout error, if needed
-      });
+  async signOut() {
+    const alert = await this.alertController.create({
+      header: 'Logout Confirmation',
+      message: 'Are you sure you want to logout?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Logout',
+          handler: () => {
+            this.authService.signOut()
+              .then(() => {
+                // After logging out, navigate to the login page and clear history
+                this.router.navigate(['/landing'], { replaceUrl: true });
+              })
+              .catch((error) => {
+                console.error('Error logging out:', error);
+                // Handle any logout error, if needed
+              });
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
   // Define the getAvailableDates method here
   getAvailableDates(doctorAvailability: DoctorAvailability): string[] {

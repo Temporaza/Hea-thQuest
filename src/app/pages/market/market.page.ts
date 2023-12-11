@@ -5,6 +5,7 @@ import { AuthenticationService } from 'src/app/authentication.service';
 import { PetBodyServiceService } from 'src/app/services/pet-body.service.service';
 import { TaskStatusService } from 'src/app/services/task-status.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-market',
@@ -45,6 +46,7 @@ export class MarketPage implements OnInit {
     private petBodyService: PetBodyServiceService,
     private taskStatusService: TaskStatusService,
     private afAuth: AngularFireAuth,
+    private alertController: AlertController
    
   ) { }
 
@@ -129,6 +131,7 @@ export class MarketPage implements OnInit {
 
        // Log the name and URL of the selected pet body when saved
       console.log('Data saved successfully!', this.petBodyUrl);
+      await this.showPetBodySavedPopup();
 
       // Log the name and URL of the selected pet body when saved
       console.log(`Saved Pet Body: ${this.getSelectedPetBodyName()}, URL: ${this.petBodyUrl}`);
@@ -137,6 +140,15 @@ export class MarketPage implements OnInit {
     }
   }
 
+  async showPetBodySavedPopup() {
+    const alert = await this.alertController.create({
+      header: 'Pet Body Saved',
+      message: 'Pet body saved successfully!',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
 
   getSelectedPetBodyName(): string {
     // Assuming the pet body URL is in the format 'PetDefault/Body/{PetBodyName}.png'
@@ -189,11 +201,21 @@ export class MarketPage implements OnInit {
       await this.updateUserData();
 
       // Notify the user that the purchase was successful
-      console.log(`Successfully purchased ${petName} for ${price} Points.`);
+      this.presentAlert(`Successfully purchased ${petName} for ${price} Points.`);
     } else {
       // Notify the user that they don't have enough points
-      console.log(`Not enough Points to buy ${petName}.`);
+      this.presentAlert(`Not enough Points to buy ${petName}.`);
     }
+  }
+
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: message,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
   }
 
   async updateUserData() {

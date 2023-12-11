@@ -104,12 +104,23 @@ to {
 
 }
 
-ion-button{
-    background: white;
-}
+// ion-button{
+//     background: white;
+// }
 
 ion-card-subtitle{
     color: white;
+}
+
+ion-card {
+  max-width: 30%; /* Set a maximum width for the appointment card */
+  margin: 0 auto; 
+}
+
+@media (max-width: 700px) {
+  ion-card {
+    max-width: 80%; /* Remove the maximum width when the screen width is less than 700px */
+  }
 }
 
 // .fam {

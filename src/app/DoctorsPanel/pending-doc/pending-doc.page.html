@@ -7,22 +7,36 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
+
   <ion-list *ngIf="appointments.length > 0">
     <ion-item *ngFor="let appointment of appointments">
-      <ion-label>
-        Date: {{ appointment.date }}<br>
-        Time: {{ appointment.time }}<br>
-        Patient: {{ appointment.doctorFullName }}<br>
-        Status: {{ appointment.status }}
-      </ion-label>
-      <ion-button *ngIf="appointment.status === 'Pending'" (click)="confirmAppointment(appointment)">
-        Confirm
-      </ion-button>
+      <ion-card color="medium">
+        <ion-card-header>
+          <ion-card-title>Date: {{ appointment.date }}</ion-card-title>
+          <ion-card-subtitle>Time: {{ appointment.time }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p>Parent: {{ appointment.parentFullName }}</p>
+          <p>Status: {{ appointment.status }}</p>
+        </ion-card-content>
+        <ion-card-footer>
+          <ion-buttons slot="end">
+            <ion-button color="success" *ngIf="appointment.status !== 'Confirmed' && appointment.status !== 'Rejected'" (click)="confirmAppointment(appointment)">
+              <ion-icon name="checkmark-circle"></ion-icon> Confirm
+            </ion-button>
+            <ion-button color="danger" *ngIf="appointment.status !== 'Confirmed' && appointment.status !== 'Rejected'" (click)="rejectAppointment(appointment)">
+              <ion-icon name="close-circle"></ion-icon> Reject
+            </ion-button>
+          </ion-buttons>
+        </ion-card-footer>
+      </ion-card>
+      <!-- Add any additional buttons or actions you need -->
     </ion-item>
   </ion-list>
+  
+
+
 
   <ion-note *ngIf="appointments.length === 0">No pending appointments.</ion-note>
-
-  
 </ion-content>

@@ -4,7 +4,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { AppointmentPage } from 'src/app/modals/appointment/appointment.page';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 
 
 @Component({
@@ -23,14 +23,23 @@ export class ConsultationPage implements OnInit {
 
   constructor(
     private firestore: AngularFirestore,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private loadingController: LoadingController
   ) { }
 
   ngOnInit() {
   }
 
   async findMatchingDoctors() {
+    const loading = await this.loadingController.create({
+      message: 'Finding Matching Doctors...',
+      translucent: true,
+      backdropDismiss: false
+    });
+  
     try {
+      await loading.present();
+  
       this.matchingDoctors = [];
       const parentPreferredDate = this.convertToDateISO(this.preferredDate);
   
@@ -69,6 +78,8 @@ export class ConsultationPage implements OnInit {
   
     } catch (error) {
       console.error('Error finding matching doctors:', error);
+    } finally {
+      await loading.dismiss();
     }
   }
 

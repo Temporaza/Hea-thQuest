@@ -13,6 +13,7 @@ import { AuthenticationService } from 'src/app/authentication.service';
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
   errorMessage: string = '';
+  alertController: any;
 
  
   
@@ -56,21 +57,21 @@ export class LoginPage implements OnInit {
   async signUp() {
     const loading = await this.loadingCtrl.create();
     await loading.present();
-  
+
     if (this.loginForm?.valid) {
       try {
         const email = this.loginForm.value.email;
         const password = this.loginForm.value.password;
-  
+
         // Authenticate the user
         const userCredential = await this.authService.loginUser(email, password);
-        
+
         // Access the User object from the UserCredential
         const user = userCredential.user;
-  
+
         // Check the role of the authenticated user
         const userRole = await this.authService.checkUserRole(user.uid);
-  
+
         // Check if the user has the required role (e.g., 'user')
         if (userRole === 'user') {
           loading.dismiss();
@@ -83,13 +84,25 @@ export class LoginPage implements OnInit {
           this.authService.signOut(); // Sign out the user to prevent unauthorized access
           // Display a message indicating unauthorized access
           console.log('Unauthorized access. You do not have the required role.');
+          this.presentErrorAlert(); // Display error alert
         }
       } catch (error) {
         console.log(error);
         loading.dismiss();
         this.showErrorMessage();
+        this.presentErrorAlert(); // Display error alert
       }
     }
+  }
+
+  async presentErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Login Failed',
+      message: 'Invalid email or password. Please try again.',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
   clearFormFields(){

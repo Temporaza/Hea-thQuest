@@ -3,7 +3,7 @@ import { FirebaseApp } from '@angular/fire/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { ModalController, NavController, ToastController } from '@ionic/angular'; // Import NavController
+import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular'; // Import NavController
 import { AuthenticationForParentsService } from 'src/app/authenticationParents/authentication-for-parents.service';
 import { VaccineDetailsModalPage } from 'src/app/modals/vaccine-details-modal/vaccine-details-modal.page';
 
@@ -27,7 +27,8 @@ export class HomeParentPage implements OnInit {
     private router: Router,
     private firestore: AngularFirestore,
     private modalController: ModalController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -85,17 +86,33 @@ export class HomeParentPage implements OnInit {
     this.router.navigate(['/parents-activity']);
   }
 
-  logout() {
-    // Call your authentication service's signOut method to log the user out
-    this.authService.signOut()
-      .then(() => {
-        // After logging out, navigate to the login page or any other desired page
-        this.navCtrl.navigateRoot('/landing'); // Navigate to the login page
-      })
-      .catch((error) => {
-        console.error('Error logging out:', error);
-        // Handle any logout error, if needed
-      });
+  async logout() {
+    const alert = await this.alertController.create({
+      header: 'Confirm Logout',
+      message: 'Are you sure you want to log out?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Logout',
+          handler: () => {
+            this.authService.signOut()
+              .then(() => {
+                this.navCtrl.navigateRoot('/landing');
+              })
+              .catch((error) => {
+                console.error('Error logging out:', error);
+                // Handle any logout error, if needed
+              });
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
   }
 
   private fetchAppointments() {
@@ -103,29 +120,68 @@ export class HomeParentPage implements OnInit {
       if (user) {
         const parentUID = user.uid;
         const appointmentsCollection = this.firestore.collection(`parents/${parentUID}/appointments`);
-
-        appointmentsCollection.valueChanges().subscribe((appointments: any[]) => {
-          this.appointments = appointments.map(appointment => ({ ...appointment, status: appointment.status || 'Pending' }));
+  
+        appointmentsCollection.snapshotChanges().subscribe((appointments: any[]) => {
+          this.appointments = appointments.map(appointment => ({
+            id: appointment.payload.doc.id,
+            ...appointment.payload.doc.data(),
+            status: appointment.payload.doc.data().status || 'Pending'
+          }));
         });
       }
     });
   }
 
-  async deleteAppointment(appointment: any, parentUID: string) {
-    try {
-      // Delete the appointment from Firestore
-      await this.firestore.collection('parents').doc(parentUID).collection('appointments').doc(appointment.id).delete();
+  async deleteAppointment(appointment: any) {
+    const alert = await this.alertController.create({
+      header: 'Confirm Deletion',
+      message: 'Sure kabang gusto mo ito idelete Sis???? pag hindi baka sapukin kita',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Delete',
+          handler: async () => {
+            try {
+              const user = await this.authService.currentUser;
+              if (!user) {
+                // Handle the case where the user is not authenticated
+                console.error('User not authenticated.');
+                return;
+              }
+          
+              const parentUID = user.uid;
+              const parentAppointmentDocRef = this.firestore.collection('parents').doc(parentUID).collection('appointments').doc(appointment.id);
+              const doctorUID = appointment.doctorUID;
+              const doctorAppointmentDocRef = this.firestore.collection('doctors').doc(doctorUID).collection('appointments').doc(appointment.id);
+          
+              // Use Firestore batch write for atomic operation
+              const batch = this.firestore.firestore.batch();
+              batch.delete(parentAppointmentDocRef.ref);
+              batch.delete(doctorAppointmentDocRef.ref);
+          
+              await batch.commit();
+          
+              // Update the appointments array in your component to reflect the changes
+              this.appointments = this.appointments.filter((a) => a.id !== appointment.id);
+          
+              // Show a success message
+              this.presentSuccessMessage('Appointment deleted successfully.');
+            } catch (error) {
+              console.error('Error deleting appointment:', error);
+              this.presentErrorMessage('Error deleting appointment');
+            }
+          },
+        },
+      ],
+    });
   
-      // Update the appointments array in your component to reflect the changes
-      this.appointments = this.appointments.filter((a) => a !== appointment);
-  
-      // Show a success message
-      this.presentSuccessMessage('Appointment deleted successfully.');
-    } catch (error) {
-      console.error('Error deleting appointment:', error);
-      this.presentErrorMessage('Error deleting appointment');
-    }
+    await alert.present();
   }
+  
 
   private async presentSuccessMessage(message: string) {
     const toast = await this.toastController.create({

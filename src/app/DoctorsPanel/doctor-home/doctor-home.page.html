@@ -4,8 +4,10 @@
       <ion-menu-button menu="doctor-menu"></ion-menu-button>
     </ion-buttons>
     <ion-title>Doctor</ion-title>
-    <ion-buttons slot="end"> <!-- Use 'slot="end"' to place the button on the right -->
-      <ion-button (click)="signOut()">Sign Out</ion-button>
+    <ion-buttons slot="end">
+      <ion-button (click)="signOut()">
+        <ion-icon name="log-out" slot="start" size="large"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

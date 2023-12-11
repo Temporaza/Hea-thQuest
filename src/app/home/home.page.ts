@@ -2,13 +2,14 @@ import { Component} from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { PetBodyServiceService } from '../services/pet-body.service.service';
 import { TaskStatusService } from '../services/task-status.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ChangeDetectorRef } from '@angular/core';
 import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
+
 
 @Component({
   selector: 'app-home',
@@ -39,6 +40,7 @@ export class HomePage {
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore,
     private cdr: ChangeDetectorRef,
+    private alertControler: AlertController
   ) {  
   
     this.user = authService.getProfile
@@ -175,26 +177,47 @@ async createLoading() {
     // Pause the background music before logging out
     this.pauseBackgroundMusic();
   
-    try {
-      await this.authService.signOut();
-
-      // Clear the local total points subject
-      this.taskStatusService.setTotalPoints(0);
+    const alert = await this.alertControler.create({
+      header: 'Logout',
+      message: 'Are you sure you want to logout?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            // Handle cancel action if needed
+            console.log('Logout canceled');
+          }
+        },
+        {
+          text: 'Logout',
+          handler: async () => {
+            try {
+              await this.authService.signOut();
   
-      // Wait for the sign-out operation to complete
-      const isAuthenticated = await this.authService.isAuthenticated();
+              // Clear the local total points subject
+              this.taskStatusService.setTotalPoints(0);
   
-      if (!isAuthenticated) {
-        // After logging out, navigate to the login page and clear history
-        this.route.navigate(['/landing'], { replaceUrl: true });
+              // Wait for the sign-out operation to complete
+              const isAuthenticated = await this.authService.isAuthenticated();
   
-        // Log the message when the user is not authenticated
-        console.log('User is not authenticated.');
-      }
-    } catch (error) {
-      console.error('Error logging out:', error);
-      // Handle any logout error, if needed
-    }
+              if (!isAuthenticated) {
+                // After logging out, navigate to the login page and clear history
+                this.route.navigate(['/landing'], { replaceUrl: true });
+  
+                // Log the message when the user is not authenticated
+                console.log('User is not authenticated.');
+              }
+            } catch (error) {
+              console.error('Error logging out:', error);
+              // Handle any logout error, if needed
+            }
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
   }
 
   toggleAudio() {

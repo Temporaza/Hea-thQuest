@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,7 +32,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DragDropModule,
     AngularFireAuthModule, 
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    IonicStorageModule.forRoot(),
     
     // FirestoreModule
   ],
