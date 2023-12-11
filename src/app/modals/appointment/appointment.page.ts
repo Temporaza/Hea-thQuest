@@ -48,7 +48,8 @@ export class AppointmentPage implements OnInit {
   }
 
   async selectTime(timeRange: any) {
-    const loading = await this.presentLoading(); // Display loading screen
+    const loading = await this.presentLoading();
+
     try {
       const selectedDate = this.doctor?.preferredDayFormatted;
       const selectedTime = timeRange.startTime;
@@ -63,10 +64,10 @@ export class AppointmentPage implements OnInit {
         if (!querySnapshot.empty) {
           const doctorUID = querySnapshot.docs[0].id;
 
-          const commonAppointmentId = this.firestore.createId(); // Use the doctor's UID as the common appointment ID
+          // Use the parent UID as part of the documentId for common reference
+          const commonDocumentId = `${parentUID}_${this.firestore.createId()}`;
 
           const appointmentData = {
-            appointmentId: commonAppointmentId,
             date: selectedDate,
             time: selectedTime,
             parentUID: parentUID,
@@ -77,15 +78,16 @@ export class AppointmentPage implements OnInit {
 
           const doctorRef = this.firestore.collection('doctors').doc(doctorUID);
           const appointmentsSubcollectionRef = doctorRef.collection('appointments');
-  
-          const doctorAppointmentDocRef = await appointmentsSubcollectionRef.add(appointmentData);
-          console.log('Appointment added to doctor\'s appointments subcollection with ID:', doctorAppointmentDocRef.id);
-  
+
+          // Use the common document ID here
+          await appointmentsSubcollectionRef.doc(commonDocumentId).set(appointmentData);
+          console.log('Appointment added to doctor\'s appointments subcollection with ID:', commonDocumentId);
+
           const parentAppointmentsRef = this.firestore.collection('parents').doc(parentUID).collection('appointments');
-          
-          // Use the common appointment ID here
-          const parentAppointmentDocRef = await parentAppointmentsRef.doc(commonAppointmentId).set(appointmentData);
-          console.log('Appointment added to parent\'s appointments subcollection with ID:', commonAppointmentId);
+
+          // Use the common document ID here
+          await parentAppointmentsRef.doc(commonDocumentId).set(appointmentData);
+          console.log('Appointment added to parent\'s appointments subcollection with ID:', commonDocumentId);
 
           this.dismissModal();
           this.presentSuccessMessage();
@@ -103,7 +105,7 @@ export class AppointmentPage implements OnInit {
       console.error('Error adding appointment:', error);
       this.presentErrorMessage('Error adding appointment');
     } finally {
-      loading.dismiss(); // Dismiss loading screen
+      loading.dismiss();
     }
   }
   

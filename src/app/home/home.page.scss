@@ -278,3 +278,9 @@ ion-card {
   }
   
 }
+
+.custom-loading-class {
+  --background: rgba(0, 0, 0, 0.7); /* Background color */
+  --spinner-color: #ff8200; /* Spinner color */
+  --spinner-size: 3rem; /* Spinner size */
+}

@@ -38,6 +38,7 @@ export class HomePage {
     private taskStatusService: TaskStatusService,
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore,
+    private cdr: ChangeDetectorRef,
   ) {  
   
     this.user = authService.getProfile
@@ -60,6 +61,9 @@ export class HomePage {
 
 
   ionViewDidEnter() {
+
+    // Show loading spinner
+    this.createLoading();
     // Get the audio element and play the music
     this.playBackgroundMusic();
     // Fetch download URLs for pet images from Firebase Storage
@@ -72,6 +76,8 @@ export class HomePage {
   ngAfterViewInit() {
     this.taskStatusService.getTotalPoints().subscribe((totalPoints) => {
       this.totalPoints = totalPoints;
+       // Manually trigger change detection
+       this.cdr.detectChanges();
     });
 
     this.checkUser();
@@ -129,28 +135,33 @@ export class HomePage {
   }
 
   async fetchPetImages() {
-    const loadingPetEyes = await this.createLoading();
-    await loadingPetEyes.present();
-    this.petEyesUrl = await this.getDownloadUrl('mata', 'One.png');
-    await loadingPetEyes.dismiss();
-  
-    const loadingPetMouth = await this.createLoading();
-    await loadingPetMouth.present();
-    this.petMouthUrl = await this.getDownloadUrl('Mouth', 'M1.png');
-    await loadingPetMouth.dismiss();
-  
-    const loadingPetBody = await this.createLoading();
-    await loadingPetBody.present();
-    this.petBodyUrl = this.petBodyService.getSelectedPetBodyUrl() || ''; 
-    await loadingPetBody.dismiss();
-  }
+    const loading = await this.createLoading();
+    try {
+        await loading.present();
 
-  async createLoading() {
+        this.petEyesUrl = await this.getDownloadUrl('mata', 'One.png');
+        this.petMouthUrl = await this.getDownloadUrl('Mouth', 'M1.png');
+        this.petBodyUrl = this.petBodyService.getSelectedPetBodyUrl() || '';
+
+        // Perform additional tasks if needed after fetching all images
+
+    } catch (error) {
+        console.error('Error fetching pet images:', error);
+    } finally {
+        // Dismiss the loading spinner whether successful or not
+        await loading.dismiss();
+    }
+}
+
+async createLoading() {
     const loading = await this.loadingController.create({
-      spinner: 'crescent', // Use your preferred loading spinner style
+        message: 'Preparing your pet...', // You can customize the loading message
+        spinner: 'lines-sharp',
+        translucent: true,
+        cssClass: 'custom-loading-class' // Add a custom CSS class if needed
     });
     return loading;
-  }
+}
    
   async getDownloadUrl(part: string, imageName: string): Promise<string> {
     const imagePath = `PetDefault/${part}/${imageName}`;
