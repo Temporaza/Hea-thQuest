@@ -83,6 +83,10 @@ export class AuthenticationForParentsService {
     }
   }
 
+  async getCurrentParentUID(): Promise<string | null> {
+    const user = await this.ngFireAuth.currentUser;
+    return user ? user.uid : null;
+  }
 
   async loginParent(email: string, password: string) {
     return await this.ngFireAuth.signInWithEmailAndPassword(email,password)

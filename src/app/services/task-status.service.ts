@@ -14,9 +14,12 @@ export class TaskStatusService {
     private firestore: AngularFirestore
   ) { }
   
- /**
-   * Get an observable to track changes in the task status.
-   * @returns Observable<string | null> - The observable for task status changes.
+  /**
+   * Set the task status and update total points if confirmed.
+   * @param status - The new status of the task.
+   * @param points - The points associated with the task.
+   * @param userId - The user ID associated with the task.
+   * @param confirmed - Whether the task is confirmed or not.
    */
 
   getTaskStatus(): Observable<{ status: string, points: number }> {
@@ -27,17 +30,23 @@ export class TaskStatusService {
     return this.totalPointsSubject.asObservable();
   }
 
-  async setTaskStatus(status: string, points: number, userId: string) {
-    console.log(`Setting task status. Status: ${status}, Points: ${points}, User ID: ${userId}`);
-    const currentTotalPoints = this.totalPointsSubject.value;
-    const newTotalPoints = currentTotalPoints + points;
-    this.totalPointsSubject.next(newTotalPoints);
-  
-     // Update the total points in Firestore
-     await this.updateTotalPointsInFirestore(userId, newTotalPoints);
+  setTaskStatus(status: string, points: number, userId: string, confirmed: boolean = false) {
+    // If confirmed, update total points
+    if (confirmed) {
+      const currentTotalPoints = this.totalPointsSubject.value;
+      const newTotalPoints = currentTotalPoints + points;
 
-     // Update the task status subject
-     this.taskStatusSubject.next({ status, points })
+      // Update the total points in Firestore
+      this.updateTotalPointsInFirestore(userId, newTotalPoints);
+
+      // Update the local total points subject
+      this.totalPointsSubject.next(newTotalPoints);
+
+      console.log(`Total points updated. User ID: ${userId}, Total Points: ${newTotalPoints}`);
+    }
+
+    // Update the task status subject
+    this.taskStatusSubject.next({ status, points });
   }
 
   private async updateTotalPointsInFirestore(userId: string, points: number) {

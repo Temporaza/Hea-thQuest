@@ -1,18 +1,68 @@
 <ion-content [fullscreen]="true" class="Body">
   <div class="logo-container">
-    <img class="logo" src="assets/petPal.png" alt="Your Logo">
+    <img class="logo" src="assets/icon/fitQuest.png" alt="Your Logo">
   </div>
-  <div class="container">
-    <div class="logNav">
-      <div class="slide" [routerLink]="['/login']">
-        <ion-button class="btn-kid" color="dark" >Kids Login</ion-button>
+
+  <section>
+    <div class="container">
+     
+        <div class="left">
+          <!-- <div class="curved2">
+            <svg xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 1440 320">
+             <path fill="#FF9A4F" fill-opacity="1" d="M0,0L40,16C80,32,160,64,240,85.3C320,107,400,117,480,101.3C560,85,640,43,720,53.3C800,64,880,128,960,144C1040,160,1120,128,1200,138.7C1280,149,1360,203,1400,229.3L1440,256L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path>
+            </svg>
+          </div>
+          <div class="logo1-container">
+            <img class="logo1" src="assets/icon/fitQuest.png" alt="Your Logo">
+          </div>
+          <div class="header">
+            <h1 class="title">Kids</h1>
+            <h1 class="subtitle">Parents</h1>
+          </div>
+          <div class="log">
+            <h1 class="logTitle">Login</h1>
+          </div> -->
+        </div>
+
+        <div class="right">
+          <div class="content">
+            <h1>This is for the Kid's Panel</h1>
+            <div [routerLink]="['/login']">
+              <ion-button class="btn-kid" color="dark" >Kids Login</ion-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="leftParent">
+           <!-- <div class="curved2">
+            <svg xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 1440 320">
+             <path fill="#FF9A4F" fill-opacity="1" d="M0,0L40,16C80,32,160,64,240,85.3C320,107,400,117,480,101.3C560,85,640,43,720,53.3C800,64,880,128,960,144C1040,160,1120,128,1200,138.7C1280,149,1360,203,1400,229.3L1440,256L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path>
+            </svg>
+          </div>
+          <div class="logo1-container">
+            <img class="logo1" src="assets/icon/fitQuest.png" alt="Your Logo">
+          </div>
+          <div class="header">
+            <h1 class="titlekids">Kids</h1>
+            <h1 class="subtitleParents">Parents</h1>
+          </div>
+          <div class="log">
+            <h1 class="logTitle">Login</h1>
+          </div> -->
+        </div>
+        <div class="rightParent">
+          <div class="content">
+            <h1>This is for the Parent's Panel</h1>
+            <div [routerLink]="['/parent-login']">
+              <ion-button class="btn-parent" color="dark" >Parents Login</ion-button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="slide" [routerLink]="['/parent-login']">
-        <ion-button class="btn-parent" color="dark" >Parents Login</ion-button>
-      </div>
-      <div class="slide" [routerLink]="['/doctor-login']">
-        <ion-button class="btn-doc" color="dark" >Doctors Login</ion-button>
-      </div>
+  </section>
+    <!-- Footer -->
+    <div class="footer">
+      <p>&copy; 2023 fitQuest. All rights reserved.</p>
+      <p>Email: fitQuest@gmail.com Contact#: 09810391315</p>
     </div>
-  </div>
 </ion-content>

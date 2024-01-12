@@ -12,13 +12,6 @@ import { TaskStatusService } from 'src/app/services/task-status.service';
   selector: 'app-activities',
   templateUrl: './activities.page.html',
   styleUrls: ['./activities.page.scss'],
-  animations: [
-    trigger('slideIn', [
-      state('void', style({ transform: 'translateY(-100%)' })),
-      state('*', style({ transform: 'translateY(0)' })),
-      transition('void => *', animate('0.5s ease-out')),
-    ]),
-  ],
 })
 export class ActivitiesPage implements OnInit {
 
@@ -83,7 +76,7 @@ export class ActivitiesPage implements OnInit {
                     .valueChanges()
                     .pipe(
                       map((parentTask: any) => {
-                        return { ...task, points: parentTask.points };
+                        return { ...task, points: parentTask ? parentTask.points : 0 };
                       })
                     );
                 });
@@ -101,36 +94,36 @@ export class ActivitiesPage implements OnInit {
   }
 
   async updateTaskStatus(task: any) {
-    task.status = task.status === 'Pending' ? 'Waiting' : 'Pending';
-
-    let userId: string | null = null;  // Declare userId variable
+    
+    // Update the status to 'Waiting' directly
+    task.status = 'Waiting';
   
-    // Update the status in Firestore
+    // Add the necessary logic to get userId and parentId
+    let userId: string | null = null;
     const currentUser = await this.afAuth.currentUser;
-
+  
     if (currentUser) {
-      const userId = currentUser.uid;
-      const parentId = task.parentId; // Add this line to get the parentId
-
+      userId = currentUser.uid;
+      const parentId = task.parentId;
+  
+      // Update the status in Firestore for both 'users' and 'parents' collections
       this.firestore
         .collection('users')
         .doc(userId)
         .collection('tasks')
         .doc(task.id)
         .update({ status: task.status });
-
-        // Update the status in the 'parents' collection using parentId
-        this.firestore
+  
+      this.firestore
         .collection('parents')
         .doc(parentId)
         .collection('tasks')
         .doc(task.id)
         .update({ status: task.status });
+  
+      // Update the task status in the service without adding points
+      this.taskStatusService.setTaskStatus(task.status, task.points, userId, false);
     }
-
-
-      // Update the task status in the service
-      this.taskStatusService.setTaskStatus(task.status, task.points, userId);
   }
 
   async deleteTask(task: any) {

@@ -6,7 +6,7 @@
     </svg>
   </div>
   <div class="logo-container">
-    <img class="logo" src="assets/petPal.png" alt="Your Logo">
+    <img class="logo" src="assets/icon/fitQuest.png" alt="Your Logo">
   </div>
   <div class="header">
     <h1 class="title">Create Account</h1>
@@ -58,6 +58,12 @@
           Contain 8 digit
         </ion-text>
       </div>
+
+       <!-- Parent's Email -->
+       <ion-item>
+        <ion-input formControlName="parentEmail" placeholder="Parent's Email" class="input"></ion-input>
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-item>
 
       <div class="signinLink">
         <p>Already a Member?<a  style="color:#ffc33f" [routerLink]="['/login']">Signin Now</a></p>

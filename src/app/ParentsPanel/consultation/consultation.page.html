@@ -3,47 +3,39 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home-parent"></ion-back-button>
     </ion-buttons>
-    <ion-title>Consultation</ion-title>
+    <ion-title class="header-title">Kids Progress</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list>
-    <ion-card class="custom-card">
-      <ion-card-header>
-        <ion-card-title>Set Your Preference</ion-card-title>
+  <!-- Display user data -->
+  <ion-list *ngIf="usersData.length > 0">
+    <ion-card *ngFor="let user of usersData">
+      <ion-card-header class="card-header">
+        <ion-card-title class="card-title">Name: {{ user.fullname }}</ion-card-title>
       </ion-card-header>
-      <ion-card-content>
-        <ion-item>
-          <ion-input [(ngModel)]="preferredDate" label="Preferred Date" type="date"></ion-input>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
-    <ion-button class="findBtn" color="warning" (click)="findMatchingDoctors()">Find Matching Doctors</ion-button>
-  </ion-list>
-  
 
-  <!-- Display matching doctors here -->
-  <div class="result">
-    <ion-list *ngIf="(matchingDoctors$ | async)?.length > 0">
-      <ion-card *ngFor="let doctor of matchingDoctors$ | async">
-        <ion-card-content *ngIf="doctor">
-          <h2>{{ doctor.fullname || 'No Name Available' }}</h2>
-          <p>Clinic Address: {{ doctor.ClinicAddress || 'No Address Available' }}</p>
-          <p>Contact: {{ doctor.contact || 'No Contact Available' }}</p>
-          <p>Email: {{ doctor.email || 'No Email Available' }}</p>
-          <p>Availability:</p>
-          <ion-list *ngIf="doctor.preferredDayAvailability">
-            <ion-item>
-              {{ doctor.preferredDayFormatted }}: 
-              {{ formatTime(doctor.preferredDayAvailability.openingTime) || 'N/A' }} - 
-              {{ formatTime(doctor.preferredDayAvailability.closingTime) || 'N/A' }}
-            </ion-item>
-          </ion-list>
-          <!-- Add a Schedule button on the right side -->
-        <ion-button expand="full" color="primary" (click)="makeAppointment(doctor)">Make an Appointment</ion-button>
-        </ion-card-content>
-      </ion-card>
-    </ion-list>
-  </div>
+      <div class="lineGraph">
+        <h1>Line Graph</h1>
+        <!-- Graph canvas within the card -->
+        <canvas [id]="'lineCanvas_' + user.uid" #lineCanvas></canvas>
+      </div>
+<!-- 
+      <div class="bmi-history-container">
+        <ion-list *ngIf="user.bmiHistory && user.bmiHistory.length > 0">
+          <ion-item *ngFor="let record of user.bmiHistory" class="bmi-record-item">
+            <ion-label class="record-label">Date: {{ record.date }}</ion-label>
+            <ion-text slot="end" class="record-bmi">BMI: {{ record.bmi }}</ion-text>
+          </ion-item>
+        </ion-list>
+      </div> -->
+
+        <!-- Pie Graph on the right -->
+      <div class="pie-graph-container">
+        <h1>Pie Graph</h1>
+        <canvas [id]="'pieCanvas_' + user.uid" #pieCanvas></canvas>
+      </div>
+  
+    </ion-card>
+  </ion-list>
 </ion-content>

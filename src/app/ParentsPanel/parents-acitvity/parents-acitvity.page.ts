@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable,combineLatest } from 'rxjs';
+import { Observable,combineLatest, of } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { TaskStatusService } from 'src/app/services/task-status.service';
 
@@ -21,6 +21,11 @@ export class ParentsAcitvityPage implements OnInit {
   createdActivities$: Observable<any[]>;
   tasks$: Observable<any>;
   taskStatus: string;
+  usersData: any[] = [];
+  selectedUserId: string; 
+  userStatus: string;
+
+  selectedExercise: string = '';
 
   constructor(
     private firestore: AngularFirestore,
@@ -31,48 +36,85 @@ export class ParentsAcitvityPage implements OnInit {
 
     ) { }
 
-    ngOnInit() {
-      this.taskStatusService.getTaskStatus().subscribe((statusWithPoints) => {
-        const { status, points } = statusWithPoints;
-    
-        // Now you can use both status and points
-        this.taskStatus = status;
-        // You might also want to use points here if needed
-    
-        // Continue with the rest of your code...
-        this.loadTasks();
-      });
+  ngOnInit() {
+
+    this.loadUsers();
+    this.taskStatusService.getTaskStatus().subscribe((statusWithPoints) => {
+      const { status, points } = statusWithPoints;
+      this.taskStatus = status;
+      this.loadTasks();
+    });
+  }
+
+  getExercisesForStatus(userStatus: string): string[] {
+    switch (userStatus) {
+      case 'Underweight':
+        return ['Jumping Jacks', 'Bodyweight Squats', 'Climbing on Monkey Bars'];
+      case 'Healthy Weight':
+        return ['Running', 'Jump Rope', 'Dance Routines'];
+      case 'Overweight':
+        return ['Brisk Walking', 'Hula Hooping', 'Dance-based Video Games'];
+      case 'Obesity':
+        return ['Swimming', 'Strength Training', 'Low-impact Cardio'];
+      // Add more cases for different statuses
+      default:
+        return [];
     }
+  }
+
+  onExerciseSelected(exercise: string) {
+    console.log('Selected Exercise:', exercise);
+    // You can add any logic related to the selected exercise here
+  }
     
-
   async loadTasks() {
-   const loading = await this.showLoading('Loading Tasks...');
-
+    const loading = await this.showLoading('Loading Tasks...');
+  
     try {
       await loading.present();
-
+  
       this.tasks$ = this.afAuth.authState.pipe(
         switchMap((user) => {
           if (user) {
-            return this.firestore.collection('parents').doc(user.uid).collection('tasks').snapshotChanges().pipe(
-              map(actions => {
-                return actions.map(a => {
-                  const data = a.payload.doc.data() as any;
-                  const id = a.payload.doc.id;
-                  const userId = data.userId;
-
-                  // Fetch user details from the 'users' collection
-                  return this.firestore.collection('users').doc(userId).snapshotChanges().pipe(
-                    map(userAction => {
-                      const userData = userAction.payload.data() as any;
-                      const userEmail = userData.email;
-                      return { ...data, id, userEmail };
-                    })
-                  );
-                });
-              }),
-              switchMap(taskObservables => combineLatest(taskObservables))
-            );
+            return this.firestore
+              .collection('parents')
+              .doc(user.uid)
+              .collection('tasks')
+              .snapshotChanges()
+              .pipe(
+                map((actions) => {
+                  return actions.map((a) => {
+                    const data = a.payload.doc.data() as any;
+                    const id = a.payload.doc.id;
+                    const userId = data.userId;
+  
+                    // Fetch user details from the 'users' collection
+                    return this.firestore
+                      .collection('users')
+                      .doc(userId)
+                      .snapshotChanges()
+                      .pipe(
+                        switchMap((userAction) => {
+                          const userData = userAction.payload.data() as any;
+                          const userEmail = userData.email;
+  
+                          // Load user status and add it to the task data
+                          return this.loadUserStatus(userId).pipe(
+                            switchMap((userStatus) => {
+                              // Dynamically fetch exercises based on user's status
+                              const exercises = this.getExercisesForStatus(userStatus);
+  
+                              return of({ ...data, id, userEmail, userStatus, exercises });
+                            })
+                          );
+                        })
+                      );
+                  });
+                }),
+                switchMap((taskObservables) =>
+                  combineLatest(taskObservables)
+                )
+              );
           } else {
             return [];
           }
@@ -80,11 +122,48 @@ export class ParentsAcitvityPage implements OnInit {
       );
     } catch (error) {
       console.error('Error loading tasks:', error);
-      this.showErrorAlert('Error creating task. Please try again.');
+      this.showErrorAlert('Error loading tasks. Please try again.');
     } finally {
-      // Dismiss the loading indicator regardless of success or failure
       await loading.dismiss();
     }
+  }
+  
+
+    // Function to load and display the user status
+  loadUserStatus(userId: string): Observable<string> {
+    // console.log('Loading status for userId:', userId);
+    return this.firestore
+      .collection('users')
+      .doc(userId)
+      .valueChanges()
+      .pipe(
+        tap((userData: any) => console.log('User Data:', userData)),
+        switchMap((userData: any) => {
+          if (userData) {
+            return of(userData?.status || 'N/A');
+          } else {
+            console.error('User document not found for userId:', userId);
+            return of('N/A');
+          }
+        }),
+        catchError((error) => {
+          console.error('Error loading user status:', error);
+          return of('N/A');
+        })
+      );
+  }
+
+  // Function to handle user selection
+  onUserSelected(userId: string) {
+    this.selectedUserId = userId;
+  
+    // Log the selected user's UID
+    console.log('Selected User UID:', userId);
+  
+    // Load and display the user status
+    this.loadUserStatus(userId).subscribe((userStatus) => {
+      this.userStatus = userStatus;
+    });
   }
 
   async createTask() {
@@ -93,45 +172,53 @@ export class ParentsAcitvityPage implements OnInit {
     try {
       await loading.present();
   
-      const userDoc = await this.firestore.collection('users').ref.where('email', '==', this.userEmail).get();
-  
-      if (!userDoc.empty) {
-        const userId = userDoc.docs[0].id;
-  
-        const currentUser = this.afAuth.currentUser;
-        if (currentUser) {
-          const parentId = (await currentUser).uid;
-  
-          // Create the task object with parentId
-          const task = {
-            userId: userId,
-            parentId: parentId, // Add parentId here
-            description: this.taskDetails,
-            status: 'pending',
-            points: parseInt(this.points, 10),
-            timestamp: new Date(),
-          };
-  
-          // Add the task to the 'parents' collection
-          const parentTaskRef = await this.firestore.collection('parents').doc(parentId).collection('tasks').add(task);
-  
-          // Get the generated task ID
-          const taskId = parentTaskRef.id;
-  
-          // Add the task to the corresponding user's collection with the assigned UID and points
-          await this.firestore.collection('users').doc(userId).collection('tasks').doc(taskId).set({
-            ...task,
-            points: parseInt(this.points, 10),
-          });
-  
-          this.taskDetails = '';
-          this.points = '50';
-        } else {
-          console.error('User not logged in.');
-        }
-      } else {
-        console.log('There is no kid with the email:', this.userEmail);
+      if (!this.selectedUserId) {
+        console.error('No user selected.');
+        return;
       }
+  
+      const selectedUser = this.usersData.find(user => user.id === this.selectedUserId);
+  
+      if (!selectedUser) {
+        console.error('Selected user not found.');
+        return;
+      }
+  
+      const userId = selectedUser.id;
+  
+      const currentUser = this.afAuth.currentUser;
+      if (currentUser) {
+        const parentId = (await currentUser).uid;
+  
+        // Create the task object with parentId
+        const task = {
+          userId: userId,
+          parentId: parentId, // Add parentId here
+          description: this.selectedExercise,
+          status: 'pending',
+          points: parseInt(this.points, 10),
+          timestamp: new Date(),
+          confirmed: false,
+        };
+  
+        // Add the task to the 'parents' collection
+        const parentTaskRef = await this.firestore.collection('parents').doc(parentId).collection('tasks').add(task);
+  
+        // Get the generated task ID
+        const taskId = parentTaskRef.id;
+  
+        // Add the task to the corresponding user's collection with the assigned UID and points
+        await this.firestore.collection('users').doc(userId).collection('tasks').doc(taskId).set({
+          ...task,
+          points: parseInt(this.points, 10),
+        });
+  
+        this.taskDetails = '';
+        this.points = '50';
+      } else {
+        console.error('User not logged in.');
+      }
+  
       this.showSuccessAlert('Task created successfully!');
     } catch (error) {
       console.error('Error creating task:', error);
@@ -141,6 +228,7 @@ export class ParentsAcitvityPage implements OnInit {
       await loading.dismiss();
     }
   }
+  
   
   editTask(task: any) {
     // Implement the logic for editing a task
@@ -184,6 +272,36 @@ export class ParentsAcitvityPage implements OnInit {
       buttons: ['OK'],
     });
     await alert.present();
+  }
+
+  async loadUsers() {
+    const loading = await this.showLoading('Loading Users...');
+  
+    try {
+      await loading.present();
+  
+      const currentUser = this.afAuth.currentUser;
+      if (currentUser) {
+        const parentId = (await currentUser).uid;
+  
+        this.firestore.collection('parents').doc(parentId).collection('users').snapshotChanges().pipe(
+          map(actions => {
+            return actions.map(a => {
+              const userData = a.payload.doc.data() as any;
+              const id = a.payload.doc.id;  // This should be the UID, not email
+              return { ...userData, id };
+            });
+          })
+        ).subscribe(users => {
+          this.usersData = users;
+        });
+      }
+    } catch (error) {
+      console.error('Error loading users:', error);
+      this.showErrorAlert('Error loading users. Please try again.');
+    } finally {
+      await loading.dismiss();
+    }
   }
 
 

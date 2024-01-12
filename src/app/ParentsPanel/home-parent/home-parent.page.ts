@@ -3,11 +3,27 @@ import { FirebaseApp } from '@angular/fire/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular'; // Import NavController
+import { AlertController, LoadingController, ModalController, NavController, ToastController } from '@ionic/angular'; // Import NavController
 import { AuthenticationForParentsService } from 'src/app/authenticationParents/authentication-for-parents.service';
-import { VaccineDetailsModalPage } from 'src/app/modals/vaccine-details-modal/vaccine-details-modal.page';
+import { OpenTaskDoneModalPage } from 'src/app/modals/open-task-done-modal/open-task-done-modal.page';
 
 
+interface ParentData {
+  users?: string[];
+}
+
+interface UserData {
+  fullname?: string;
+  email?: string;
+  age?: number;
+  height?: number;
+  weight?: number;
+  bmi?: number;
+  status?: string;
+  usersUID?: string;
+  tasks?: any[];
+  // Add other properties as needed
+}
 
 @Component({
   selector: 'app-home-parent',
@@ -20,23 +36,30 @@ export class HomeParentPage implements OnInit {
   checkedVaccines: number[] = []; // Add this line to declare the property
   appointments: any[] = [];
 
+  usersData: UserData[] = [];
+
+  
+
   constructor(
     
-    private authService: AngularFireAuth,
+    private authFire: AngularFireAuth,
     private navCtrl: NavController,
     private router: Router,
     private firestore: AngularFirestore,
     private modalController: ModalController,
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private authService: AuthenticationForParentsService,
+    private loadingController: LoadingController,
   ) { }
 
-  ngOnInit() {
-    console.log('ngOnInit called');
+  async ngOnInit() {
+  
+    await this.loadData();
     this.fetchParentName();
     this.fetchAppointments()
     // Retrieve the checked state from Firestore
-    this.authService.authState.subscribe(user => {
+    this.authFire.authState.subscribe(user => {
       if (user) {
         console.log('Authenticated user:', user);
   
@@ -61,18 +84,83 @@ export class HomeParentPage implements OnInit {
     });
   }
 
-  private async fetchParentName() {
-    try {
-      const user = await this.authService.currentUser;
-      if (user && user.uid) {
-        // Use the user data directly if it contains the fullname
-        this.parentFullName = user.displayName || '';
+  async loadData() {
+    const loading = await this.loadingController.create({
+      message: 'Loading...',
+    });
   
-        // If you need to fetch additional data from Firestore, you can do so here
+    try {
+      await loading.present();
+  
+      const user = await this.authService.getProfile();
+      if (user) {
+        const userId = user.uid;
+  
+        const parentDoc = await this.firestore
+          .collection('parents')
+          .doc(userId)
+          .get()
+          .toPromise();
+  
+        if (parentDoc.exists) {
+          const parentData = parentDoc.data() as ParentData;
+          const usersUIDs: string[] = parentData?.users || [];
+  
+          // Clear the existing data to avoid duplication
+          this.usersData = [];
+  
+          // Fetch user information for each usersUID from the 'users' subcollection
+          const usersInfoPromises = usersUIDs.map(async (userUID) => {
+            const userDoc = await this.firestore
+              .collection('parents')
+              .doc(userId)
+              .collection('users')
+              .doc<UserData>(userUID)
+              .get()
+              .toPromise();
+  
+            if (userDoc.exists) {
+              const userData = userDoc.data();
+              // Make sure to include the usersUID property
+              const userWithUID: UserData = {
+                fullname: userData?.fullname || 'N/A',
+                email: userData?.email || 'N/A',
+                age: userData?.age,
+                height: userData?.height,
+                weight: userData?.weight,
+                bmi: userData?.bmi,
+                status: userData?.status,
+                usersUID: userUID, // Include the usersUID property
+                // Add other properties as needed
+              };
+              this.usersData.push(userWithUID);
+            }
+          });
+  
+          // Wait for all promises to complete
+          await Promise.all(usersInfoPromises);
+        }
       }
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('Error fetching parent document:', error);
+    } finally {
+      await loading.dismiss(); // Dismiss the loading indicator regardless of success or error
     }
+  }
+
+  private fetchParentName() {
+    this.authFire.authState.subscribe(async (user) => {
+      if (user) {
+        // Get the reference to the document
+        const parentDocRef = this.firestore.collection('parents').doc(user.uid);
+
+        // Use snapshotChanges() to get the observable and subscribe to it
+        parentDocRef.snapshotChanges().subscribe((parentSnapshot) => {
+          const parentData = parentSnapshot.payload.data() as any; // Use payload property
+          this.parentFullName = parentData?.fullname || ''; // Use the fullname property
+        });
+      }
+    });
   }
 
   isActivityLocked(): boolean {
@@ -99,7 +187,7 @@ export class HomeParentPage implements OnInit {
         {
           text: 'Logout',
           handler: () => {
-            this.authService.signOut()
+            this.authFire.signOut()
               .then(() => {
                 this.navCtrl.navigateRoot('/landing');
               })
@@ -116,7 +204,7 @@ export class HomeParentPage implements OnInit {
   }
 
   private fetchAppointments() {
-    this.authService.authState.subscribe(async (user) => {
+    this.authFire.authState.subscribe(async (user) => {
       if (user) {
         const parentUID = user.uid;
         const appointmentsCollection = this.firestore.collection(`parents/${parentUID}/appointments`);
@@ -135,7 +223,7 @@ export class HomeParentPage implements OnInit {
   async deleteAppointment(appointment: any) {
     const alert = await this.alertController.create({
       header: 'Confirm Deletion',
-      message: 'Sure kabang gusto mo ito idelete Sis???? pag hindi baka sapukin kita',
+      message: 'Dedelete mo?',
       buttons: [
         {
           text: 'Cancel',
@@ -146,7 +234,7 @@ export class HomeParentPage implements OnInit {
           text: 'Delete',
           handler: async () => {
             try {
-              const user = await this.authService.currentUser;
+              const user = await this.authFire.currentUser;
               if (!user) {
                 // Handle the case where the user is not authenticated
                 console.error('User not authenticated.');
@@ -202,6 +290,27 @@ export class HomeParentPage implements OnInit {
     });
     await toast.present();
   }
+  
+  async openTaskDoneModal(userData: UserData) {
+    console.log('User Data Tasks:', userData.tasks);
+    const confirmedTasks = this.getConfirmedTasks(userData.tasks ?? []);
+    console.log('Confirmed Tasks:', confirmedTasks);
+  
+    const modal = await this.modalController.create({
+      component: OpenTaskDoneModalPage,
+      componentProps: {
+        userData: userData,
+        confirmedTasks: confirmedTasks,
+        usersUID: userData.usersUID,
+      },
+    });
+    return await modal.present();
+  }
+  
+  
 
+  getConfirmedTasks(tasks: any[]): any[] {
+    return tasks.filter((task) => task.status === 'Completed' && task.confirmed);
+  }
 
 }

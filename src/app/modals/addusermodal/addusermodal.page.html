@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add User</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Your form fields go here -->
+  <ion-item>
+    <ion-label>Name: </ion-label>
+    <ion-input type="text" name="name" required [(ngModel)]="babyData.name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Age: </ion-label>
+    <ion-input type="number" name="age" required [(ngModel)]="babyData.age"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Weight: </ion-label>
+    <ion-input type="number" name="weight" required [(ngModel)]="babyData.weight"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Height: </ion-label>
+    <ion-input type="number" name="height" required [(ngModel)]="babyData.height"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Parent's Email: </ion-label>
+    <ion-input type="email" name="parentEmail" [(ngModel)]="parentEmail" required></ion-input>
+  </ion-item>
+
+  <!-- Add more form fields as needed -->
+
+  <ion-button expand="full" (click)="saveBabyData()">Save</ion-button>
+</ion-content>

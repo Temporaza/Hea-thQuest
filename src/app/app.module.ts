@@ -19,6 +19,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
 // import { FirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
@@ -29,10 +30,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     IonicModule.forRoot(), 
     AppRoutingModule,
     AngularFireModule, 
-    DragDropModule,
     AngularFireAuthModule, 
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
+    DragDropModule,
     IonicStorageModule.forRoot(),
     
     // FirestoreModule

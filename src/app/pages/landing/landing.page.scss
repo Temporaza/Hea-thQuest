@@ -1,10 +1,11 @@
-
-
-
 body{
   margin: 0;
   padding: 0;
   overflow: hidden; /* Prevent scrolling */
+  box-sizing: border-box;
+  font-family: 'Montserrat';
+  justify-content: space-between;
+  
 }
 
 
@@ -30,104 +31,209 @@ body{
   }
 }
 
-ion-content {
-  background-color: #D7B94A;
-  --background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg %3E%3Cpath fill='%23cbb460' d='M486 705.8c-109.3-21.8-223.4-32.2-335.3-19.4C99.5 692.1 49 703 0 719.8V800h843.8c-115.9-33.2-230.8-68.1-347.6-92.2C492.8 707.1 489.4 706.5 486 705.8z'/%3E%3Cpath fill='%23c1b074' d='M1600 0H0v719.8c49-16.8 99.5-27.8 150.7-33.5c111.9-12.7 226-2.4 335.3 19.4c3.4 0.7 6.8 1.4 10.2 2c116.8 24 231.7 59 347.6 92.2H1600V0z'/%3E%3Cpath fill='%23b8ad87' d='M478.4 581c3.2 0.8 6.4 1.7 9.5 2.5c196.2 52.5 388.7 133.5 593.5 176.6c174.2 36.6 349.5 29.2 518.6-10.2V0H0v574.9c52.3-17.6 106.5-27.7 161.1-30.9C268.4 537.4 375.7 554.2 478.4 581z'/%3E%3Cpath fill='%23b0ab99' d='M0 0v429.4c55.6-18.4 113.5-27.3 171.4-27.7c102.8-0.8 203.2 22.7 299.3 54.5c3 1 5.9 2 8.9 3c183.6 62 365.7 146.1 562.4 192.1c186.7 43.7 376.3 34.4 557.9-12.6V0H0z'/%3E%3Cpath fill='%23A9A9A9' d='M181.8 259.4c98.2 6 191.9 35.2 281.3 72.1c2.8 1.1 5.5 2.3 8.3 3.4c171 71.6 342.7 158.5 531.3 207.7c198.8 51.8 403.4 40.8 597.3-14.8V0H0v283.2C59 263.6 120.6 255.7 181.8 259.4z'/%3E%3Cpath fill='%23bababa' d='M1600 0H0v136.3c62.3-20.9 127.7-27.5 192.2-19.2c93.6 12.1 180.5 47.7 263.3 89.6c2.6 1.3 5.1 2.6 7.7 3.9c158.4 81.1 319.7 170.9 500.3 223.2c210.5 61 430.8 49 636.6-16.6V0z'/%3E%3Cpath fill='%23cbcbcb' d='M454.9 86.3C600.7 177 751.6 269.3 924.1 325c208.6 67.4 431.3 60.8 637.9-5.3c12.8-4.1 25.4-8.4 38.1-12.9V0H288.1c56 21.3 108.7 50.6 159.7 82C450.2 83.4 452.5 84.9 454.9 86.3z'/%3E%3Cpath fill='%23dcdcdc' d='M1600 0H498c118.1 85.8 243.5 164.5 386.8 216.2c191.8 69.2 400 74.7 595 21.1c40.8-11.2 81.1-25.2 120.3-41.7V0z'/%3E%3Cpath fill='%23ededed' d='M1397.5 154.8c47.2-10.6 93.6-25.3 138.6-43.8c21.7-8.9 43-18.8 63.9-29.5V0H643.4c62.9 41.7 129.7 78.2 202.1 107.4C1020.4 178.1 1214.2 196.1 1397.5 154.8z'/%3E%3Cpath fill='%23FEFEFE' d='M1315.3 72.4c75.3-12.6 148.9-37.1 216.8-72.4h-723C966.8 71 1144.7 101 1315.3 72.4z'/%3E%3C/g%3E%3C/svg%3E") center center / cover no-repeat;
-}
+//login
 
-.btn-kid{
-  margin-top: 16vh;
+section{
+  // min-height: 80vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
 }
-
-.btn-parent{
-  margin-top: 18vh;
-}
-
-.btn-doc{
-  margin-top: 17vh;
-}
-
 
 .container{
-  text-align: center;
-  height: 70vh; // make the container full height
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; // distribute the slides evenly
-  overflow: hidden; /* Prevent scrolling for this container */
-}
-
-.logNav{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.slide {
-  width: 60%; // make the slides full width
-  height: calc(33.33% - 20px); // divide the height equally among the slides
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-size: cover; // make the background image cover the whole slide
-  background-position: center; // center the background image
-  margin: 10px 0;
-  transition: transform 0.3s;
+  gap: 30px;
 }
 
-.slide:hover {
-  transform: scale(1.05); /* Increase the size by 5% on hover */
+.left{
+  border: solid black 2px;
+  width: 50%;
+  height: 60vh;
+  background: url(/assets/kids.jpg) no-repeat center/cover;
+  border-radius: 8px;
+  box-shadow: 10px 10px 2px rgb(0, 0, 0);
+  animation: slideInLeft 1.5s ease-out; /* Slide animation */
 }
 
-.slide:nth-child(1) {
-  background-image: url('/assets/kids.png'); // image for Kids Login
-  border-top-left-radius: 50px;
-  border-bottom-right-radius: 50px;
+// .curved2{
+//   background-color: #FFDB57;
+//   padding: 25px;
+//   position: relative; // Ensure the container has a relative position
+// }
+
+// .curved2 svg {
+//   position: absolute;
+//   top: 0;/* Adjust the position to your liking */
+//   left: 0; /* Adjust the position to your liking */
+//   transform: scaleX(-1); /* This flips the SVG horizontally */
+//   filter: drop-shadow(1px 40px 1px #FFDB57);
+//   width: 90%; // Set the width to 100% to fill the container
+//   height: auto; // Maintain the aspect ratio
+// }
+
+// .logo1-container {
+//   display: flex;
+//   justify-content: center;
+// }
+
+// .logo1 {
+//   width: 150px; /* Set the width to your desired size */
+//   height: 150px; /* Automatically adjust the height while maintaining the aspect ratio */
+// }
+
+// .header{
+//   display: flex;
+//   justify-content: center;
+//   gap: 20px;
+
+//   text-align: center;
+// }
+
+// .title{
+//   background-color: #F4B400;
+//   width: 100px;
+//   font-size: 2em;
+//   border: 1px solid black;
+//   text-align: center;
+//   border-radius: 10px;
+// }
+
+// .subtitleParents{
+//   background-color: #F4B400;
+//   width: 130px;
+//   font-size: 2em;
+//   border: 1px solid black;
+//   text-align: center;
+//   border-radius: 10px;
+// }
+
+// .subtitle, .titlekids{
+//   background-color: white;
+//   width: 130px;
+//   font-size: 2em;
+//   border: 1px solid black;
+//   border-radius: 10px;
+// }
+
+// .log{
+//   display: flex;
+//   justify-content: center;
+//   text-align: center;
+// }
+
+// .logTitle{
+//   background-color: white;
+//   width: 130px;
+//   font-size: 2em;
+//   border: 1px solid black;
+//   border-radius: 10px;
+// }
+
+//left parent style
+
+.leftParent{
+  border: solid black 2px;
+  width: 50%;
+  height: 60vh;
+  background: url(/assets/parents.png) no-repeat center/cover;
+  border-radius: 8px;
+  box-shadow: 10px 10px 2px rgb(0, 0, 0);
+  animation: slideInLeft 1.5s ease-out; /* Slide animation */
 }
 
-.slide:nth-child(2) {
-  background-image: url('/assets/parents.png'); // image for Parents Login
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%); /* Start off-screen to the left */
+  }
+  to {
+    transform: translateX(0); /* Slide in to the center */
+  }
+}
+
+.right, .rightParent{
   width: 40%;
-  height: 60%;
+  height: 30vh;
+  background-color: #FFDB57;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  border-radius: 15px;
+  color: rgb(0, 0, 0);
+  margin-left: -150px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.827);
+  opacity: 0; /* initially hidden */
+  transition: margin-left 1s ease, opacity 1s ease;
 }
 
-.slide:nth-child(3) {
-  background-image: url('/assets/pedia.png'); // image for Doctors Login
-  border-top-left-radius: 100px;
-  border-bottom-right-radius: 100px;
- 
+.leftParent:hover + .rightParent,
+.rightParent:hover {
+  opacity: 1; /* reveal on hover */
+  margin-left: -150px;
+  box-shadow: 10px 10px 5px rgb(0, 0, 0);
 }
+
+.left:hover + .right,
+.right:hover {
+  opacity: 1; /* reveal on hover */
+  margin-left: -150px;
+  box-shadow: 10px 10px 5px rgb(0, 0, 0);
+}
+
+.right h1, .rightParent h1{
+  font-weight: lighter;
+}
+
+.right p, .rightParent p{
+  margin: 2px 0;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 768px){
+  .container{
+    flex-direction: column;
+    width: 80%;
+  }
+  .left, .leftParent{
+    width: 100%;
+    height:60vh;
+  }
+  .right, .rightParent{
+    width: 80%;
+    margin: 0;
+    margin-top: -150px;
+  }
+  .left:hover + .right,
+  .right:hover {
+    margin-left: 0; /* Center the right class on hover */
+  }
+  .leftParent:hover + .rightParent,
+  .rightParent:hover {
+    margin-left: 0; /* Center the right class on hover */
+  }
+  
+}
+
+
+
+ion-content {
+  --background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 100 60'%3E%3Cg %3E%3Crect fill='%23D98343' width='11' height='11'/%3E%3Crect fill='%23da8546' x='10' width='11' height='11'/%3E%3Crect fill='%23db8749' y='10' width='11' height='11'/%3E%3Crect fill='%23db884c' x='20' width='11' height='11'/%3E%3Crect fill='%23dc8a4e' x='10' y='10' width='11' height='11'/%3E%3Crect fill='%23dd8c51' y='20' width='11' height='11'/%3E%3Crect fill='%23dd8e54' x='30' width='11' height='11'/%3E%3Crect fill='%23de8f57' x='20' y='10' width='11' height='11'/%3E%3Crect fill='%23df915a' x='10' y='20' width='11' height='11'/%3E%3Crect fill='%23e0935d' y='30' width='11' height='11'/%3E%3Crect fill='%23e0955f' x='40' width='11' height='11'/%3E%3Crect fill='%23e19762' x='30' y='10' width='11' height='11'/%3E%3Crect fill='%23e29865' x='20' y='20' width='11' height='11'/%3E%3Crect fill='%23e29a68' x='10' y='30' width='11' height='11'/%3E%3Crect fill='%23e39c6b' y='40' width='11' height='11'/%3E%3Crect fill='%23e39e6e' x='50' width='11' height='11'/%3E%3Crect fill='%23e4a070' x='40' y='10' width='11' height='11'/%3E%3Crect fill='%23e5a173' x='30' y='20' width='11' height='11'/%3E%3Crect fill='%23e5a376' x='20' y='30' width='11' height='11'/%3E%3Crect fill='%23e6a579' x='10' y='40' width='11' height='11'/%3E%3Crect fill='%23e6a77c' y='50' width='11' height='11'/%3E%3Crect fill='%23e7a97f' x='60' width='11' height='11'/%3E%3Crect fill='%23e7aa81' x='50' y='10' width='11' height='11'/%3E%3Crect fill='%23e8ac84' x='40' y='20' width='11' height='11'/%3E%3Crect fill='%23e8ae87' x='30' y='30' width='11' height='11'/%3E%3Crect fill='%23e9b08a' x='20' y='40' width='11' height='11'/%3E%3Crect fill='%23e9b28d' x='10' y='50' width='11' height='11'/%3E%3Crect fill='%23e9b390' x='70' width='11' height='11'/%3E%3Crect fill='%23eab592' x='60' y='10' width='11' height='11'/%3E%3Crect fill='%23eab795' x='50' y='20' width='11' height='11'/%3E%3Crect fill='%23ebb998' x='40' y='30' width='11' height='11'/%3E%3Crect fill='%23ebbb9b' x='30' y='40' width='11' height='11'/%3E%3Crect fill='%23ebbc9e' x='20' y='50' width='11' height='11'/%3E%3Crect fill='%23ecbea1' x='80' width='11' height='11'/%3E%3Crect fill='%23ecc0a4' x='70' y='10' width='11' height='11'/%3E%3Crect fill='%23ecc2a7' x='60' y='20' width='11' height='11'/%3E%3Crect fill='%23edc4aa' x='50' y='30' width='11' height='11'/%3E%3Crect fill='%23edc5ac' x='40' y='40' width='11' height='11'/%3E%3Crect fill='%23edc7af' x='30' y='50' width='11' height='11'/%3E%3Crect fill='%23edc9b2' x='90' width='11' height='11'/%3E%3Crect fill='%23eecbb5' x='80' y='10' width='11' height='11'/%3E%3Crect fill='%23eecdb8' x='70' y='20' width='11' height='11'/%3E%3Crect fill='%23eecfbb' x='60' y='30' width='11' height='11'/%3E%3Crect fill='%23eed0be' x='50' y='40' width='11' height='11'/%3E%3Crect fill='%23eed2c1' x='40' y='50' width='11' height='11'/%3E%3Crect fill='%23eed4c4' x='90' y='10' width='11' height='11'/%3E%3Crect fill='%23eed6c7' x='80' y='20' width='11' height='11'/%3E%3Crect fill='%23efd8ca' x='70' y='30' width='11' height='11'/%3E%3Crect fill='%23efdacd' x='60' y='40' width='11' height='11'/%3E%3Crect fill='%23efdbd0' x='50' y='50' width='11' height='11'/%3E%3Crect fill='%23efddd3' x='90' y='20' width='11' height='11'/%3E%3Crect fill='%23efdfd6' x='80' y='30' width='11' height='11'/%3E%3Crect fill='%23efe1d9' x='70' y='40' width='11' height='11'/%3E%3Crect fill='%23efe3dc' x='60' y='50' width='11' height='11'/%3E%3Crect fill='%23efe5df' x='90' y='30' width='11' height='11'/%3E%3Crect fill='%23efe7e2' x='80' y='40' width='11' height='11'/%3E%3Crect fill='%23eee8e5' x='70' y='50' width='11' height='11'/%3E%3Crect fill='%23eeeae8' x='90' y='40' width='11' height='11'/%3E%3Crect fill='%23eeeceb' x='80' y='50' width='11' height='11'/%3E%3Crect fill='%23EEEEEE' x='90' y='50' width='11' height='11'/%3E%3C/g%3E%3C/svg%3E") center center / cover no-repeat;
+}
+
+
+*{
+  font-family: 'Patrick Hand SC', cursive;
+}
+
 
 @media (min-width: 1000px) {
-  .slide {
-    background-size: contain; // scale the image to fit inside the slide
-    background-repeat: no-repeat; // prevent the image from repeating
-    background-position: center; // center the image
-    width: 80%; // make the slides full width
-   
-  }
-
-  .slide:nth-child(2) {
-    width: 20%;
-  }
-
-  
-  .slide:nth-child(3) {
-    width: 25%;
-  }
-
-  .logNav {
-    flex-direction: row; // change the direction to row
-    justify-content: space-around; // distribute the slides evenly with space around them
-  }
-
-  .slide {
-    height: 80%; // make the slides full height
-    width: calc(33.33% - 100px);
-    margin: 10px 0;
-  }
 
   .logo-container {
     display: flex;
@@ -142,16 +248,9 @@ ion-content {
     animation: logoAnimation 1s ease-in-out infinite;
   }
 
-  .btn-kid{
-    margin-top: 30vh;
-  }
-  
-  .btn-parent{
-    margin-top: 30vh;
-  }
-  
-  .btn-doc{
-    margin-top: 30vh;
+  .footer {
+    margin-top: 14%;
+    min-height: 5%;
   }
   
   
@@ -162,13 +261,19 @@ ion-content {
     50% {
       transform: scale(1.3); /* Reach the normal size */
     }
+    
   }
 
 }
 
-
-  // //aweraw
-  // ion-content {
-  //   --background: url('/assets/family.jpg') no-repeat center center fixed;
-  //   background-size: cover;
-  // }
+/* Add this style for the footer */
+.footer {
+  background-color: orange; /* Adjust the background color as needed */
+  color: white; /* Adjust the text color for better visibility */
+  text-align: center;
+  padding: 10px;
+  bottom: 0;
+  width: 100%;
+  margin-top: 14%;
+  min-height: 5%;
+}

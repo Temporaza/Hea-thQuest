@@ -89,7 +89,7 @@ export class KidsProgressPage implements OnInit {
   async confirmTaskCompletion(task: any) {
     let loading: HTMLIonLoadingElement; // Declare the loading variable
     console.log(`Confirming task completion. Task: ${JSON.stringify(task)}`);
-    
+  
     try {
       loading = await this.loadingController.create({
         message: 'Confirming task completion...',
@@ -99,31 +99,36 @@ export class KidsProgressPage implements OnInit {
   
       // Implement the logic for confirming a task completion
       task.status = 'Completed';
+      task.confirmed = true; // Set the confirmed field to true
+  
       console.log(`Task status set to 'Completed'. Updating Firestore...`);
   
-      // Update the status in Firestore for 'parents' collection
-      await this.firestore.collection('parents').doc(task.parentId)
-        .collection('tasks').doc(task.id).update({ status: task.status });
+      // Update the status and confirmation in Firestore for 'parents' collection
+      await this.firestore.collection('parents').doc(task.parentId).collection('tasks').doc(task.id).update({
+        status: task.status,
+        confirmed: task.confirmed,
+      });
   
-      // Update the status in Firestore for 'users' collection
-      await this.firestore.collection('users').doc(task.userId)
-        .collection('tasks').doc(task.id).update({ status: task.status });
+      // Update the status and confirmation in Firestore for 'users' collection
+      await this.firestore.collection('users').doc(task.userId).collection('tasks').doc(task.id).update({
+        status: task.status,
+        confirmed: task.confirmed,
+      });
   
       // Fetch the points for the task
-      this.firestore.collection('users').doc(task.userId)
-        .collection('tasks').doc(task.id).get().subscribe((doc) => {
-          const taskData = doc.data();
-          const taskPoints = taskData ? taskData['points'] : 0;
-          
-          console.log(`Task points: ${taskPoints}`);
-          // Notify the task service about the status change
-          this.taskStatusService.setTaskStatus(task.status, taskPoints, task.userId);
-        });
-
+      this.firestore.collection('users').doc(task.userId).collection('tasks').doc(task.id).get().subscribe(async (doc) => {
+        const taskData = doc.data();
+        const taskPoints = taskData ? taskData['points'] : 0;
+  
+        console.log(`Task points: ${taskPoints}`);
+        // Notify the task service about the status change
+        this.taskStatusService.setTaskStatus(task.status, taskPoints, task.userId, true);
+  
         // Fetch the current total points from Firestore
         const currentTotalPoints = await this.taskStatusService.getTotalPointsFromFirestore(task.userId);
         console.log(`Current total points at Firestore: ${currentTotalPoints}`);
         
+      });
     } catch (error) {
       console.error('Error confirming task completion:', error);
     } finally {
@@ -133,6 +138,8 @@ export class KidsProgressPage implements OnInit {
       }
     }
   }
+  //add true
+  
   
 
   async deleteTask(task: any) {

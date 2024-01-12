@@ -1,0 +1,103 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable, map } from 'rxjs';
+
+
+@Component({
+  selector: 'app-open-task-done-modal',
+  templateUrl: './open-task-done-modal.page.html',
+  styleUrls: ['./open-task-done-modal.page.scss'],
+})
+export class OpenTaskDoneModalPage implements OnInit {
+
+  @Input() userData: any;
+  @Input() usersUID: string;
+  @Input() confirmedTasks: any[]; // Add this line
+  tasks$: Observable<any[]>;
+
+  constructor(
+    private modalController: ModalController,
+    private firestore: AngularFirestore,
+    private alertControler: AlertController,
+    private toastController: ToastController
+    ) { }
+
+  ngOnInit() {
+    console.log('usersUID in modal:', this.usersUID);
+    this.loadTasks();
+  }
+
+  loadTasks() {
+    // Fetch tasks for the specific user using the usersUID
+    this.tasks$ = this.firestore.collection(`users/${this.usersUID}/tasks`).snapshotChanges()
+      .pipe(
+        map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data() as any;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          });
+        })
+      );
+  
+    this.tasks$.subscribe(tasks => {
+      console.log('Tasks for the user:', tasks);
+    });
+  }
+  dismiss() {
+    this.modalController.dismiss();
+  }
+
+  async deleteTask(task: any) {
+    const alert = await this.alertControler.create({
+      header: 'Confirm Deletion',
+      message: 'Are you sure you want to delete this task?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Delete',
+          handler: async () => {
+            try {
+              // Delete the task from Firestore
+              await this.firestore.collection('users').doc(task.userId).collection('tasks').doc(task.id).delete();
+
+              // Show a success toast message
+              await this.presentSuccessMessage('Task deleted successfully.');
+            } catch (error) {
+              console.error('Error deleting task:', error);
+              // Show an error toast message
+              await this.presentErrorMessage('Error deleting task.');
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  private async presentSuccessMessage(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'top',
+      color: 'success',
+    });
+    await toast.present();
+  }
+
+  private async presentErrorMessage(message: string) {
+    const toast = await this.toastController.create({
+      message: `Error: ${message}`,
+      duration: 2000,
+      position: 'top',
+      color: 'danger',
+    });
+    await toast.present();
+  }
+
+}

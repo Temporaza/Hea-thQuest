@@ -22,7 +22,7 @@ export class AuthenticationService {
       return !!user;
     }
 
-  async registerUser(email: string, password:string, fullname:string){
+  async registerUser(email: string, password:string, fullname:string, parentEmail?: string){
     // return await this.ngFireAuth.createUserWithEmailAndPassword(email, password)
     try{
       const userCredential = await this.ngFireAuth.createUserWithEmailAndPassword(email, password)
@@ -31,16 +31,62 @@ export class AuthenticationService {
       const userData = {
         email: user.email,
         fullname: fullname,
-        role: 'user' // Assign the 'doctor' role
+        role: 'user',
+        usersUID: user.uid,// Assign the 'doctor' role
       }
 
       await this.addUserDataToFirestore(user.uid, userData);
+
+       // If a parent email is provided, link the user to the parent
+      if (parentEmail) {
+        const parentUID = await this.getParentUIDByEmail(parentEmail);
+        if (parentUID) {
+          await this.saveUserToParent(parentUID, user);
+        }
+      }
 
       return user;
     } catch (error) {
       console.error('Error registering user:', error);
       throw error;
       }
+  }
+
+  async getParentUIDByEmail(parentEmail: string): Promise<string | null> {
+    try {
+      const snapshot = await this.firestore.collection('parents', ref => ref.where('email', '==', parentEmail)).get().toPromise();
+      if (!snapshot.empty) {
+        return snapshot.docs[0].id;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error getting parent UID by email:', error);
+      throw error;
+    }
+  }
+
+  async saveUserToParent(parentUID: string, user: any) {
+    try {
+      const parentDocRef = this.firestore.collection('parents').doc(parentUID);
+
+      // Get the current users array
+      const parentDoc = await parentDocRef.get().toPromise();
+      const parentData = parentDoc.data() as { users?: string[] }; // Explicitly cast to a known type
+
+      // Check if user.uid is not already in the array
+      const usersArray: string[] = parentData.users || [];
+
+      if (!usersArray.includes(user.uid)) {
+        // Add user.uid to the array
+        usersArray.push(user.uid);
+
+        // Update the document with the modified array
+        await parentDocRef.update({ users: usersArray });
+      }
+    } catch (error) {
+      console.error('Error updating parent document:', error);
+      throw error;
+    }
   }
 
   //Add data to the firestore

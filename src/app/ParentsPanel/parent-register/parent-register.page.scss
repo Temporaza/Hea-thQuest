@@ -1,3 +1,9 @@
+
+
+*{
+  font-family: 'Patrick Hand SC', cursive;
+}
+
 .curved2{
     background-color: #FFDB57;
     padding: 25px;
@@ -64,24 +70,24 @@ ion-item{
     width: 100%;
   }
 
-.signinLink{
+  .signinLink {
     display: flex;
-    margin: auto;
     flex-direction: row;
-    align-content: center;
-    position: absolute;
     justify-content: center;
-    left: 0;
-    bottom: 0;
-    width: 80%;
-    right: 0;
-    p{
-        font-size: 0.9rem;
+    align-items: center;
+    margin: 10px; /* Adjust the margin as needed */
+  
+    p {
+      font-size: 0.9rem;
+      margin: 0; /* Remove default margin */
     }
-    a{
-        text-decoration: none;
+  
+    a {
+      text-decoration: none;
+      color: #ffc33f;
+      margin-left: 5px; /* Add some space between the text and the link */
     }
-}
+  }
 .center-button {
     background-color: #FFDB57;
     border: none;

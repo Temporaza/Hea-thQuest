@@ -12,7 +12,7 @@
  <ion-loading *ngIf="isLoading" message="Loading tasks..." duration="5000"></ion-loading>
 
  <!-- Display Created Tasks with Slide-In Animation -->
- <ion-card *ngFor="let task of userTasks$ | async" class="task-card" [@slideIn]>
+ <ion-card *ngFor="let task of userTasks$ | async" class="task-card">
 
    <ion-card-header>
      <ion-card-title class="task-title">{{ task.description }}</ion-card-title>

@@ -1,6 +1,4 @@
 *{
-    padding: 0;
-    margin: 0;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -8,17 +6,29 @@ ion-toolbar{
     --background: #ff8200;
 }
 
-.foot-btn{
-    // display: flex;
-    // flex-direction: column;
-    // margin: 15%;
+ion-content{
+    --background: #FFDB57;
+  }
+
+ion-card {
+    max-width: 500px; // Set the maximum width to 700px
+    margin: 20px auto;   // Center the card horizontally
+    
 }
+
 
 ion-row{
     display: flex;
     justify-content: center;
     margin: 100px 0px;
+   
 }
+
+*{
+  font-family: 'Patrick Hand SC', cursive;
+}
+
+
 
 .save{
     margin-right: 10px;
@@ -28,17 +38,22 @@ ion-row{
     margin-left: 10px;
 }
 
-@media (min-width: 800px) {
-    .center-container {
-        margin-left: 80vh;
-        margin-top: 10vh;
 
-      }
-      ion-list {
-        max-width: 500px; /* Set your desired maximum height */
-       
-        }
+.Users {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 5vh;
+  
+    ion-card {
+      width: 97%;
+      margin: 10px;   // Adjust the margin
+    }
+  }
 
-      
-     
-}
+@media (max-width: 700px) {
+    .Users {
+      flex-direction: row;
+      justify-content: space-around;
+    }
+  }

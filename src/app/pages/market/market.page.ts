@@ -226,6 +226,7 @@ export class MarketPage implements OnInit {
         await this.firestore.collection('users').doc(userId).set({
           totalPoints: this.totalPoints,
           ownedPetBodies: this.getOwnedPetBodies(),
+          petBodyUrl: this.petBodyUrl,  // Add this line to include pet body URL
         }, { merge: true });
         console.log('User data updated successfully.');
       }

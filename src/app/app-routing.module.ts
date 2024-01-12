@@ -126,6 +126,38 @@ const routes: Routes = [
     path: 'welcome-modal-page',
     loadChildren: () => import('./modals/welcome-modal-page/welcome-modal-page.module').then( m => m.WelcomeModalPagePageModule)
   },
+  {
+    path: 'edit-user-modal',
+    loadChildren: () => import('./modals/edit-user-modal/edit-user-modal.module').then( m => m.EditUserModalPageModule)
+  },
+  {
+    path: 'addusermodal',
+    loadChildren: () => import('./modals/addusermodal/addusermodal.module').then( m => m.AddusermodalPageModule)
+  },
+  {
+    path: 'open-task-done-modal',
+    loadChildren: () => import('./modals/open-task-done-modal/open-task-done-modal.module').then( m => m.OpenTaskDoneModalPageModule)
+  },
+  {
+    path: 'search-games',
+    loadChildren: () => import('./pages/search-games/search-games.module').then( m => m.SearchGamesPageModule)
+  },
+  {
+    path: 'shape-match',
+    loadChildren: () => import('./pages/games/shape-match/shape-match.module').then( m => m.ShapeMatchPageModule)
+  },
+  {
+    path: 'game-details',
+    loadChildren: () => import('./modals/game-details/game-details.module').then( m => m.GameDetailsPageModule)
+  },
+  {
+    path: 'congratulatory',
+    loadChildren: () => import('./modals/congratulatory/congratulatory.module').then( m => m.CongratulatoryPageModule)
+  },
+  {
+    path: 'sound-animals',
+    loadChildren: () => import('./pages/games/sound-animals/sound-animals.module').then( m => m.SoundAnimalsPageModule)
+  },
   
  
 

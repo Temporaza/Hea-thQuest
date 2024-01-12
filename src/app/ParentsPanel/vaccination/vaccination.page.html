@@ -8,71 +8,101 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="center-container">
-    <ion-list class="vaccines" lines="full">
-      <!-- Vaccine 1 -->
-      <ion-item>
-        <ion-checkbox (ionChange)="updateCheckedVaccines($event, 1)" [checked]="checkedVaccines.includes(1)" aria-label="Label" Slot="start">Vaccine 1</ion-checkbox>
-        <ion-button fill="clear" slot="end" (click)="showDetails(1)">Details</ion-button>
-      </ion-item>
-      
-      <!-- Vaccine 2 -->
-      <ion-item>
-        <ion-checkbox (ionChange)="updateCheckedVaccines($event, 2)" [checked]="checkedVaccines.includes(2)" aria-label="Label" Slot="start">Vaccine 2</ion-checkbox>
-        <ion-button fill="clear" slot="end" (click)="showDetails(2)">Details</ion-button>
-      </ion-item>
-      
-      <!-- Vaccine 3 -->
-      <ion-item>
-        <ion-checkbox (ionChange)="updateCheckedVaccines($event, 3)" [checked]="checkedVaccines.includes(3)" aria-label="Label" Slot="start">Vaccine 3</ion-checkbox>
-        <ion-button fill="clear" slot="end" (click)="showDetails(3)">Details</ion-button>
-      </ion-item>
-      
-      <!-- Vaccine 4 -->
-      <ion-item>
-        <ion-checkbox (ionChange)="updateCheckedVaccines($event, 4)" [checked]="checkedVaccines.includes(4)" aria-label="Label" Slot="start">Vaccine 4</ion-checkbox>
-        <ion-button fill="clear" slot="end" (click)="showDetails(4)">Details</ion-button>
-      </ion-item>
 
-      <!-- Vaccine 5 -->
-      <ion-item>
-        <ion-checkbox (ionChange)="updateCheckedVaccines($event, 5)" [checked]="checkedVaccines.includes(5)" aria-label="Label" Slot="start">Vaccine 5</ion-checkbox>
-        <ion-button fill="clear" slot="end" (click)="showDetails(5)">Details</ion-button>
-      </ion-item>
+  <div class="Users">
+    <ion-card color="warning" *ngIf="usersData.length > 0" >
+      <ion-card-header>
+        <ion-card-title>Kids</ion-card-title>
+      </ion-card-header>
 
-      <!-- Vaccine 6 -->
-      <ion-item>
-        <ion-checkbox (ionChange)="updateCheckedVaccines($event, 6)" [checked]="checkedVaccines.includes(6)" aria-label="Label" Slot="start">Vaccine 6</ion-checkbox>
-        <ion-button fill="clear" slot="end" (click)="showDetails(6)">Details</ion-button>
-      </ion-item>
+        <ion-card *ngFor="let userData of usersData">
+          <ion-card-header>
+            <ion-card-title>Full Name: {{ userData.fullname }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item>
+              <ion-label>Email:</ion-label>
+              <ion-text>{{ userData.email }}</ion-text>
+            </ion-item>
+            <!-- Add more items as needed -->
 
-      <!-- Vaccine 7 -->
-      <ion-item>
-        <ion-checkbox (ionChange)="updateCheckedVaccines($event, 7)" [checked]="checkedVaccines.includes(7)" aria-label="Label" Slot="start">Vaccine 7</ion-checkbox>
-        <ion-button fill="clear" slot="end" (click)="showDetails(7)">Details</ion-button>
-      </ion-item>
+            <ion-item>
+              <ion-label>Age:</ion-label>
+              <ion-text>{{ userData.age || 'N/A' }}</ion-text>
+            </ion-item>
+            <ion-item>
+              <ion-label>Height:</ion-label>
+              <ion-text>{{ userData.height || 'N/A' }}</ion-text>
+            </ion-item>
+            <ion-item>
+              <ion-label>Weight:</ion-label>
+              <ion-text>{{ userData.weight || 'N/A' }}</ion-text>
+            </ion-item>
+            <ion-item>
+              <ion-label>BMI:</ion-label>
+              <ion-text>{{ userData.bmi || 'N/A' }}</ion-text>
+            </ion-item>
+            <ion-item>
+              <ion-label>Status:</ion-label>
+              <ion-text>{{ userData.status || 'N/A' }}</ion-text>
+            </ion-item>
+            
+          </ion-card-content>
+          <ion-card-footer>
+            <!-- Button to navigate to vaccines page -->
+            <!-- <ion-button fill="solid" color="primary" slot="end" (click)="showVaccineDetailsModal(userData)">
+              Vaccines
+            </ion-button> -->
+            <!-- Edit button -->
+            <ion-button fill="outline" color="warning" slot="end" (click)="editUser(userData)">
+              Edit
+            </ion-button>
+          </ion-card-footer>
+        </ion-card>
+    </ion-card>
 
-      <!-- Vaccine 8 -->
-      <ion-item>
-        <ion-checkbox (ionChange)="updateCheckedVaccines($event, 8)" [checked]="checkedVaccines.includes(8)" aria-label="Label" Slot="start">Vaccine 8</ion-checkbox>
-        <ion-button fill="clear" slot="end" (click)="showDetails(8)">Details</ion-button>
-      </ion-item>
-    </ion-list>
+
+    <ion-card color="warning">
+      <ion-card-header>
+        <ion-card-title>Babies</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card *ngFor="let baby of babies">
+        <ion-card-header>
+          <ion-card-title>Name: {{ baby?.name }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>Age:</ion-label>
+            <ion-text>{{ baby?.age || 'N/A' }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Height:</ion-label>
+            <ion-text>{{ baby?.height || 'N/A' }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Weight:</ion-label>
+            <ion-text>{{ baby?.weight || 'N/A' }}</ion-text>
+          </ion-item>
+          <!-- Add more details as needed -->
+        </ion-card-content>
+        <ion-card-footer>
+          <!-- Add actions for each baby as needed -->
+          <ion-button expand="full" (click)="openVaccineModal(baby)">Vaccine</ion-button>
+        </ion-card-footer>
+      </ion-card>
+    
+    </ion-card>
   </div>
+
+  <ion-text *ngIf="usersData.length === 0">No users found.</ion-text>
+
+
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="openAddUserModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>
-<ion-footer>
-  <div class="foot-btn">
-    <ion-row>
-      <ion-col class="save" size="auto">
-        <ion-button (click)="saveCheckedVaccines()" color="secondary">
-          Save
-        </ion-button>
-      </ion-col>
-      <ion-col class="reg" size="auto">
-        <ion-button [disabled]="isRegisterButtonDisabled()" color="success" (click)="navigateToSignup()">
-          Register Now <ion-icon name="lock-open-outline"></ion-icon>
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </div>
-</ion-footer>
