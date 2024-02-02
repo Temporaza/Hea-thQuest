@@ -122,7 +122,7 @@ export class ActivitiesPage implements OnInit {
         .update({ status: task.status });
   
       // Update the task status in the service without adding points
-      this.taskStatusService.setTaskStatus(task.status, task.points, userId, false);
+      this.taskStatusService.setTaskStatus(task.status, task.points, userId , task.otherTasks, false);
     }
   }
 

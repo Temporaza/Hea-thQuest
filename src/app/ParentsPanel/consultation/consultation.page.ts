@@ -86,12 +86,20 @@ export class ConsultationPage implements OnInit, AfterViewInit {
           const userData = this.usersData.find(user => user.uid === uid);
   
           if (!userData) {
-            console.error(`User data not found for UID: ${uid}`);
+            // console.error(`User data not found for UID: ${uid}`);
             return;
           }
   
           const bmiData = userData.bmiHistory?.map(entry => entry.bmi) || [];
-          const dateLabels = userData.bmiHistory?.map(entry => entry.date) || [];
+          const dateLabels = userData.bmiHistory?.map(entry => {
+            // Format the date here as "yyyy/mm/dd"
+            const formattedDate = new Date(entry.date).toLocaleDateString('en-GB', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit'
+            });
+            return formattedDate;
+          }) || [];
   
           const data = {
             labels: dateLabels,
@@ -140,17 +148,25 @@ export class ConsultationPage implements OnInit, AfterViewInit {
           // Destroy existing Chart instance
           Chart.getChart(ctx)?.destroy();
   
-          const lineChart = new Chart(ctx, {
-            type: 'line',
-            data: data,
-            options: options
-          });
+          if (bmiData.length === 0) {
+            // Display a placeholder message or graph when there's no data
+            ctx.fillStyle = 'white';
+            ctx.font = '16px Arial';
+            ctx.fillText('No BMI data available', 10, 50);
+          } else {
+            const lineChart = new Chart(ctx, {
+              type: 'line',
+              data: data,
+              options: options
+            });
+          }
         } catch (error) {
           console.error(`Error creating graph: ${error.message}`);
         }
       }
     });
   }
+  
 
 
 

@@ -1,6 +1,6 @@
 
 *{
-  font-family: 'Patrick Hand SC', cursive;
+  font-family: 'Patrick Hand SC';
 }
 
 .fixed-height-container {
@@ -120,4 +120,10 @@ ion-item{
         width: 250px; /* Set the width to your desired size */
         height: 250px; /* Automatically adjust the height while maintaining the aspect ratio */
       }
+  }
+
+  ion-text{
+    text-align: center;
+    display: flex;
+    justify-content: center;
   }

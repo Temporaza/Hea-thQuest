@@ -4,23 +4,31 @@ ion-content {
   }
 
 *{
-    font-family: 'Patrick Hand SC', cursive;
+  font-family: 'Comic Sans MS';
+}
+
+
+
+.container {
+  text-align: center;
+  margin-top: 7%;
 }
 
 .giant-box {
-    width: 100%;
+    width: 90%;
     max-width: 400px; /* Adjust the maximum width as per your design */
-    height: 300px; /* Adjust the height as per your design */
-    background-image: url('/assets/animals/board.png');
+    height: 250px; /* Adjust the height as per your design */
+    background-image: url('/assets/animals/board.webp');
     background-size: contain; /* Ensure the background image covers the entire container */
     background-repeat: no-repeat;
-    border-radius: 10px; /* Adjust border-radius for rounded corners */
-    padding: 20px; /* Adjust padding as needed */
     margin: 0 auto;
     display: flex;
     justify-content: center;
-    align-items: center;
-    text-align: center;
+
+    img{
+      height: 200px;
+    }
+  
   }
 
   .shape-description {
@@ -33,17 +41,9 @@ ion-content {
 
   .box-typing{
     width: 100%;
-    max-width: 400px; /* Adjust the maximum width as per your design */
-    height: 300px; /* Adjust the height as per your design */
-    background-image: url('/assets/shapes/woodAnimals.png');
-    background-size: contain; /* Ensure the background image covers the entire container */
-    background-repeat: no-repeat;
-    border-radius: 10px; /* Adjust border-radius for rounded corners */
-    padding: 20px; /* Adjust padding as needed */
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-  
+    max-width: 100px; /* Adjust the maximum width as per your design */
+    height: 90px; /* Adjust the height as per your design */
+   margin: 0 auto;
   }
   
   .img-shape {
@@ -64,23 +64,38 @@ ion-content {
     padding: 10px;
     background: none; /* Remove default background */
     border: none; /* Remove border */
+    animation: pulse 1.5s infinite;
   }
 
+  @keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
   .text-field-container {
-    margin-top: 20px;
     text-align: center;
+    font-family: 'Comic Sans MS';
   }
   
   input[type="text"] {
     width: 80%;
     max-width: 300px; /* Adjust as needed */
-    padding: 10px;
+    padding: 20px;
     border: 2px solid #3498db; /* Border color */
     border-radius: 8px; /* Adjust border radius for rounded corners */
     outline: none;
     transition: border-color 0.3s ease-in-out;
     background-color: #ecf0f1; /* Background color */
     color: #333; /* Text color */
+    font-size: 1.5em;
+    font-family: 'Comic Sans MS';
   }
   
   input[type="text"]:focus {
@@ -96,6 +111,13 @@ ion-content {
   
   .center-button {
     text-align: center;
+    font-size: 1.5em;
+
+    ion-button{
+      height: 50px;
+      width: 90px;
+      font-size: 20px;
+    }
   }
 
   .large-toast {

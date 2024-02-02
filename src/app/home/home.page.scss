@@ -14,6 +14,11 @@
 //   }
 // }
 
+*{
+  font-family: 'Patrick Hand SC';
+}
+
+
 ion-toolbar{
   --background: #ff8200;
 
@@ -31,38 +36,46 @@ ion-router-outlet {
 
 .points-container {
   position: absolute;
-  margin-top: 7vh;
-  right: 30px;
+  margin-top: 3vh;
+  right: 20px;
+  background-color: #ffcc00; /* Yellow background */
+  border-radius: 10px;
   display: flex;
   align-items: center;
-  background-color: rgb(52, 181, 213);
+  gap: 5px;
+  font-family: 'Comic Sans MS', cursive; /* Example playful font */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .points-icon {
-  font-size: 2.4rem; // Adjust the icon size
-  color: #f5ce0b; // Adjust the icon color
-  margin-right: 5px; // Adjust the space between icon and points
+  color: #ff6347; /* Tomato icon color */
+  font-size: 24px;
 }
 
 .points {
   font-size: 2.4rem; // Adjust the font size
-  color: #f5ce0b; // Adjust the text color
+  color: #333; // Adjust the text color
 }
 
-ion-fab{
-  margin-top: 15vh;
-  margin-left: 3vh
+.audio .music ion-icon {
+  font-size: 2em; /* Adjust the size as needed */
 }
 
-.audio{
-  margin-left: 2vh;
+.fab-buttons{
+  margin-right: 4vh;
+}
+
+.fab-buttons ion-fab-button{
+  width: 70px; /* Adjust the width as needed */
+  height: 70px; /* Adjust the height as needed */
+}
+
+ion-fab-list ion-fab-button{
+  width: 100px; /* Adjust the width as needed */
+  height: 100px; /* Adjust the height as needed */
 }
 
 @media screen and (min-width: 620px) {
-  ion-fab{
-    margin-top: 10vh;
-    margin-left: 30vh
-  }
 
   ion-button {
     background-color: transparent; /* Set the background color of ion-button to transparent */
@@ -81,6 +94,15 @@ ion-fab{
   }
 
   ion-fab-list ion-fab-button{
+    width: 100px; /* Adjust the width as needed */
+    height: 100px; /* Adjust the height as needed */
+  }
+
+  .fab-buttons{
+    margin-right: 3vh;
+  }
+
+  .fab-buttons ion-fab-button{
     width: 100px; /* Adjust the width as needed */
     height: 100px; /* Adjust the height as needed */
   }
@@ -132,14 +154,15 @@ ion-card {
   align-items: center;
   justify-content: center;
   z-index: 2;
-  margin-top: 35vh;
+  margin-top: 25vh;
   // border: 2px solid violet;
+  margin-bottom: 20px;
 }
 
 
 
 .pet-body {
-  width: 320px; /* Adjust the size as needed */
+  width: 240px; /* Adjust the size as needed */
   // border: 2px solid green;
 }
 
@@ -148,9 +171,8 @@ ion-card {
   width: 300px; /* Adjust the size as needed */
   height: auto; /* Maintain aspect ratio */
   position: absolute;
-  margin-top: 1vh;
-  margin-left: 2vh;
-  animation: blinkAnimation 3.5s infinite alternate; /* Blinking animation */
+  margin-bottom: 3vh;
+  // margin-left: 2vh;
   transition: height 2s ease-in-out; /* Smooth transition for height changes */
   
 }
@@ -162,7 +184,6 @@ ion-card {
   position: absolute;
   margin-top: 4vh;
   margin-left: 2vh;
-  animation: MouthAnimation 3.5s infinite alternate; /* Blinking animation */
   transition: height 2s ease-in-out; /* Smooth transition for height changes */
 }
 
@@ -176,111 +197,117 @@ ion-card {
   }
 }
 
-@keyframes blinkAnimation {
-  60% {
-    height: auto;
-    content: url('/assets/mata/One.png');
-  }
-
-  65% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/mata/Two.png');
-    // background-image: url('{{ petEyesUrl }}/Two.png');
-  }
-
-  70% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/mata/Three.png');
-  }
-
-  75% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/mata/Four.png');
-  }
-
-  80% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/mata/Five.png');
-  }
-
-  85% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/mata/Six.png'); 
-   
-  }
-  95% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/mata/Seven.png'); 
-   
-  }
-  100% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/mata/Eight.png'); 
-   
-  }
-  
-}
-
-@keyframes MouthAnimation {
-  60% {
-    height: auto;
-    content: url('/assets/Mouth/M3.png'); /* Open eyes image */
-  }
-
-  65% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M2.png');
-  }
-
-  70% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M3.png');
-  }
-
-  75% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M4.png');
-  }
-
-  80% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M5.png');
-  }
-
-  85% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M6.png'); /* Closed eyes image */
-   
-  }
-  95% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M7.png'); /* Closed eyes image */
-   
-  }
-  100% {
-    width: 300px;
-    height: auto; 
-    content: url('/assets/Mouth/M8.png'); 
-   
-  }
-  
-}
 
 .custom-loading-class {
   --background: rgba(0, 0, 0, 0.7); /* Background color */
   --spinner-color: #ff8200; /* Spinner color */
   --spinner-size: 3rem; /* Spinner size */
+}
+
+.health-bar {
+  width: 60%;
+  margin: 0 auto;
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  height: 20px; /* Set a fixed height for the health bar */
+}
+
+.health-bar-inner {
+  height: 100%;
+  width: 50%;
+  background-color: #4CAF50;
+  transition: width 0.3s ease-in-out;
+}
+
+.food{
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  img{
+    height: 130px;
+    width: 130px;
+  }
+}
+
+.yum{
+  z-index: 3;
+  position: absolute;
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  img{
+    height: 140px;
+    width: 140px;
+    margin: 120px;
+  }
+
+}
+
+.foodCount{
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  margin-bottom: 2vh;
+
+  h1{
+    font-size: 40px;
+  }
+}
+
+
+.attitude{
+  z-index: 3;
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  img{
+    height: 140px;
+    width: 140px;
+    margin: 120px;
+  }
+  position: absolute;
+}
+
+ion-footer {
+  max-width: 70%;
+  margin: 0 auto;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  background-color: #003366;
+}
+
+.footer-toolbar {
+  display: flex;
+  justify-content: center;
+}
+
+.footer-buttons {
+  display: flex;
+  flex-direction: row; /* Change to column to stack buttons and text vertically */
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.custom-button {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.custom-button img {
+  max-width: 50px; /* Adjust as needed */
+  max-height: 50px; /* Adjust as needed */
+}
+
+.button-text {
+  margin-top: 5px; /* Adjust as needed */
+  font-size: 14px; /* Adjust as needed */
 }

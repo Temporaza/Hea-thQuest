@@ -17,25 +17,53 @@
     <ion-card-content>
 
       <ion-item>
-        <ion-label>Vaccine 1</ion-label>
+        <ion-label>BCG</ion-label>
         <ion-checkbox [(ngModel)]="baby.vaccines.vaccine1"></ion-checkbox>
+        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine1" slot="end"></ion-input>
       </ion-item>
-
+      
       <ion-item>
-        <ion-label>Vaccine 2</ion-label>
+        <ion-label>Hepatitis B</ion-label>
         <ion-checkbox [(ngModel)]="baby.vaccines.vaccine2"></ion-checkbox>
+        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine2" slot="end"></ion-input>
       </ion-item>
-
+      
       <ion-item>
-        <ion-label>Vaccine 3</ion-label>
+        <ion-label>DPT/TdaP/Td</ion-label>
         <ion-checkbox [(ngModel)]="baby.vaccines.vaccine3"></ion-checkbox>
+        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine3" slot="end"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label>IPV</ion-label>
+        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine4"></ion-checkbox>
+        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine4" slot="end"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Vaccine 4</ion-label>
-        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine4"></ion-checkbox>
+        <ion-label>HiB</ion-label>
+        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine5"></ion-checkbox>
+        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine5" slot="end"></ion-input>
       </ion-item>
 
+      <ion-item>
+        <ion-label>PCV</ion-label>
+        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine6"></ion-checkbox>
+        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine6" slot="end"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Measles/MMR</ion-label>
+        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine7"></ion-checkbox>
+        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine7" slot="end"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Varicella</ion-label>
+        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine8"></ion-checkbox>
+        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine8" slot="end"></ion-input>
+      </ion-item>
+      
     </ion-card-content>
   </ion-card>
 </ion-content>

@@ -33,6 +33,7 @@ export class AuthenticationService {
         fullname: fullname,
         role: 'user',
         usersUID: user.uid,// Assign the 'doctor' role
+        petHealth: 100,
       }
 
       await this.addUserDataToFirestore(user.uid, userData);

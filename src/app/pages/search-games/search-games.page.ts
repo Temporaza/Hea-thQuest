@@ -12,6 +12,8 @@ interface Game {
   title: string;
   description: string;
   ageRating: number;
+  minAge: number;
+  maxAge: number;
   // Add other game properties as needed
 }
 
@@ -83,34 +85,44 @@ export class SearchGamesPage implements OnInit {
       console.error('Error fetching user data:', error);
     }
   }
-
   findGames() {
-    // Proceed with finding games only when the button is clicked
     if (this.usersUID && this.agePreference) {
       console.log('Current User Age:', this.agePreference);
-
-      // Get the reference to the underlying CollectionReference
+  
       const collectionRef = this.gamesCollection.ref;
-
-      // Query games based on ageRating
-      collectionRef
-        .where('ageRating', '<=', this.agePreference)
-        .get()
-        .then((querySnapshot) => {
-          if (!querySnapshot.empty) {
-            this.foundGames = querySnapshot.docs.map(
-              (doc) => ({ id: doc.id, ...doc.data() } as Game)
-            );
-            console.log('Found Games:', this.foundGames);
-
-            // Display the title and description of matching games
+  
+      // Query games where user's age matches minAge exactly
+      const exactMinAgeQuery = collectionRef
+        .where('minAge', '==', this.agePreference)
+        .get();
+  
+      // Query games where user's age matches maxAge exactly
+      const exactMaxAgeQuery = collectionRef
+        .where('maxAge', '==', this.agePreference)
+        .get();
+  
+      // Combine the results of the two queries
+      Promise.all([exactMinAgeQuery, exactMaxAgeQuery])
+        .then((querySnapshots) => {
+          const foundGames: Game[] = [];
+  
+          querySnapshots.forEach((querySnapshot) => {
+            if (!querySnapshot.empty) {
+              const games = querySnapshot.docs.map(
+                (doc) => ({ id: doc.id, ...doc.data() } as Game)
+              );
+              foundGames.push(...games);
+            }
+          });
+  
+          if (foundGames.length > 0) {
+            console.log('Found Games:', foundGames);
+            this.foundGames = foundGames;
             this.displayMatchingGames();
           } else {
-            console.log('No games found for the specified age rating.');
-            // You can handle the case when no games are found, for example, by displaying a message to the user.
+            console.log('No games found for the specified age range.');
           }
-
-          // Set the buttonClicked flag to true after finding games
+  
           this.buttonClicked = true;
         })
         .catch((error) => {
@@ -120,19 +132,15 @@ export class SearchGamesPage implements OnInit {
       console.error('Invalid user or age preference.');
     }
   }
-
+  
   displayMatchingGames() {
-    // Filter games where ageRating matches the user's age
     const matchingGames = this.foundGames.filter(
-      (game) => game.ageRating === this.agePreference
+      (game) => game.minAge <= this.agePreference && game.maxAge >= this.agePreference
     );
 
-    // Display the title and description of matching games
     matchingGames.forEach((game) => {
       console.log('Matching Game Title:', game.title);
       console.log('Matching Game Description:', game.description);
-      // You can use these values to display information in your Angular template
-      // For example, you can bind these values to HTML elements using Angular directives.
     });
   }
   

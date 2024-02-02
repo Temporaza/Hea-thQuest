@@ -3,7 +3,7 @@ ion-content {
 }
 
 *{
-  font-family: 'Patrick Hand SC', cursive;
+  font-family: 'Patrick Hand SC';
 }
 
 .background {
@@ -78,94 +78,109 @@ ion-button {
 
 //pet bodies
 
-.pet_Bodies{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 90px; /* Adjust the gap between items as needed */
-  justify-content: center;
-  margin-top: 12vh;
-  // border: 2px solid black;
-
-}
-
-.duzzy {
-  width: 100%; /* Ensure each item takes the full width of its grid cell */
-  height: 0; /* Ensure the height is calculated based on the aspect ratio of the image */
-  padding-bottom: 100%; /* Assuming square images, adjust as needed */
-  position: relative;
-  background-color: white;
-  
-}
-
-.pet_Bodies img {
-  position: absolute;
-  width: 100%; /* Adjust the size as needed */
-  height: 100%;
-  // border: 2px solid yellow;
-  transition: padding 0.3s ease; /* Add transition effect */
-  padding: 5px;
-}
-
-.pet_Bodies img:hover {
-  padding: 10px; /* Adjust the padding on hover */
-}
 
 button {
-  margin-top: 10px;
-  padding: 5px;
-  background-color: #4285f4;
-  color: #ffffff;
-  border: none;
-  cursor: pointer;
+  width: 100%; // Make the buttons take the full width of the container
+  padding: 15px; // Increase the padding for the buttons
+  font-size: 16px; // Adjust the font size as needed
+  border-radius: 15px; // Add rounded corners to the buttons
+  background-color: #4285f4; // Change the button background color
+  color: #ffffff; // Change the button text color
+  margin-top: 10px; // Add margin between buttons and other elements
+
+  &:first-child {
+    margin-bottom: 10px; // Add margin below the first button
+  }
 }
 
-.pet-info {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  padding: 1px;
-  // background-color: rgba(255, 255, 255, 0.8); /* Adjust the background color and opacity */
-  height:3px;
-}
-
-.pet-name, .pet-price {
+.pet-price {
+  font-family: 'Comic Sans MS';
   display: block;
-  font-size: 14px;
-  background-color: white;
-  border-radius: 5px;
+  font-size: 12px; // Adjust the font size as needed
+  margin-top: 5px; // Add margin between button text and price text
 }
 
-@media screen and (min-width: 620px) {
-  .pet_Bodies {
-    margin-top: 30vh;
-    max-width: 700px;
-    margin: 40px auto; /* Center horizontally */
-  }
+// @media screen and (min-width: 620px) {
  
-  .save-button{
-    max-width: 40%;
-    margin-left: auto;
-    margin-right: auto;
-  }
+//   .save-button{
+//     max-width: 40%;
+//     margin-left: auto;
+//     margin-right: auto;
+//   }
 
-  .pet_Bodies img{
-    padding: 30px;
-  }
+//   .pet_Bodies img{
+//     padding: 30px;
+//   }
 
-  .pet-info button{
-    padding: 15px; // Increase the padding for the button
-      font-size: 16px;
-      border-radius: 15px;
-  }
-  .pet-name{
-    font-size: 20px;
-  }
+//   .pet-info button{
+//     padding: 15px; // Increase the padding for the button
+//       font-size: 16px;
+//       border-radius: 15px;
+//   }
+//   .pet-name{
+//     font-size: 20px;
+//   }
 
-  .duzzy {
-    border-radius: 0px 70px 0 70px;
+//   .duzzy {
+//     border-radius: 0px 70px 0 70px;
     
+//   }
+// }
+
+.pet_Bodies {
+  background-color: #003366; // Set pet bodies background color
+  padding: 20px; // Add padding for better visibility
+  width: 90%;
+  margin: 6vh auto;
+  border-radius: 15px;
+
+  .closet-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); // Adjust the width of each column as needed
+    gap: 20px; // Adjust the gap between items
+
+    .duzzy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      background-color: #fff; // Set each pet body's background color
+      border-radius: 8px; // Add rounded corners for a neat look
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Add a subtle shadow
+    }
+
+    .pet-info {
+      margin-top: 10px;
+      text-align: center;
+      font-family: 'Comic Sans MS';
+    }
+
+    // Add additional styles as needed
   }
 }
 
-//points css
+
+.points-container {
+  width: 110px;
+  margin-top: 3vh;
+  margin-left: 3vh;
+  right: 20px;
+  background-color: #ffcc00; /* Yellow background */
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Comic Sans MS', cursive; /* Example playful font */
+  box-shadow: 0 4px 8px rgba(1, 5, 1, 10.5);
+}
+
+.points-icon {
+  color: #ff6347; /* Tomato icon color */
+  font-size: 24px;
+}
+
+.points {
+  font-size: 2.4rem; // Adjust the font size
+  color: #333; // Adjust the text color
+}

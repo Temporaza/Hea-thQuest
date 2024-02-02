@@ -1,7 +1,12 @@
 
-
 *{
-  font-family: 'Patrick Hand SC', cursive;
+  font-family: 'Patrick Hand SC';
+}
+
+ion-text{
+  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 .curved2{

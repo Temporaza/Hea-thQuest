@@ -59,17 +59,17 @@
       </ion-item>
 
       <!-- Button to manually add BMI record -->
-      <ion-button expand="full" (click)="addManualBMI()">Add Manual BMI Record</ion-button>
+      <div class="bmiHistory">
+        <ion-button expand="full" (click)="addManualBMI()">Add Manual BMI Record</ion-button>
 
-      <!-- Display BMI history with manually recorded dates -->
-      <ion-list *ngIf="userData.bmiHistory && userData.bmiHistory.length > 0">
-        <ion-item *ngFor="let record of userData.bmiHistory">
-          <ion-label>Date: {{ record.date | date: 'yyyy-MM-dd' }}</ion-label>
-          <ion-text slot="end">BMI: {{ record.bmi }}</ion-text>
-          <ion-button (click)="deleteBMIRecord(i)">Delete</ion-button>
-        </ion-item>
-      </ion-list>
-
+        <ion-list *ngIf="userData.bmiHistory && userData.bmiHistory.length > 0">
+          <ion-item *ngFor="let record of userData.bmiHistory">
+            <ion-label>Date: {{ record.date | date: 'yyyy-MM-dd' }}</ion-label>
+            <ion-text slot="end">BMI: {{ record.bmi }}</ion-text>
+            <ion-button (click)="deleteBMIRecord(i)">Delete</ion-button>
+          </ion-item>
+        </ion-list>
+      </div>
     </ion-card-content>
   </ion-card>
 

@@ -138,10 +138,10 @@ export class TrashGamePage implements OnInit {
     interact('.draggable')
     .draggable({
       inertia: {
-        resistance: 8,
-        minSpeed: 80,
-        speed: 50,
-        endSpeed: 6,
+        resistance: 5,
+        minSpeed: 60,
+        speed: 40,
+        endSpeed: 3,
       },
       modifiers: [
         interact.modifiers.restrictRect({

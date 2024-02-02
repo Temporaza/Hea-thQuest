@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ModalController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 
 
 @Component({
@@ -18,7 +18,8 @@ export class VaccineDetailsModalPage {
     private modalController: ModalController,
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private alertController: AlertController
     ) { }
 
     ngOnInit() {
@@ -29,7 +30,23 @@ export class VaccineDetailsModalPage {
           vaccine2: false,
           vaccine3: false,
           vaccine4: false,
-          // Add properties for vaccines 3 to 8
+          vaccine5: false,
+          vaccine6: false,
+          vaccine7: false,
+          vaccine8: false,
+        };
+      }
+
+      if (!this.baby.vaccineDates) {
+        this.baby.vaccineDates = {
+          vaccine1: null,
+          vaccine2: null,
+          vaccine3: null,
+          vaccine4: null,
+          vaccine5: null,
+          vaccine6: null,
+          vaccine7: null,
+          vaccine8: null,
         };
       }
   
@@ -64,13 +81,14 @@ export class VaccineDetailsModalPage {
   private async saveVaccineDetailsToFirestore(baby: any) {
     try {
       const parentDoc = await this.firestore.collection('parents').doc(this.parentUID).get().toPromise();
-  
+
       if (parentDoc.exists) {
         const babiesCollection = parentDoc.ref.collection('babies');
         await babiesCollection.doc(baby.name).update({
           vaccines: baby.vaccines,
+          vaccineDates: baby.vaccineDates,
         });
-        console.log('Vaccine details saved to Firestore successfully'); // Check if this log appears in the console
+        console.log('Vaccine details saved to Firestore successfully');
       } else {
         console.error('Parent document does not exist');
       }
@@ -84,19 +102,45 @@ export class VaccineDetailsModalPage {
       this.baby.vaccines.vaccine1 &&
       this.baby.vaccines.vaccine2 &&
       this.baby.vaccines.vaccine3 &&
-      this.baby.vaccines.vaccine4
+      this.baby.vaccines.vaccine4 &&
+      this.baby.vaccines.vaccine5 &&
+      this.baby.vaccines.vaccine6 &&
+      this.baby.vaccines.vaccine7 &&
+      this.baby.vaccines.vaccine8
       // Add more conditions for other vaccines if needed
     );
   }
 
-  navigateToSignup(): void {
+  async navigateToSignup(): Promise<void> {
     // Check if all vaccines are checked before navigating
     if (this.isAllVaccinesChecked()) {
-      // Navigate to the signup page
-      this.navCtrl.navigateForward('/signup'); // Replace '/signup' with the actual route to your signup page
+      const alert = await this.alertController.create({
+        header: 'Confirm Signup',
+        message: 'Are you sure you want to proceed to signup?',
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+          },
+          {
+            text: 'Proceed',
+            handler: () => {
+              // Navigate to the signup page
+              this.navCtrl.navigateForward('/signup').then(() => {
+                // Close the modal after navigating to the signup page
+                this.modalController.dismiss();
+              });
+            },
+          },
+        ],
+      });
+
+      await alert.present();
     } else {
       // Display an alert or perform some action if not all vaccines are checked
       console.log('Please complete all vaccine checks before proceeding to signup.');
     }
   }
+
 }

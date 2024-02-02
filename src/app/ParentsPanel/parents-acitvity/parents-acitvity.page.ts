@@ -26,6 +26,7 @@ export class ParentsAcitvityPage implements OnInit {
   userStatus: string;
 
   selectedExercise: string = '';
+  otherTasks: string = '';
 
   constructor(
     private firestore: AngularFirestore,
@@ -49,13 +50,13 @@ export class ParentsAcitvityPage implements OnInit {
   getExercisesForStatus(userStatus: string): string[] {
     switch (userStatus) {
       case 'Underweight':
-        return ['Jumping Jacks', 'Bodyweight Squats', 'Climbing on Monkey Bars'];
+        return ['Jumping Jacks', 'Climbing Stairs', 'Hula Hooping', 'Chair Squats', 'Stretching', 'dance'];
       case 'Healthy Weight':
-        return ['Running', 'Jump Rope', 'Dance Routines'];
+        return ['Running', 'Jump Rope', 'Dance Routines', 'Yoga for kids'];
       case 'Overweight':
-        return ['Brisk Walking', 'Hula Hooping', 'Dance-based Video Games'];
+        return ['Brisk Walking', 'Hula Hooping', 'Dance-based Video Games', 'Balancing Exercise One Leg', 'Biking', 'Plank' ];
       case 'Obesity':
-        return ['Swimming', 'Strength Training', 'Low-impact Cardio'];
+        return ['Chair Exercise', 'Strength Training', 'Low-impact Cardio', 'Gentle Yoga', 'Cycling', 'Balance Exercise'];
       // Add more cases for different statuses
       default:
         return [];
@@ -195,6 +196,7 @@ export class ParentsAcitvityPage implements OnInit {
           userId: userId,
           parentId: parentId, // Add parentId here
           description: this.selectedExercise,
+          otherTasks: this.otherTasks, 
           status: 'pending',
           points: parseInt(this.points, 10),
           timestamp: new Date(),
@@ -215,6 +217,7 @@ export class ParentsAcitvityPage implements OnInit {
   
         this.taskDetails = '';
         this.points = '50';
+        this.otherTasks = '';
       } else {
         console.error('User not logged in.');
       }

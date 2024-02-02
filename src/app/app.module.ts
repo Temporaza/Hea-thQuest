@@ -19,6 +19,10 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { SwiperModule } from 'swiper/angular';
+
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
 
 // import { FirestoreModule } from '@angular/fire/firestore';
 
@@ -29,6 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     IonicModule.forRoot(), 
     AppRoutingModule,
+    SwiperModule,
     AngularFireModule, 
     AngularFireAuthModule, 
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -38,7 +43,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     
     // FirestoreModule
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy}],
+
+  // providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

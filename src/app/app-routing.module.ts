@@ -158,6 +158,44 @@ const routes: Routes = [
     path: 'sound-animals',
     loadChildren: () => import('./pages/games/sound-animals/sound-animals.module').then( m => m.SoundAnimalsPageModule)
   },
+  {
+    path: 'bmi-diff',
+    loadChildren: () => import('./modals/bmi-diff/bmi-diff.module').then( m => m.BmiDiffPageModule)
+  },
+  {
+    path: 'modal-calendar',
+    loadChildren: () => import('./modals/modal-calendar/modal-calendar.module').then( m => m.ModalCalendarPageModule)
+  },
+  {
+    path: 'babybook',
+    loadChildren: () => import('./ParentsPanel/babybook/babybook.module').then( m => m.BabybookPageModule)
+  },
+  {
+    path: 'numbers',
+    loadChildren: () => import('./pages/games/numbers/numbers.module').then( m => m.NumbersPageModule)
+  },
+  {
+    path: 'admin-panel',
+    loadChildren: () => import('./admin/admin-panel/admin-panel.module').then( m => m.AdminPanelPageModule)
+  },
+  {
+    path: 'admin-home',
+    loadChildren: () => import('./admin/admin-home/admin-home.module').then( m => m.AdminHomePageModule)
+  },
+  {
+    path: 'parent-details-modal',
+    loadChildren: () => import('./admin/adminModals/parent-details-modal/parent-details-modal.module').then( m => m.ParentDetailsModalPageModule)
+  },
+  {
+    path: 'users-details-modal',
+    loadChildren: () => import('./admin/adminModals/users-details-modal/users-details-modal.module').then( m => m.UsersDetailsModalPageModule)
+  },
+  {
+    path: 'game-counting',
+    loadChildren: () => import('./pages/games/game-counting/game-counting.module').then( m => m.GameCountingPageModule)
+  },
+
+
   
  
 

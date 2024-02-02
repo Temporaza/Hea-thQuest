@@ -10,14 +10,16 @@
 <ion-content [fullscreen]="true">
 
   <div class="Users">
-    <ion-card color="warning" *ngIf="usersData.length > 0" >
+
+    <ion-card class="Kids" *ngIf="usersData.length > 0" >
       <ion-card-header>
         <ion-card-title>Kids</ion-card-title>
       </ion-card-header>
-
         <ion-card *ngFor="let userData of usersData">
           <ion-card-header>
-            <ion-card-title>Full Name: {{ userData.fullname }}</ion-card-title>
+            <ion-item>
+              <ion-label>Full Name: {{ userData.fullname }}</ion-label>
+            </ion-item>
           </ion-card-header>
           <ion-card-content>
             <ion-item>
@@ -54,19 +56,24 @@
               Vaccines
             </ion-button> -->
             <!-- Edit button -->
-            <ion-button fill="outline" color="warning" slot="end" (click)="editUser(userData)">
+            <ion-button slot="end" (click)="editUser(userData)">
               Edit
             </ion-button>
           </ion-card-footer>
         </ion-card>
     </ion-card>
 
-
-    <ion-card color="warning">
+    <ion-card class="Kids">
       <ion-card-header>
         <ion-card-title>Babies</ion-card-title>
-      </ion-card-header>
+      
+        <div class="plain-button" (click)="openCalendarModal()">
+          <ion-icon name="calendar"></ion-icon>
+          <span>Vaccine Calendar</span>
+        </div>
+
     
+      </ion-card-header>
       <ion-card *ngFor="let baby of babies">
         <ion-card-header>
           <ion-card-title>Name: {{ baby?.name }}</ion-card-title>
@@ -94,8 +101,8 @@
     
     </ion-card>
   </div>
-
-  <ion-text *ngIf="usersData.length === 0">No users found.</ion-text>
+<!-- 
+  <ion-text *ngIf="usersData.length === 0">No users found.</ion-text> -->
 
 
 

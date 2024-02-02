@@ -10,67 +10,92 @@
 
 <ion-content [fullscreen]="true" class="background">
 
-  <!-- Add the audio element with controls -->
-  <audio id="backgroundMusic" autoplay loop controls style="display:none">
-    <source src="/assets/Happy Short 1.wav" type="audio/wav">
-    Your browser does not support the audio element.
-  </audio>
+  <div class="options">
+    <audio id="backgroundMusic" autoplay loop controls style="display:none">
+      <source src="/assets/Happy Short 1.wav" type="audio/wav">
+      Your browser does not support the audio element.
+    </audio>
 
-   <!-- Toggle button for audio control -->
-   <div class="audio">
-    <ion-button class="music" (click)="toggleAudio()">
-      <ion-icon name="volume-mute" *ngIf="!isAudioPlaying"></ion-icon>
-      <ion-icon name="volume-high" *ngIf="isAudioPlaying"></ion-icon>
-    </ion-button>
-  </div>
-    
-  <ion-fab slot="fixed" vertical="top" horizontal="start">
-      <ion-fab-button>
-        <ion-icon name="chevron-forward-circle"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-list side="end">
-        <ion-fab-button routerLink="/market">
-          <img alt="daily task" src="assets/Market.png" />
+    <!-- Toggle button for audio control -->
+    <div class="audio">
+      <ion-button class="music" (click)="toggleAudio()">
+        <ion-icon name="volume-mute" *ngIf="!isAudioPlaying"></ion-icon>
+        <ion-icon name="volume-high" *ngIf="isAudioPlaying"></ion-icon>
+      </ion-button>
+    </div>
+      
+    <!-- <ion-fab class="fab-buttons" slot="fixed" vertical="bottom" horizontal="end">
+        <ion-fab-button>
+          <img alt="widge" src="assets/Widget.png" />
         </ion-fab-button>
-        <ion-fab-button routerLink="/activities">
-          <img alt="daily task" src="assets/activities.png" />
-        </ion-fab-button>
-        <ion-fab-button routerLink="/search-games">
-          <ion-icon name="game-controller-sharp"></ion-icon>
-        </ion-fab-button>
-      </ion-fab-list>
-    </ion-fab>
+        <ion-fab-list side="top">
+          <ion-fab-button routerLink="/market">
+            <img alt="daily task" src="assets/Market.png" />
+          </ion-fab-button>
+          <ion-fab-button routerLink="/activities">
+            <img alt="daily task" src="assets/activities.png" />
+          </ion-fab-button>
+          <ion-fab-button routerLink="/search-games">
+            <img alt="games" src="assets/Games.png" />
+          </ion-fab-button>
+        </ion-fab-list>
+    </ion-fab> -->
 
-    <div class="points-container">
-      <ion-icon name="star" class="points-icon"></ion-icon>
-      <span class="points">{{ totalPoints }}</span>
+   
+
     </div>
 
-   <!-- Clickable images -->
-  <!-- <div class="Pages"> 
-    <ion-card class="cardImg1">
-      <ion-button fill="clear" routerLink="/market">
-        <img alt="daily task" src="assets/Market.png" />
-      </ion-button>
-    </ion-card>
+    <!-- <div class="points-container">
+      <ion-icon name="star" class="points-icon"></ion-icon>
+      <span class="points">{{ totalPoints }}</span>
+    </div> -->
 
-    <ion-card class="cardImg2">
-      <ion-button fill="clear" routerLink="/activities">
-        <img alt="daily task" src="assets/activities.png" />
-      </ion-button>
-  </ion-card>
-  </div> -->
+  <div class="yum" *ngIf="showYumImage">
+    <img src="assets/yum.png" alt="Food" />
+  </div>
 
+  <div class="attitude" *ngIf="showHmmImage">
+    <img src="assets/hmm.png" alt="attitude" />
+  </div>
 
-  <div class="pet-container">
-    <img [src]="petEyesUrl"  class="pet-eyes blinking" />
-    <img [src]="petMouthUrl"  class="pet-mouth talking" />
+  <div class="pet-container" (click)="handlePetClick()">
+    <img [src]="petEyesUrl"  class="pet-eyes" />
+    <img [src]="petMouthUrl"  class="pet-mouth" />
     <img [src]="petBodyUrl" class="pet-body" />
+  </div>
 
+  <div class="health-bar" (click)="updatePetHealth(petHealth - 10)">
+    <div class="health-bar-inner" [style.width]="petHealth + '%'"></div>
+  </div>
+
+  
+  <div class="food" (click)="handleSaladClick()">
+    <img src="assets/salad.png" alt="Food" />
+  </div>
+
+
+  <div class="foodCount">
+    <!-- <h1>Food Count</h1> -->
   </div>
   
+  <ion-footer>
+      <div class="footer-buttons">
+        <button ion-button class="custom-button" routerLink="/market">
+          <img alt="Market" src="assets/Market.png" />
+          <div class="button-text">Market</div>
+        </button>
+        <button ion-button class="custom-button" routerLink="/activities">
+          <img alt="Activities" src="assets/activities.png" />
+          <div class="button-text">Quests</div>
+        </button>
+        <button ion-button class="custom-button" routerLink="/search-games">
+          <img alt="Search Games" src="assets/Games.png" />
+          <div class="button-text">Games</div>
+        </button>
+      </div>
+  </ion-footer>
   <!-- Disable swipe gesture for the home page -->
-  <ion-router-outlet id="main-content" swipeGesture="false"></ion-router-outlet>
+  <!-- <ion-router-outlet id="main-content" swipeGesture="false"></ion-router-outlet> -->
 
 
 </ion-content>

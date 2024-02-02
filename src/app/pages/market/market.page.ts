@@ -6,6 +6,8 @@ import { PetBodyServiceService } from 'src/app/services/pet-body.service.service
 import { TaskStatusService } from 'src/app/services/task-status.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AlertController } from '@ionic/angular';
+import { PointsServiceService } from 'src/app/services/points.service.service';
+
 
 @Component({
   selector: 'app-market',
@@ -38,6 +40,8 @@ export class MarketPage implements OnInit {
    isBigYakOwned: boolean = false;
    isCurlyOwned: boolean = false;
    isSpikeyOwned: boolean = false;
+   isSumoOwned: boolean = false;
+   isWetDogOwned: boolean = false;
 
   constructor(
     private storage: AngularFireStorage,
@@ -46,9 +50,15 @@ export class MarketPage implements OnInit {
     private petBodyService: PetBodyServiceService,
     private taskStatusService: TaskStatusService,
     private afAuth: AngularFireAuth,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private pointsService: PointsServiceService
    
   ) { }
+
+  updatePointsAfterPurchase(newPoints: number) {
+    // Update points in the service
+    this.pointsService.updatePoints(newPoints);
+  }
 
   async ngOnInit() {
     try {
@@ -96,7 +106,8 @@ export class MarketPage implements OnInit {
         this.isBigYakOwned = ownedPetBodies.includes('BigYak');
         this.isCurlyOwned = ownedPetBodies.includes('Curly');
         this.isSpikeyOwned = ownedPetBodies.includes('Spikey');
-        
+        this.isSumoOwned = ownedPetBodies.includes('Sumo');
+        this.isWetDogOwned = ownedPetBodies.includes('wetDog');
 
       } else {
         console.log('User document does not exist.');
@@ -194,6 +205,12 @@ export class MarketPage implements OnInit {
         case 'Spikey':
           this.isSpikeyOwned = true;
           break;
+        case 'Sumo':
+          this.isSumoOwned = true;
+          break;
+        case 'wetDog':
+          this.isWetDogOwned = true;
+          break;
         // Add similar cases for other pet bodies if needed
       }
 
@@ -256,12 +273,20 @@ export class MarketPage implements OnInit {
         ownedPetBodies.push('BigYak');
       }
 
-      if (this.isBigYakOwned) {
+      if (this.isCurlyOwned) {
         ownedPetBodies.push('Curly');
       }
 
       if (this.isSpikeyOwned) {
-        ownedPetBodies.push('Curly');
+        ownedPetBodies.push('Spikey');
+      }
+
+      if (this.isSumoOwned) {
+        ownedPetBodies.push('Sumo');
+      }
+
+      if (this.isWetDogOwned) {
+        ownedPetBodies.push('wetDog');
       }
       // Add similar conditions for other pet bodies if needed
       return ownedPetBodies;

@@ -1,7 +1,7 @@
 
 
 *{
-  font-family: 'Patrick Hand SC', cursive;
+  font-family: 'Patrick Hand SC';
 }
 
 .curved2{
@@ -124,6 +124,8 @@ ion-item{
     transition: opacity 0.3s ease-in-out; /* Add a smooth transition effect */
   }
 
+  
+
   @media (min-width: 900px) {
     .logo-container {
         display: flex;
@@ -136,4 +138,10 @@ ion-item{
         width: 250px; /* Set the width to your desired size */
         height: 250px; /* Automatically adjust the height while maintaining the aspect ratio */
       }
+  }
+
+  ion-text{
+    text-align: center;
+    display: flex;
+    justify-content: center;
   }

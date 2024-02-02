@@ -6,6 +6,7 @@ import { LoadingController, ModalController } from '@ionic/angular';
 import { VaccineDetailsModalPage } from 'src/app/modals/vaccine-details-modal/vaccine-details-modal.page';
 import { EditUserModalPage } from 'src/app/modals/edit-user-modal/edit-user-modal.page';
 import { AddusermodalPage } from 'src/app/modals/addusermodal/addusermodal.page';
+import { ModalCalendarPage } from 'src/app/modals/modal-calendar/modal-calendar.page';
 
 
 interface ParentData {
@@ -157,6 +158,14 @@ export class VaccinationPage implements OnInit {
   //     console.error('Error querying Firestore:', error);
   //   }
   // }
+
+  async openCalendarModal() {
+    const modal = await this.modalController.create({
+      component: ModalCalendarPage,
+    });
+
+    await modal.present();
+  }
   
 
   navigateToSignup() {

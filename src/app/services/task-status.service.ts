@@ -7,7 +7,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class TaskStatusService {
 
-  private taskStatusSubject = new BehaviorSubject<{ status: string, points: number }>({ status: '', points: 0 });
+  private taskStatusSubject = new BehaviorSubject<{ status: string, points: number, otherTasks?: string  }>({ status: '', points: 0 });
   private totalPointsSubject = new BehaviorSubject<number>(0)
 
   constructor(
@@ -19,10 +19,11 @@ export class TaskStatusService {
    * @param status - The new status of the task.
    * @param points - The points associated with the task.
    * @param userId - The user ID associated with the task.
+   * @param otherTasks - Other tasks description.
    * @param confirmed - Whether the task is confirmed or not.
    */
 
-  getTaskStatus(): Observable<{ status: string, points: number }> {
+  getTaskStatus(): Observable<{ status: string, points: number, otherTasks?: string  }> {
     return this.taskStatusSubject.asObservable();
   }
 
@@ -30,23 +31,20 @@ export class TaskStatusService {
     return this.totalPointsSubject.asObservable();
   }
 
-  setTaskStatus(status: string, points: number, userId: string, confirmed: boolean = false) {
+  setTaskStatus(status: string, points: number, userId: string, otherTasks?: string, confirmed: boolean = false) {
     // If confirmed, update total points
     if (confirmed) {
-      const currentTotalPoints = this.totalPointsSubject.value;
-      const newTotalPoints = currentTotalPoints + points;
-
       // Update the total points in Firestore
-      this.updateTotalPointsInFirestore(userId, newTotalPoints);
-
+      this.updateTotalPointsInFirestore(userId, points);
+    
       // Update the local total points subject
-      this.totalPointsSubject.next(newTotalPoints);
-
-      console.log(`Total points updated. User ID: ${userId}, Total Points: ${newTotalPoints}`);
+      this.totalPointsSubject.next(points);
+    
+      console.log(`Total points updated. User ID: ${userId}, Total Points: ${points}`);
     }
 
     // Update the task status subject
-    this.taskStatusSubject.next({ status, points });
+    this.taskStatusSubject.next({ status, points, otherTasks });
   }
 
   private async updateTotalPointsInFirestore(userId: string, points: number) {
@@ -56,27 +54,29 @@ export class TaskStatusService {
         return;
       }
   
-      const userDoc = await this.firestore.collection('users').doc(userId).get().toPromise();
+      await this.firestore.firestore.runTransaction(async (transaction) => {
+        const userDocRef = this.firestore.collection('users').doc(userId).ref;
+        const userDoc = await transaction.get(userDocRef);
   
-      if (userDoc.exists) {
-        const currentTotalPoints = (userDoc.data() as { totalPoints?: number })?.totalPoints || 0;
-        const newTotalPoints = currentTotalPoints + points;
+        if (userDoc.exists) {
+          const currentTotalPoints = (userDoc.data() as { totalPoints?: number })?.totalPoints || 0;
+          const newTotalPoints = currentTotalPoints + points;
   
-        // Update the total points in Firestore
-        await this.firestore.collection('users').doc(userId).update({ totalPoints: newTotalPoints });
+          // Update the total points in Firestore
+          transaction.update(userDocRef, { totalPoints: newTotalPoints });
   
-        // Update the local total points subject
-        this.totalPointsSubject.next(newTotalPoints);
+          // Update the local total points subject
+          this.totalPointsSubject.next(newTotalPoints);
   
-        console.log(`Total points updated in Firestore. User ID: ${userId}, Total Points: ${newTotalPoints}`);
-      } else {
-        console.error('User not found in Firestore:', userId);
-      }
+          console.log(`Total points updated in Firestore. User ID: ${userId}, Total Points: ${newTotalPoints}`);
+        } else {
+          console.error('User not found in Firestore:', userId);
+        }
+      });
     } catch (error) {
       console.error('Error updating total points in Firestore:', error);
     }
   }
-  
   
 
   setTotalPoints(totalPoints: number): void {

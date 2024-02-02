@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { AuthenticationForParentsService } from 'src/app/authenticationParents/authentication-for-parents.service';
 import { map } from 'rxjs/operators';
 
@@ -36,7 +36,10 @@ export class EditUserModalPage implements OnInit {
   constructor(
     private modalController: ModalController,
     private firestore: AngularFirestore,
-    private authService: AuthenticationForParentsService
+    private authService: AuthenticationForParentsService,
+    private toastController: ToastController,
+    private alertController: AlertController,
+    private loadingController: LoadingController
   ) { }
 
   async ngOnInit() {
@@ -95,6 +98,11 @@ export class EditUserModalPage implements OnInit {
 
 async saveUser() {
   try {
+    // Check if BMI history is empty
+    if (!this.userData.bmiHistory || this.userData.bmiHistory.length === 0) {
+      this.presentToast('Please add BMI history before saving user data.');
+      return;
+    }
     await this.calculateBMI();
 
     const parentUID = await this.authService.getCurrentParentUID();
@@ -131,6 +139,11 @@ async addManualBMI() {
   try {
     await this.calculateBMI();
 
+    if (!this.userInputDate) {
+      this.presentToast('Please choose a date before adding a manual BMI record.');
+      return;
+    }
+
     if (this.userInputDate) {
       const inputDate = new Date(this.userInputDate);
       if (!isNaN(inputDate.getTime())) {
@@ -164,27 +177,38 @@ async addManualBMI() {
   }
 }
 
-  calculateBMI() {
-    const { age, height, weight } = this.userData;
+async presentToast(message: string, color: string = 'success', duration: number = 3000) {
+  const toast = await this.toastController.create({
+    message: message,
+    duration: duration,
+    color: color,
+    animated: true,
+    position: 'bottom',
+  });
+  toast.present();
+}
 
-    if (age && height && weight) {
-      const heightInMeters = height / 100;
-      const weightInKilograms = weight;
-      const bmi = weightInKilograms / (heightInMeters * heightInMeters);
+calculateBMI() {
+  const { age, height, weight } = this.userData;
 
-      this.userData.bmi = Math.round(bmi * 100) / 100;
+  if (age && height && weight) {
+    const heightInMeters = height / 100;
+    const weightInKilograms = weight;
+    const bmi = weightInKilograms / (heightInMeters * heightInMeters);
 
-      if (bmi < 18.5) {
-        this.userData.status = 'Underweight';
-      } else if (bmi < 25) {
-        this.userData.status = 'Healthy Weight';
-      } else if (bmi < 30) {
-        this.userData.status = 'Overweight';
-      } else {
-        this.userData.status = 'Obesity';
-      }
+    this.userData.bmi = Math.round(bmi * 100) / 100;
+
+    if (bmi < 18.5) {
+      this.userData.status = 'Underweight';
+    } else if (bmi < 25) {
+      this.userData.status = 'Healthy Weight';
+    } else if (bmi < 30) {
+      this.userData.status = 'Overweight';
+    } else {
+      this.userData.status = 'Obesity';
     }
   }
+}
 
   handleInputChange() {
     this.calculateBMI();
@@ -196,25 +220,44 @@ async addManualBMI() {
 
   async deleteBMIRecord(index: number) {
     try {
-      // Remove the BMI record from the local array
-      this.userData.bmiHistory.splice(index, 1);
-
-      // Update the Firestore document without the deleted BMI record
-      const parentUID = await this.authService.getCurrentParentUID();
-      const userDocRef = this.firestore
-        .collection('parents')
-        .doc(parentUID)
-        .collection('users')
-        .doc(this.userData.usersUID);
-
-      // Update the document with the edited user data in the users subcollection
-      await userDocRef.update({
-        bmiHistory: this.userData.bmiHistory,
+      const alert = await this.alertController.create({
+        header: 'Confirm Delete',
+        message: 'Are you sure you want to delete this BMI record?',
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+          },
+          {
+            text: 'Delete',
+            handler: async () => {
+              // Remove the BMI record from the local array
+              this.userData.bmiHistory.splice(index, 1);
+  
+              // Update the Firestore document without the deleted BMI record
+              const parentUID = await this.authService.getCurrentParentUID();
+              const userDocRef = this.firestore
+                .collection('parents')
+                .doc(parentUID)
+                .collection('users')
+                .doc(this.userData.usersUID);
+  
+              // Update the document with the edited user data in the users subcollection
+              await userDocRef.update({
+                bmiHistory: this.userData.bmiHistory,
+              });
+  
+              console.log('BMI Record deleted successfully.');
+              this.presentToast('BMI Record deleted successfully.', 'success', 3000);
+            },
+          },
+        ],
       });
-
-      console.log('BMI Record deleted successfully.');
+  
+      await alert.present();
     } catch (error) {
       console.error('Error deleting BMI record:', error);
+      this.presentToast('BMI Record deleted successfully.', 'success', 3000);
       // Handle the error as needed
     }
   }

@@ -122,7 +122,7 @@ export class KidsProgressPage implements OnInit {
   
         console.log(`Task points: ${taskPoints}`);
         // Notify the task service about the status change
-        this.taskStatusService.setTaskStatus(task.status, taskPoints, task.userId, true);
+        this.taskStatusService.setTaskStatus(task.status, taskPoints, task.userId, task.otherTasks, true);
   
         // Fetch the current total points from Firestore
         const currentTotalPoints = await this.taskStatusService.getTotalPointsFromFirestore(task.userId);

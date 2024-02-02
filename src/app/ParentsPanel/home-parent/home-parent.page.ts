@@ -5,8 +5,13 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, NavController, ToastController } from '@ionic/angular'; // Import NavController
 import { AuthenticationForParentsService } from 'src/app/authenticationParents/authentication-for-parents.service';
+import { BmiDiffPage } from 'src/app/modals/bmi-diff/bmi-diff.page';
 import { OpenTaskDoneModalPage } from 'src/app/modals/open-task-done-modal/open-task-done-modal.page';
 
+interface BMIRecord {
+  date: string;
+  bmi: number;
+}
 
 interface ParentData {
   users?: string[];
@@ -22,6 +27,7 @@ interface UserData {
   status?: string;
   usersUID?: string;
   tasks?: any[];
+  bmiHistory?: BMIRecord[];
   // Add other properties as needed
 }
 
@@ -131,6 +137,7 @@ export class HomeParentPage implements OnInit {
                 bmi: userData?.bmi,
                 status: userData?.status,
                 usersUID: userUID, // Include the usersUID property
+                bmiHistory: userData?.bmiHistory || [], 
                 // Add other properties as needed
               };
               this.usersData.push(userWithUID);
@@ -313,4 +320,18 @@ export class HomeParentPage implements OnInit {
     return tasks.filter((task) => task.status === 'Completed' && task.confirmed);
   }
 
+  async openBmiDiffModal() {
+    const modal = await this.modalController.create({
+      component: BmiDiffPage, // Update to your actual BMI Difference Modal
+      componentProps: {
+        userData: this.usersData, // Pass necessary data to the modal
+      },
+    });
+
+    await modal.present();
+  }
+
+  navigateToEBook() {
+    this.router.navigate(['/babybook']);
+  }
 }

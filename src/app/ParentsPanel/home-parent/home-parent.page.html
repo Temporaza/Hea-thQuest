@@ -1,27 +1,46 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-title>Parents Dashboard</ion-title>
+    <ion-buttons slot="end" class="bordered" fill="solid" color="light">
       <ion-button (click)="logout()">
-        <ion-icon name="log-out" size="large"></ion-icon>
+        <ion-icon color="custom" name="log-out" size="large"></ion-icon>
       </ion-button>
-      <ion-title>Parents Dashboard</ion-title>
     </ion-buttons>
     <!-- <ion-title>{{ parentFullName }}'s Home</ion-title> -->
-  </ion-toolbar>
+  
+  <ion-item class="avatar" lines="start">
+    <ion-avatar>
+      <img src="https://www.shareicon.net/data/512x512/2017/02/15/878685_user_512x512.png">
+    </ion-avatar>
+    <ion-label>
+      <p>Hello,</p>
+      <h3>{{ parentFullName }}</h3>
+    </ion-label>
+  </ion-item>
+</ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <ion-label class="greeting">Greetings {{ parentFullName }}!!!</ion-label>
+  <!-- <ion-label class="greeting">Greetings {{ parentFullName }}!!!</ion-label> -->
+
+
   
   <div class="wholeBody">
+
+    <button class="navigation-button" (click)="navigateToEBook()">
+      <img src="assets/ebook/ebook.png" alt="EBook" class="ebook-icon" />
+      <p>E-BabyBook</p>
+      <p>(Premium)</p>
+    </button>
+
       <div class="cardwImg1">
       
           <ion-card class="cardImg1">
             <img alt="daily task" src="assets/Frame 2.png" />
             <ion-card-header>
               <ion-button routerLink="/kids-progress">
-              <ion-card-subtitle>Kids Tasks Pending</ion-card-subtitle>
+              <ion-card-subtitle>Quest Pending</ion-card-subtitle>
               </ion-button>
             </ion-card-header>
           </ion-card>
@@ -42,7 +61,7 @@
           <img alt="daily task" src="assets/image 1.png" />
           <ion-card-header>
             <ion-button routerLink="/vaccination">
-            <ion-card-subtitle>Vaccination List</ion-card-subtitle>
+            <ion-card-subtitle>Kids</ion-card-subtitle>
             </ion-button>
           </ion-card-header>
         </ion-card>
@@ -83,12 +102,8 @@
         </ion-card-content>
       </ion-card>
     </div> -->
-   
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Kids</ion-card-title>
-      </ion-card-header>
-
+    <div class="container">
+      <h2>List of Kids</h2>
         <ion-card *ngFor="let userData of usersData" class="user-card">
           <ion-card-header>
             <ion-card-title>Name: {{ userData.fullname }}</ion-card-title>
@@ -99,7 +114,7 @@
               <ion-item>
                 <ion-label>Email: {{ userData.email }}</ion-label>
               </ion-item>
-
+              <!-- Display BMI history -->
               <!-- <ion-item>
                 <ion-label>Age: {{ userData.age || 'N/A' }}</ion-label>
               </ion-item>
@@ -121,13 +136,15 @@
               </ion-item> -->
             </ion-list>
 
+            <!-- <ion-button expand="full" (click)="openBmiDiffModal()">
+              BMI Differences
+            </ion-button> -->
             <ion-button expand="full" (click)="openTaskDoneModal(userData)">
               Task's Done
             </ion-button>
           </ion-card-content>
         </ion-card>
-    </ion-card>
-   
+      </div>
 
 </ion-content>
 

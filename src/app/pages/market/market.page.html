@@ -9,11 +9,10 @@
 
 <ion-content [fullscreen]="true" class="background">
 
- <div class="points-container">
-  <div class="background-image"></div>
-  <ion-icon name="star" class="points-icon"></ion-icon>
-  <span class="points">{{ totalPoints }}</span>
-</div>
+  <div class="points-container">
+    <ion-icon name="star" class="points-icon"></ion-icon>
+    <span class="points">{{ totalPoints }}</span>
+  </div>
  
   <div class="pet-container">
     <img [src]="petEyesUrl"  class="pet-eyes blinking" />
@@ -28,73 +27,90 @@
 
   
     <div class="pet_Bodies">
-      <div class="duzzy" [class.owned]="isDuzzyOwned">
-        <img [src]="duzzyUrl" alt="Duzzy" />
-        <div class="pet-info">
-          <button *ngIf="!isDuzzyOwned" (click)="buyPetBody('Duzzy', 50)">Buy</button>
-          <button *ngIf="isDuzzyOwned" (click)="equipPetBody(duzzyUrl, 'Duzzy')">Equip</button>
-          <span class="pet-name">Duzzy</span>
-          <span class="pet-price" *ngIf="isDuzzyOwned">Owned</span>
-          <span class="pet-price" *ngIf="!isDuzzyOwned">Price: 50 Points</span>
+      <div class="closet-container">
+        <div class="duzzy" [class.owned]="isDuzzyOwned">
+          <img [src]="duzzyUrl" alt="Duzzy" />
+          <div class="pet-info">
+            <button *ngIf="!isDuzzyOwned" (click)="buyPetBody('Duzzy', 50)">
+              Buy
+              <span class="pet-price" *ngIf="!isDuzzyOwned">Price: 50 Points</span>
+            </button>
+            <button *ngIf="isDuzzyOwned" (click)="equipPetBody(duzzyUrl, 'Duzzy')">Equip</button>
+            <span class="pet-name">Duzzy</span>
+            <span class="pet-price" *ngIf="isDuzzyOwned">Owned</span>
+          </div>
         </div>
+
+        <div class="duzzy" [class.owned]="isBigYakOwned">
+          <img [src]="big_YakUrl" alt="BigYak"/>
+          <div class="pet-info">
+            <button *ngIf="!isBigYakOwned" (click)="buyPetBody('BigYak', 50)">
+              Buy
+              <span class="pet-price" *ngIf="!isBigYakOwned">Price: 50 Points</span>
+            </button>
+            <button *ngIf="isBigYakOwned" (click)="equipPetBody(big_YakUrl, 'BigYak')">Equip</button>
+            <span class="pet-name">Big Yak</span>
+            <span class="pet-price" *ngIf="isBigYakOwned">Owned</span>
+          
+          </div>
+        </div>
+
+        <div class="duzzy" [class.owned]="isCurlyOwned">
+          <img [src]="curlyUrl" alt="curly"/>
+          <div class="pet-info">
+            <button *ngIf="!isCurlyOwned" (click)="buyPetBody('Curly', 50)">
+              Buy
+              <span class="pet-price" *ngIf="!isCurlyOwned">Price: 50 Points</span>
+            </button>
+            <button *ngIf="isCurlyOwned" (click)="equipPetBody(curlyUrl, 'Curly')">Equip</button>
+            <span class="pet-name">Curly</span>
+            <span class="pet-price" *ngIf="isCurlyOwned">Owned</span>
+         
+          </div>
+        </div>
+
+        <div class="duzzy" [class.owned]="isSpikeyOwned">
+          <img [src]="spikeyUrl" alt="curly"/>
+          <div class="pet-info">
+            <button *ngIf="!isSpikeyOwned" (click)="buyPetBody('Spikey', 100)">
+              Buy
+              <span class="pet-price" *ngIf="!isSpikeyOwned">Price: 100 Points</span>
+            </button>
+            <button *ngIf="isSpikeyOwned" (click)="equipPetBody(spikeyUrl, 'Spikey')">Equip</button>
+            <span class="pet-name">Big Yak</span>
+            <span class="pet-price" *ngIf="isSpikeyOwned">Owned</span>
+     
+          </div>
+        </div>
+
+        <div class="duzzy">
+            <img [src]="sumoUrl" alt="Sumo"/>
+            <div class="pet-info">
+            <button *ngIf="!isSumoOwned" (click)="buyPetBody('Sumo', 100)">
+              Buy
+              <span class="pet-price" *ngIf="!isSumoOwned">Price: 100 Points</span>
+            </button>
+            <button *ngIf="isSumoOwned" (click)="equipPetBody(sumoUrl, 'Sumo')">Equip</button>
+            <span class="pet-name">Sumo</span>
+            <span class="pet-price" *ngIf="isSumoOwned">Owned</span>
+   
+            </div>
+          </div>
+
+        <div class="duzzy">
+          <img [src]="wet_dogUrl" alt="Sumo"/>
+          <div class="pet-info">
+          <button *ngIf="!isWetDogOwned" (click)="buyPetBody('wetDog', 100)">
+            Buy
+            <span class="pet-price" *ngIf="!isWetDogOwned">Price: 100 Points</span>
+          </button>
+          <button *ngIf="isWetDogOwned" (click)="equipPetBody(wet_dogUrl, 'wetDog')">Equip</button>
+          <span class="pet-name">Wet Dog</span>
+          <span class="pet-price" *ngIf="isWetDogOwned">Owned</span>
+          </div>
+        </div>
+       
       </div>
-
-      <div class="duzzy" [class.owned]="isBigYakOwned">
-        <img [src]="big_YakUrl" alt="BigYak"/>
-        <div class="pet-info">
-          <button *ngIf="!isBigYakOwned" (click)="buyPetBody('BigYak', 50)">Buy</button>
-          <button *ngIf="isBigYakOwned" (click)="equipPetBody(big_YakUrl, 'BigYak')">Equip</button>
-          <span class="pet-name">Big Yak</span>
-          <span class="pet-price" *ngIf="isBigYakOwned">Owned</span>
-          <span class="pet-price" *ngIf="!isBigYakOwned">Price: 50 Points</span>
-        </div>
-      </div>
-
-      <div class="duzzy" [class.owned]="isCurlyOwned">
-        <img [src]="curlyUrl" alt="curly"/>
-        <div class="pet-info">
-          <button *ngIf="!isCurlyOwned" (click)="buyPetBody('Curly', 50)">Buy</button>
-          <button *ngIf="isCurlyOwned" (click)="equipPetBody(curlyUrl, 'Curly')">Equip</button>
-          <span class="pet-name">Big Yak</span>
-          <span class="pet-price" *ngIf="isCurlyOwned">Owned</span>
-          <span class="pet-price" *ngIf="!isCurlyOwned">Price: 50 Points</span>
-        </div>
-      </div>
-
-      <div class="duzzy" [class.owned]="isSpikeyOwned">
-        <img [src]="spikeyUrl" alt="curly"/>
-        <div class="pet-info">
-          <button *ngIf="!isSpikeyOwned" (click)="buyPetBody('Spikey', 50)">Buy</button>
-          <button *ngIf="isSpikeyOwned" (click)="equipPetBody(spikeyUrl, 'Spikey')">Equip</button>
-          <span class="pet-name">Big Yak</span>
-          <span class="pet-price" *ngIf="isSpikeyOwned">Owned</span>
-          <span class="pet-price" *ngIf="!isSpikeyOwned">Price: 50 Points</span>
-        </div>
-      </div>
-
-
-     <!-- <div class="duzzy">
-        <img [src]="spikeyUrl" alt="Duzzy"/>
-        <div class="pet-info">
-          <button (click)="equipPetBody(spikeyUrl, 'Spikey')">Equip</button>
-          <span class="pet-name">Spikey</span>
-        </div>
-      </div> -->
-
-      <!-- <div class="duzzy">
-        <img [src]="sumoUrl" alt="Duzzy"/>
-        <div class="pet-info">
-          <button (click)="equipPetBody(sumoUrl, 'Sumo Url')">Equip</button>
-          <span class="pet-name">Sumo</span>
-        </div>
-      </div>
-      <div class="duzzy">
-        <img [src]="wet_dogUrl" alt="Duzzy"/>
-        <div class="pet-info">
-          <button (click)="equipPetBody(wet_dogUrl, 'Wet Dog')">Equip</button>
-          <span class="pet-name">Wet_Dog</span>
-        </div>
-      </div> -->
     </div>
 
 </ion-content>
