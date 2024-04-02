@@ -1,226 +1,96 @@
-
-ion-header{
-  ion-toolbar {
-    margin-top: 3vh; /* Remove the default margin */
-  }
-}
-
-.ion-no-border{
-  padding: 0 10px;
-  background: #f1f5f8;
-}
-
-.avatar{
-  h3{
-    font-weight: 700;
-    font-size: 14px;
-    margin-left: 5px;
-  }
-  p{
-    font-weight: 500;
-    font-size: 14px;
-    margin-left: 5px;
-  }
-  ion-avatar{
-    --border-radius: 40%;
-  }
-  background: #f1f5f8;
-
-}
-
-  .bordered{
-  margin-right: 10px;
-  border-radius: 10px;
-  box-shadow: 5px 5px 10px #d1d1d1, -5px -5px 10px #ffffff;
-  }
-
-*{
-  font-family: 'Patrick Hand SC';
-}
-
-ion-content{
- --background: #003366;
-}
-
-// ion-content {
-//   --background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 100 60'%3E%3Cg %3E%3Crect fill='%23D98343' width='11' height='11'/%3E%3Crect fill='%23da8546' x='10' width='11' height='11'/%3E%3Crect fill='%23db8749' y='10' width='11' height='11'/%3E%3Crect fill='%23db884c' x='20' width='11' height='11'/%3E%3Crect fill='%23dc8a4e' x='10' y='10' width='11' height='11'/%3E%3Crect fill='%23dd8c51' y='20' width='11' height='11'/%3E%3Crect fill='%23dd8e54' x='30' width='11' height='11'/%3E%3Crect fill='%23de8f57' x='20' y='10' width='11' height='11'/%3E%3Crect fill='%23df915a' x='10' y='20' width='11' height='11'/%3E%3Crect fill='%23e0935d' y='30' width='11' height='11'/%3E%3Crect fill='%23e0955f' x='40' width='11' height='11'/%3E%3Crect fill='%23e19762' x='30' y='10' width='11' height='11'/%3E%3Crect fill='%23e29865' x='20' y='20' width='11' height='11'/%3E%3Crect fill='%23e29a68' x='10' y='30' width='11' height='11'/%3E%3Crect fill='%23e39c6b' y='40' width='11' height='11'/%3E%3Crect fill='%23e39e6e' x='50' width='11' height='11'/%3E%3Crect fill='%23e4a070' x='40' y='10' width='11' height='11'/%3E%3Crect fill='%23e5a173' x='30' y='20' width='11' height='11'/%3E%3Crect fill='%23e5a376' x='20' y='30' width='11' height='11'/%3E%3Crect fill='%23e6a579' x='10' y='40' width='11' height='11'/%3E%3Crect fill='%23e6a77c' y='50' width='11' height='11'/%3E%3Crect fill='%23e7a97f' x='60' width='11' height='11'/%3E%3Crect fill='%23e7aa81' x='50' y='10' width='11' height='11'/%3E%3Crect fill='%23e8ac84' x='40' y='20' width='11' height='11'/%3E%3Crect fill='%23e8ae87' x='30' y='30' width='11' height='11'/%3E%3Crect fill='%23e9b08a' x='20' y='40' width='11' height='11'/%3E%3Crect fill='%23e9b28d' x='10' y='50' width='11' height='11'/%3E%3Crect fill='%23e9b390' x='70' width='11' height='11'/%3E%3Crect fill='%23eab592' x='60' y='10' width='11' height='11'/%3E%3Crect fill='%23eab795' x='50' y='20' width='11' height='11'/%3E%3Crect fill='%23ebb998' x='40' y='30' width='11' height='11'/%3E%3Crect fill='%23ebbb9b' x='30' y='40' width='11' height='11'/%3E%3Crect fill='%23ebbc9e' x='20' y='50' width='11' height='11'/%3E%3Crect fill='%23ecbea1' x='80' width='11' height='11'/%3E%3Crect fill='%23ecc0a4' x='70' y='10' width='11' height='11'/%3E%3Crect fill='%23ecc2a7' x='60' y='20' width='11' height='11'/%3E%3Crect fill='%23edc4aa' x='50' y='30' width='11' height='11'/%3E%3Crect fill='%23edc5ac' x='40' y='40' width='11' height='11'/%3E%3Crect fill='%23edc7af' x='30' y='50' width='11' height='11'/%3E%3Crect fill='%23edc9b2' x='90' width='11' height='11'/%3E%3Crect fill='%23eecbb5' x='80' y='10' width='11' height='11'/%3E%3Crect fill='%23eecdb8' x='70' y='20' width='11' height='11'/%3E%3Crect fill='%23eecfbb' x='60' y='30' width='11' height='11'/%3E%3Crect fill='%23eed0be' x='50' y='40' width='11' height='11'/%3E%3Crect fill='%23eed2c1' x='40' y='50' width='11' height='11'/%3E%3Crect fill='%23eed4c4' x='90' y='10' width='11' height='11'/%3E%3Crect fill='%23eed6c7' x='80' y='20' width='11' height='11'/%3E%3Crect fill='%23efd8ca' x='70' y='30' width='11' height='11'/%3E%3Crect fill='%23efdacd' x='60' y='40' width='11' height='11'/%3E%3Crect fill='%23efdbd0' x='50' y='50' width='11' height='11'/%3E%3Crect fill='%23efddd3' x='90' y='20' width='11' height='11'/%3E%3Crect fill='%23efdfd6' x='80' y='30' width='11' height='11'/%3E%3Crect fill='%23efe1d9' x='70' y='40' width='11' height='11'/%3E%3Crect fill='%23efe3dc' x='60' y='50' width='11' height='11'/%3E%3Crect fill='%23efe5df' x='90' y='30' width='11' height='11'/%3E%3Crect fill='%23efe7e2' x='80' y='40' width='11' height='11'/%3E%3Crect fill='%23eee8e5' x='70' y='50' width='11' height='11'/%3E%3Crect fill='%23eeeae8' x='90' y='40' width='11' height='11'/%3E%3Crect fill='%23eeeceb' x='80' y='50' width='11' height='11'/%3E%3Crect fill='%23EEEEEE' x='90' y='50' width='11' height='11'/%3E%3C/g%3E%3C/svg%3E") center center / cover no-repeat;
-// }
-
-// ion-title{
-//     text-align: center;
-// }
-
-// ion-card {
-//   --background: transparent;
-// }
-
-.cardwImg1 {
-    display: flex;
-    justify-content: space-between; /* Adjust the spacing between cards */
-    overflow: hidden; /* Hide overflow to prevent unwanted scrolling during animation */
-  }
-  
-  .cardImg1,
-  .cardImg2 {
-    width: 50%;
-    animation: slideInFromLeft 1.5s ease-out; /* Adjust animation duration and easing */
-  }
-  
-  @keyframes slideInFromLeft {
-    from {
-      transform: translateX(-100%); /* Start off-screen to the left */
-    }
-    to {
-      transform: translateX(0); /* Move to the original position */
-    }
-  }
-
-.cardwImg2 {
-display: flex;
-justify-content: space-between; /* Adjust the spacing between cards */
-overflow: hidden; /* Hide overflow to prevent unwanted scrolling during animation */
-}
-
-.cardImg3,
-.cardImg4 {
-width: 50%;
-animation: slideInFromRight 1.5s ease-out; /* Adjust animation duration and easing */
-}
-
-@keyframes slideInFromRight {
-from {
-    transform: translateX(100%); /* Start off-screen to the left */
-}
-to {
-    transform: translateX(0); /* Move to the original position */
-}
-}
-
-.cardwImg1,
-.cardwImg2 {
-  display: flex;
-  justify-content: center;
+//NEW UI
+ion-title {
   text-align: center;
-  // background-color: #ff8200;
-
-
-  .cardImg1,
-  .cardImg2,
-  .cardImg3,
-  .cardImg4 {
-    width: 50%;
-    max-width: 300px;
-    margin: 10px;
-    border-radius: 15px;
-
-    ion-button {
-      margin-top: 5px;
-    }
-  }
+  font-family: "IntegralCF-Bold";
 }
 
-
-@media (min-width: 800px) {
-    .wholeBody{
-   /* Responsive vertical centering */
-        display: flex;
-        justify-content: center;
-        text-align: center;
-    }
-    ion-button {
-        margin-top: 5px;
-    }
-    ion-card {
-      max-width: 40%; /* Remove the maximum width when the screen width is less than 700px */
-    }
-    .container{
-      h2{
-        margin-left: 60vh;
-      }
-    }
-
-    ion-toolbar{
-      max-width: 50%;
-      margin: 3vh auto;
-    }
-   
-  }
-
-.wholeBody{
-
-    margin-bottom: 40px;
-    background: #f1f5f8;
-    padding: 4px 10px 20px 10px;
-    border-radius: 0 0 28px 28px;
-
+ion-content {
+  --background: url("/assets/ebook/bg.png") center/cover no-repeat;
+  height: 100vh;
 }
 
-// ion-button{
-//     background: white;
-// }
-
-ion-card-subtitle{
-    color: white;
-}
-
-ion-card {
-  max-width: 80%; /* Set a maximum width for the appointment card */
-  margin: 0 auto; 
-}
-
-@media (min-width: 700px) {
-  ion-card {
-    max-width: 40%; /* Remove the maximum width when the screen width is less than 700px */
-  }
-  .container{
-    h2{
-      margin-left: 60vh;
-    }
-  }
-}
-
-.user-card {
-  margin-bottom: 16px; /* Adjust the margin as needed for the desired gap */
-}
-
-.greeting{
+.questPending {
   display: flex;
   justify-content: center;
-  font-size: 3em;
-  margin-top: 7vh
 }
 
-.container{
- 
-  ion-label {
-    background-color: transparent !important; /* Set the background to transparent */
-  }
-  h2{
-    padding: 0 20px;
-    font-family: 'Schoolbell', cursive;
-    color: white;
-  }
-  ion-card-subtitle{
-    color: black;
+.outputs {
+  display: flex;
+  justify-content: center;
+}
+
+.second {
+  display: flex;
+  justify-content: center;
+}
+
+.parent-container {
+  // background: url('/assets/ebook/board.png') center/cover no-repeat;
+  // height: 50vh;
+  font-family: "IntegralCF-Bold";
+  position: absolute;
+  margin-top: 10vh;
+  width: 300px;
+}
+
+@media only screen and (min-width: 768px) {
+  .board {
+    img {
+      width: 100vh;
+    }
   }
 }
 
+@media only screen and (min-width: 400px) and (max-width: 500px) {
+  .board {
+    img {
+      width: 70vh;
+    }
+  }
+}
 
-.navigation-button {
-  background: none;
-  border: none;
+.board {
+  img {
+    max-width: 80vh;
+  }
+}
+
+.container {
+  margin: 0 auto;
+  width: 90%;
+  text-align: center;
+}
+
+.kids-list {
+  list-style-type: none;
   padding: 0;
-  margin: 16px; /* Adjust the margin as needed */
-  cursor: pointer;
-
-  p{
-    color: black;
-    font-weight: bold;
-    font-size: 25px;
-  }
 }
 
-.ebook-icon {
-  width: 100px; /* Adjust the width as needed */
-  height: 100px; /* Adjust the height as needed */
+.kid-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5vh;
+}
+
+.kid-details {
+  flex-grow: 1;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.quest {
+  max-width: 80%;
 }

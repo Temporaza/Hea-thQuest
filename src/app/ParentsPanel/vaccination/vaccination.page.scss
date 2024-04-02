@@ -1,86 +1,89 @@
-*{
-    font-family: Arial, Helvetica, sans-serif;
+ion-title {
+  text-align: center;
+  font-family: "IntegralCF-Bold";
 }
 
-ion-toolbar{
-    --background: #ff8200;
+ion-card-title {
+  font-family: "IntegralCF-Bold";
 }
 
-ion-content{
-  --background: #003366;
- }
+ion-content {
+  --background: url("/assets/ebook/bg.png") center/cover no-repeat;
+  height: 100vh;
+}
 
-.Kids{
-  --background: #f1f5f8;
+.Users {
+  font-family: "IntegralCF-Bold";
+  ion-label {
+    font-family: "IntegralCF-Bold";
+  }
 }
 
 ion-card {
-    max-width: 500px; // Set the maximum width to 700px
-    margin: 20px auto;   // Center the card horizontally
-    
+  width: 90%;
+  margin: 20px auto;
+  border: 1px solid;
+  box-shadow: 10px 14px 22px -9px rgba(0, 0, 0, 0.71);
 }
 
-
-ion-row{
-    display: flex;
-    justify-content: center;
-    margin: 100px 0px;
-   
-}
-
-*{
-  font-family: 'Patrick Hand SC';
-}
-
-ion-label{
+ion-card-title {
   font-weight: bold;
 }
 
-ion-card-title{
-  font-weight: bold;
+.save {
+  margin-right: 10px;
 }
 
-.save{
-    margin-right: 10px;
+.reg {
+  margin-left: 10px;
 }
-
-.reg{
-    margin-left: 10px;
-}
-
 
 .Users {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 5vh;
-  
-    ion-card {
-      width: 97%;
-      margin: 10px;   // Adjust the margin
-    }
-    
+  background-color: white;
+  height: auto;
+  border-radius: 20px;
+  border: #0080ff 15px solid;
+  margin-top: 10vh;
+}
+
+@media (min-width: 700px) {
+  ion-card {
+    width: 60%;
   }
+}
 
-@media (max-width: 700px) {
-    .Users {
-      flex-direction: row;
-      justify-content: space-around;
-    }
-  }
+.plain-button {
+  cursor: pointer; /* Add pointer cursor for interaction */
+  display: flex; /* Use flex to align icon and text horizontally */
+  align-items: center; /* Align items in the center */
+  color: #007bff; /* Set the color as needed */
+  margin: 0 auto;
+  font-size: 20px;
+}
 
+.plain-button ion-icon {
+  margin-right: 8px; /* Add spacing between icon and text */
+}
 
-  .plain-button {
-    cursor: pointer; /* Add pointer cursor for interaction */
-    display: flex; /* Use flex to align icon and text horizontally */
-    align-items: center; /* Align items in the center */
-    color: #007bff; /* Set the color as needed */
-    margin: 0 auto;
-    font-size: 20px;
-  }
-  
-  .plain-button ion-icon {
-    margin-right: 8px; /* Add spacing between icon and text */
-  }
+.edit-btn {
+  color: black;
+  justify-content: center;
+  margin: 20px;
+  margin: 0 auto;
+  background: rgba(
+    252,
+    128,
+    66,
+    0.6
+  ); /* Adjust the opacity by modifying the last value (0.6) */
+  border-radius: 10px;
+  border: 2px solid black;
+  max-width: 100px;
+}
 
-
+ion-card-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}

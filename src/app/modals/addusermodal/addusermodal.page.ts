@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ModalController } from '@ionic/angular';
-import firebase from 'firebase/compat/app';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthenticationService } from 'src/app/authentication.service';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-addusermodal',
@@ -12,90 +15,174 @@ import firebase from 'firebase/compat/app';
 export class AddusermodalPage implements OnInit {
   parentUid: string;
   parentEmail: string;
-
-  babyData: any = {}; // Initialize babyData as an empty object
-  babies: any[] = [];
+  regForm: FormGroup;
 
   constructor(
     private modalController: ModalController,
     private afAuth: AngularFireAuth,
-    private firestore: AngularFirestore
-    
-    ) { }
+    private firestore: AngularFirestore,
+    private formBuilder: FormBuilder,
+    private authService: AuthenticationService,
+    public loadingCtrl: LoadingController,
+    private alertController: AlertController,
+    public router: Router
+  ) {}
 
-    ngOnInit() {
-      this.babies = [];
+  ngOnInit() {
+    this.regForm = this.formBuilder.group({
+      fullname: ['', [Validators.required]],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email,
+          Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$'),
+        ],
+      ],
+      password: [
+        '',
+        [
+          // Validators.required,
+          // Validators.pattern("(?=.*\d)(?=.*[a-z])(?=.*[0-8])(?=.*[A-Z]).{8,}")
+        ],
+      ],
+      parentEmail: ['', [Validators.required, Validators.email]],
+    });
+  }
 
-      this.afAuth.authState.subscribe(user => {
-        if (user) {
-          this.parentUid = user.uid;
-          this.parentEmail = user.email;
-  
-          // Load existing babies array
-          this.loadBabies();
-        }
-      });
+  // ngOnInit() {
+  //   this.afAuth.authState.subscribe((user) => {
+  //     if (user) {
+  //       this.parentUid = user.uid;
+  //       this.parentEmail = user.email;
+
+  //       Load existing babies array
+  //       this.loadBabies();
+  //     }
+  //   });
+  // }
+
+  get errorControl() {
+    return this.regForm?.controls;
+  }
+
+  async signUp() {
+    const loading = await this.loadingCtrl.create();
+    await loading.present();
+
+    if (this.regForm?.valid) {
+      const parentEmail = this.regForm.value.parentEmail;
+
+      // Check if the parent's email exists in the parents' collection
+      const parentUID = await this.getParentUIDByEmail(parentEmail);
+
+      if (!parentUID) {
+        // Parent's email not found, display an error message
+        loading.dismiss();
+        console.log('Parent not found for email:', parentEmail);
+        this.presentErrorAlert('Error', 'Parent Email does not exists.');
+        // Add your logic to display an error message to the user, e.g., using a toast or an alert
+        return;
+      }
+
+      const user = await this.authService
+        .registerUser(
+          this.regForm.value.email,
+          this.regForm.value.password,
+          this.regForm.value.fullname,
+          parentEmail
+        )
+        .catch((error) => {
+          console.log(error);
+          loading.dismiss();
+        });
+
+      if (user) {
+        // Save the new user information to the parent's UID
+        await this.saveUserToParent(parentUID, user);
+
+        loading.dismiss();
+        this.clearFormFields();
+
+        // Display success message
+        this.presentSuccessAlert('Success', 'Registration successful!');
+      } else {
+        console.log('Provide correct values');
+      }
     }
-  
+  }
+
+  // Helper method to present success alert
+  async presentSuccessAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  async getParentUIDByEmail(parentEmail: string): Promise<string | null> {
+    try {
+      // Call the method from AuthenticationService or wherever it's defined
+      const parentUID = await this.authService.getParentUIDByEmail(parentEmail);
+      return parentUID;
+    } catch (error) {
+      // Show error pop-up
+      this.presentErrorAlert('Error', 'An error occurred. Please try again.');
+      return null;
+    }
+  }
+
+  async saveUserToParent(parentUID: string, user: any) {
+    try {
+      // Create a reference to the user document in the 'users' collection
+      const userDocRef = this.firestore.collection('users').doc(user.uid);
+
+      // Get the user document data
+      const userDataSnapshot = await userDocRef.get().toPromise();
+
+      // Check if the user document exists
+      if (userDataSnapshot.exists) {
+        // Get the user data
+        const userData = userDataSnapshot.data();
+
+        // Create a reference to the 'users' subcollection under the parent
+        const parentUserCollectionRef = this.firestore.collection(
+          `parents/${parentUID}/users`
+        );
+
+        // Save the user data to the 'users' subcollection under the parent
+        await parentUserCollectionRef.doc(user.uid).set(userData);
+      } else {
+        console.error(
+          'Error updating parent document: User document does not exist'
+        );
+        // Handle the error appropriately
+        throw new Error('User document does not exist');
+      }
+    } catch (error) {
+      console.error('Error updating parent document:', error);
+      throw error;
+    }
+  }
+
+  clearFormFields() {
+    this.regForm.reset(); // Reset the form to its initial state
+  }
+
+  async presentErrorAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
 
   async dismissModal() {
     await this.modalController.dismiss();
   }
-
-  loadBabies() {
-    this.firestore
-      .collection('parents')
-      .doc(this.parentUid)
-      .snapshotChanges()
-      .subscribe((doc: any) => {
-        const babiesObject = doc.payload.data()?.babies;
-  
-        // Convert the babies object into an array
-        this.babies = babiesObject ? Object.values(babiesObject) : [];
-      });
-  }
-
-  async saveBabyData() {
-    try {
-      if (!this.babyData.name || !this.babyData.age || !this.babyData.weight || !this.babyData.height) {
-        throw new Error('Please fill in all required fields.');
-      }
-  
-      // Perform any other validations if needed
-  
-      // Include vaccine details in the baby data
-      this.babyData.vaccines = {
-        vaccine1: false,  // You can set the default values as needed
-        vaccine2: false,
-        vaccine3: false,
-        vaccine4: false,
-      };
-  
-      // Save the new baby data into Firestore
-      await this.saveBabyToFirestore(this.babyData);
-  
-      // Optionally, close the modal after saving
-      this.modalController.dismiss({
-        saved: true,
-        babyData: this.babyData,
-      });
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
-
-  private async saveBabyToFirestore(babyData: any) {
-    try {
-      const parentDoc = await this.firestore.collection('parents').doc(this.parentUid).get().toPromise();
-  
-      if (parentDoc.exists) {
-        const babiesCollection = parentDoc.ref.collection('babies');
-        await babiesCollection.doc(babyData.name).set(babyData);
-      }
-    } catch (error) {
-      console.error('Error saving baby data to Firestore:', error);
-    }
-  }
-
-
 }

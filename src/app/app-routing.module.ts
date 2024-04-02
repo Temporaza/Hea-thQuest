@@ -50,22 +50,6 @@ const routes: Routes = [
     loadChildren: () => import('./ParentsPanel/home-parent/home-parent.module').then( m => m.HomeParentPageModule),
     
   },
-
-
-  {
-    path: 'doctor-login',
-    loadChildren: () => import('./DoctorsPanel/doctor-login/doctor-login.module').then( m => m.DoctorLoginPageModule),
-   
-  },
-  {
-    path: 'doctor-register',
-    loadChildren: () => import('./DoctorsPanel/doctor-register/doctor-register.module').then( m => m.DoctorRegisterPageModule)
-  },
-  {
-    path: 'doctor-home',
-    loadChildren: () => import('./DoctorsPanel/doctor-home/doctor-home.module').then( m => m.DoctorHomePageModule),
-
-  },
   {
     path: 'kids-progress',
     loadChildren: () => import('./ParentsPanel/kids-progress/kids-progress.module').then( m => m.KidsProgressPageModule)
@@ -81,22 +65,6 @@ const routes: Routes = [
   {
     path: 'vaccine-details-modal',
     loadChildren: () => import('./modals/vaccine-details-modal/vaccine-details-modal.module').then( m => m.VaccineDetailsModalPageModule)
-  },
-  {
-    path: 'patient-data',
-    loadChildren: () => import('./DoctorsPanel/patient-data/patient-data.module').then( m => m.PatientDataPageModule)
-  },
-  {
-    path: 'schedule',
-    loadChildren: () => import('./DoctorsPanel/schedule/schedule.module').then( m => m.SchedulePageModule)
-  },
-  {
-    path: 'doctor-consult',
-    loadChildren: () => import('./DoctorsPanel/doctor-consult/doctor-consult.module').then( m => m.DoctorConsultPageModule)
-  },
-  {
-    path: 'pending-doc',
-    loadChildren: () => import('./DoctorsPanel/pending-doc/pending-doc.module').then( m => m.PendingDocPageModule)
   },
   {
     path: 'market',
@@ -193,6 +161,10 @@ const routes: Routes = [
   {
     path: 'game-counting',
     loadChildren: () => import('./pages/games/game-counting/game-counting.module').then( m => m.GameCountingPageModule)
+  },
+  {
+    path: 'custom-navigation',
+    loadChildren: () => import('./component/custom-navigation/custom-navigation.module').then( m => m.CustomNavigationPageModule)
   },
 
 

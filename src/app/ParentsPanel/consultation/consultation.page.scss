@@ -1,95 +1,84 @@
-ion-toolbar{
-  --background: #ff8200;
-
+ion-title {
+  text-align: center;
+  font-family: "IntegralCF-Bold";
 }
 
 ion-list {
   background-color: transparent !important;
 }
 
-ion-content{
-  --background: #003366;
- }
-
-*{
-  font-family: 'Patrick Hand SC';
+ion-content {
+  --background: url("/assets/ebook/bg.png") center/cover no-repeat;
+  height: 100vh;
 }
 
-
-
 .custom-card {
-    max-width: 400px; /* Set your desired maximum width */
+  max-width: 400px; /* Set your desired maximum width */
+  width: 100%; /* Ensure the card takes full width if the content is smaller than max-width */
+  margin: 10px auto; /* Adjust margin as needed for spacing */
+}
+
+@media (min-width: 680px) {
+  .custom-card {
+    max-width: 800px; /* Set your desired maximum width */
     width: 100%; /* Ensure the card takes full width if the content is smaller than max-width */
     margin: 10px auto; /* Adjust margin as needed for spacing */
+    margin-top: 8vh;
   }
-
-  @media (min-width: 680px) {
-    .custom-card {
-        max-width: 800px; /* Set your desired maximum width */
-        width: 100%; /* Ensure the card takes full width if the content is smaller than max-width */
-        margin: 10px auto; /* Adjust margin as needed for spacing */
-        margin-top: 8vh;
-      }
-      ion-card {
-        width: 40%;
-        margin: 0 auto;
-        margin-top: 6vh;
-      }
- }
-
- .findBtn {
-    display: block;
-    margin: 0 auto; /* Center the button horizontally */
-    max-width: 500px; /* Set your desired maximum width */
-    width: 100%; /* Ensure the button takes full width if the content is smaller than max-width */
-    
+  ion-card {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 6vh;
   }
+}
 
-  .lineGraph {
-    margin-bottom: 50px; /* Adjust the value as needed */
-    text-align: center;
-    font-weight: bold;
+.findBtn {
+  display: block;
+  margin: 0 auto; /* Center the button horizontally */
+  max-width: 500px; /* Set your desired maximum width */
+  width: 100%; /* Ensure the button takes full width if the content is smaller than max-width */
+}
+
+.lineGraph {
+  margin-bottom: 50px; /* Adjust the value as needed */
+  text-align: center;
+  font-weight: bold;
+  margin: 30px 10px;
+  border-radius: 10px;
+  background: #f1eedc;
+  box-shadow: 10px 14px 22px -9px rgba(0, 0, 0, 0.71);
+}
+
+.pie-graph-container {
+  text-align: center;
+  font-weight: bold;
+  margin: 30px 10px;
+  border-radius: 10px;
+  background: #f1eedc;
+  box-shadow: 10px 14px 22px -9px rgba(0, 0, 0, 0.71);
+}
+
+.SuperParent {
+  display: flex;
+  justify-content: center;
+}
+
+.parentConsult {
+  background-color: white;
+  height: auto;
+  border-radius: 20px;
+  border: #0080ff 15px solid;
+  width: 65vh;
+  margin-top: 10vh;
+}
+
+@media only screen and (max-width: 768px) {
+  .parentConsult {
+    width: 100%;
   }
+}
 
-  .pie-graph-container{
-    text-align: center;
-    font-weight: bold;
-  }
-
-  // .header-title {
-  //   font-size: 20px;
-  //   font-weight: bold;
-  // }
-  
-  // .card-header {
-  //   background-color: #f0f0f0;
-  //   border-bottom: 1px solid #ddd;
-  // }
-  
-  // .card-title {
-  //   font-size: 25px;
-  //   font-weight: bold;
-  // }
-  
-  // .bmi-record-item {
-  //   border-bottom: 1px solid #ddd;
-  // }
-  
-  // .record-label {
-  //   font-weight: bold;
-  // }
-  
-  // .record-bmi {
-  //   color: #009688; /* Set your desired color */
-  //   font-weight: bold;
-  // }
-
-  // .bmi-history-container {
-  //   width: 50%; /* Adjust as needed */
-  //   float: left;
-  // }
-  
-  // .pie-graph-container {
-  //   width: 50%; /* Adjust as needed */
-  //   float: left;
-  // }
+.card-header {
+  text-align: center;
+  font-family: "IntegralCF-Bold";
+}

@@ -14,14 +14,12 @@
 //   }
 // }
 
-*{
-  font-family: 'Patrick Hand SC';
+* {
+  font-family: "IntegralCF-Bold";
 }
 
-
-ion-toolbar{
+ion-toolbar {
   --background: #ff8200;
-
 }
 
 ion-router-outlet {
@@ -29,7 +27,7 @@ ion-router-outlet {
 }
 
 .background {
-  --background: url('/assets/house.png') no-repeat center center fixed;
+  --background: url("/assets/house.png") no-repeat center center fixed;
   --background-size: cover;
   position: relative;
 }
@@ -43,7 +41,7 @@ ion-router-outlet {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-family: 'Comic Sans MS', cursive; /* Example playful font */
+  font-family: "Comic Sans MS", cursive; /* Example playful font */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
@@ -61,22 +59,21 @@ ion-router-outlet {
   font-size: 2em; /* Adjust the size as needed */
 }
 
-.fab-buttons{
+.fab-buttons {
   margin-right: 4vh;
 }
 
-.fab-buttons ion-fab-button{
+.fab-buttons ion-fab-button {
   width: 70px; /* Adjust the width as needed */
   height: 70px; /* Adjust the height as needed */
 }
 
-ion-fab-list ion-fab-button{
+ion-fab-list ion-fab-button {
   width: 100px; /* Adjust the width as needed */
   height: 100px; /* Adjust the height as needed */
 }
 
 @media screen and (min-width: 620px) {
-
   ion-button {
     background-color: transparent; /* Set the background color of ion-button to transparent */
     border: none; /* Remove the border if present */
@@ -93,20 +90,19 @@ ion-fab-list ion-fab-button{
     font-size: 4em; /* Adjust the size as needed */
   }
 
-  ion-fab-list ion-fab-button{
+  ion-fab-list ion-fab-button {
     width: 100px; /* Adjust the width as needed */
     height: 100px; /* Adjust the height as needed */
   }
 
-  .fab-buttons{
+  .fab-buttons {
     margin-right: 3vh;
   }
 
-  .fab-buttons ion-fab-button{
+  .fab-buttons ion-fab-button {
     width: 100px; /* Adjust the width as needed */
     height: 100px; /* Adjust the height as needed */
   }
-  
 }
 
 .Pages {
@@ -124,7 +120,6 @@ ion-button {
   border: none; /* Remove the border if present */
   padding: 0px;
   margin: 0px;
- 
 }
 
 ion-card {
@@ -132,18 +127,18 @@ ion-card {
   border: none; /* Remove the border if present */
 }
 
-.cardImg1, .cardImg2 {
+.cardImg1,
+.cardImg2 {
   width: 30%; /* Adjust the width as needed */
   margin-bottom: -30px;
   z-index: 2;
 }
 
-.music{
+.music {
   margin: 8% 5%;
   position: absolute;
   z-index: 3;
 }
-
 
 //pet style
 .pet-container {
@@ -159,8 +154,6 @@ ion-card {
   margin-bottom: 20px;
 }
 
-
-
 .pet-body {
   width: 240px; /* Adjust the size as needed */
   // border: 2px solid green;
@@ -174,7 +167,6 @@ ion-card {
   margin-bottom: 3vh;
   // margin-left: 2vh;
   transition: height 2s ease-in-out; /* Smooth transition for height changes */
-  
 }
 
 .pet-mouth {
@@ -187,7 +179,6 @@ ion-card {
   transition: height 2s ease-in-out; /* Smooth transition for height changes */
 }
 
-
 @keyframes floatAnimation {
   from {
     transform: translateY(0);
@@ -196,7 +187,6 @@ ion-card {
     transform: translateY(-10px);
   }
 }
-
 
 .custom-loading-class {
   --background: rgba(0, 0, 0, 0.7); /* Background color */
@@ -217,48 +207,46 @@ ion-card {
 .health-bar-inner {
   height: 100%;
   width: 50%;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   transition: width 0.3s ease-in-out;
 }
 
-.food{
+.food {
   display: flex;
   justify-content: center; /* Center the content horizontally */
-  img{
+  img {
     height: 130px;
     width: 130px;
   }
 }
 
-.yum{
+.yum {
   z-index: 3;
   position: absolute;
   display: flex;
   justify-content: center; /* Center the content horizontally */
-  img{
+  img {
     height: 140px;
     width: 140px;
     margin: 120px;
   }
-
 }
 
-.foodCount{
+.foodCount {
   display: flex;
   justify-content: center; /* Center the content horizontally */
   margin-bottom: 2vh;
 
-  h1{
+  h1 {
     font-size: 40px;
   }
 }
 
-
-.attitude{
+.attitude {
   z-index: 3;
   display: flex;
   justify-content: center; /* Center the content horizontally */
-  img{
+  img {
     height: 140px;
     width: 140px;
     margin: 120px;
@@ -266,16 +254,21 @@ ion-card {
   position: absolute;
 }
 
-ion-footer {
-  max-width: 70%;
-  margin: 0 auto;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
-  background-color: #003366;
+// ion-footer {
+//   max-width: 70%;
+//   margin: 0 auto;
+//   position: fixed;
+//   bottom: 0;
+//   left: 0;
+//   right: 0;
+//   border-top-left-radius: 25px;
+//   border-top-right-radius: 25px;
+//   background-color: #003366;
+// }
+.menu-inner {
+  display: flex;
+  justify-content: center;
+  --background: #fc8042;
 }
 
 .footer-toolbar {
@@ -285,29 +278,40 @@ ion-footer {
 
 .footer-buttons {
   display: flex;
-  flex-direction: row; /* Change to column to stack buttons and text vertically */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 30px;
+  margin: 50%;
+  img {
+    height: 500px;
+    width: 500px;
+  }
+  height: 50vh;
 }
 
 .custom-button {
-  background: none;
-  border: none;
-  box-shadow: none;
-  padding: 0;
+  border: black 1px solid;
+  box-shadow: 1px 2px 3px;
+  padding: 10px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: 10px 10px 5px 0px rgba(74, 62, 62, 0.75);
+  border-radius: 10px;
+  background: #fc8042;
 }
 
 .custom-button img {
-  max-width: 50px; /* Adjust as needed */
-  max-height: 50px; /* Adjust as needed */
+  max-width: 13vh;
+  max-height: 13vh; /* Adjust as needed */
 }
 
 .button-text {
   margin-top: 5px; /* Adjust as needed */
-  font-size: 14px; /* Adjust as needed */
+  font-size: 1rem; /* Adjust as needed */
+  font-family: "IntegralCF-Bold";
+  text-align: center;
+  color: black;
 }

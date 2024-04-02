@@ -1,78 +1,127 @@
-<ion-content  [fullscreen]="true">
-  <div class="fixed-height-container">
-  <div class="curved2">
-    <svg xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 1440 320">
-      <path fill="#FF9A4F" fill-opacity="1" d="M0,224L80,208C160,192,320,160,480,122.7C640,85,800,43,960,74.7C1120,107,1280,213,1360,266.7L1440,320L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
-    </svg>
-  </div>
-  <div class="logo-container">
-    <img class="logo" src="assets/icon/new.png" alt="Your Logo">
-  </div>
-  <div class="header">
-    <h1 class="title">Create Account</h1>
-  </div>
-  
-  <form [formGroup]="regForm" novalidate>
-    <div class="ion-padding">
+<ion-content [fullscreen]="true">
+  <ion-icon
+    name="arrow-back-outline"
+    (click)="navigateToVaccinationPage()"
+  ></ion-icon>
 
-      <!-- Fullname -->
-      <ion-item>
-        <ion-input formControlName="fullname" placeholder="name" class="input"></ion-input>
-        <ion-icon name="person-outline"></ion-icon>
-      </ion-item>
-      <div *ngIf="this.regForm.controls?.['fullname'].touched && this.regForm.controls?.['fullname'].invalid">
-        <ion-text *ngIf="errorControl['fullname'].errors?.['required']" color="danger">
-          <ion-icon name="warning"></ion-icon>Fullname is required
-        </ion-text>
-      </div>
-
-      <!-- Email -->
-      <ion-item>
-        <ion-input formControlName="email" placeholder="email" class="input"></ion-input>
-        <ion-icon name="person-outline"></ion-icon>
-      </ion-item>
-      <div *ngIf="this.regForm.controls?.['email'].touched && this.regForm.controls?.['email'].invalid" >
-        <ion-text *ngIf="errorControl['email'].errors?.['required']" color="danger">
-          <ion-icon name="warning"></ion-icon>Email is required
-        </ion-text>
-        <ion-text *ngIf="errorControl['email'].errors?.['pattern']" color="danger">
-          <ion-icon name="warning"></ion-icon>Email should be valid
-        </ion-text>
-      </div>
-
-      <!-- Password -->
-      <ion-item>
-        <ion-input formControlName="password" placeholder="password" type="password" class="input"></ion-input>
-        <ion-icon name="lock-closed-outline"></ion-icon>
-      </ion-item>
-      <div *ngIf="this.regForm.controls?.['password'].touched && this.regForm.controls?.['password'].invalid" >
-        <ion-text *ngIf="errorControl['password'].errors?.['required']" color="danger">
-          <ion-icon name="warning"></ion-icon>Password is required
-        </ion-text>
-        <ion-text *ngIf="errorControl['password'].errors?.['pattern']" color="danger">
-          <ion-icon name="warning"></ion-icon>
-          Password must atleast have 
-          One Character
-          One Capital
-          One Number
-          Contain 8 digit
-        </ion-text>
-      </div>
-
-       <!-- Parent's Email -->
-       <ion-item>
-        <ion-input formControlName="parentEmail" placeholder="Parent's Email" class="input"></ion-input>
-        <ion-icon name="person-outline"></ion-icon>
-      </ion-item>
-
-      <div class="signinLink">
-        <p>Already a Member?<a  style="color:#ffc33f" [routerLink]="['/login']">Signin Now</a></p>
-      </div>
+  <div class="container">
+    <div class="Logo">
+      <img class="logo" src="assets/newAssets/Likha.png" alt="Your Logo" />
+      <img class="logo" src="assets/icon/new.png" alt="Your Logo" />
+      <img class="circle" src="assets/newAssets/circle.png" alt="Your Logo" />
     </div>
 
-    <button class="center-button" (click)="signUp()">
-      Sign Up
-   </button>
-  </form>
-</div>
+    <div class="form">
+      <div class="header">
+        <div class="header-parent">
+          <div class="parent">
+            <ion-icon name="person-outline" class="header-icon"></ion-icon>
+            <div class="header-text">Kids</div>
+          </div>
+        </div>
+        <h1 class="title">SIGNUP</h1>
+      </div>
+
+      <form [formGroup]="regForm" novalidate>
+        <div class="ion-padding">
+          <ion-item>
+            <ion-icon class="icons" name="person-outline"></ion-icon>
+            <ion-input
+              formControlName="fullname"
+              placeholder="name"
+              class="input"
+            ></ion-input>
+          </ion-item>
+          <div
+            *ngIf="this.regForm.controls?.['fullname'].touched && this.regForm.controls?.['fullname'].invalid"
+          >
+            <ion-text
+              *ngIf="errorControl['fullname'].errors?.['required']"
+              color="danger"
+            >
+              <ion-icon name="warning"></ion-icon>Fullname is required
+            </ion-text>
+          </div>
+
+          <ion-item>
+            <ion-icon class="icons" name="person-outline"></ion-icon>
+            <ion-input
+              formControlName="email"
+              placeholder="Enter username"
+              class="input"
+              type="text"
+            ></ion-input>
+          </ion-item>
+          <div
+            *ngIf="regForm.get('email').dirty && regForm.get('email').errors"
+          >
+            <ion-text
+              *ngIf="regForm.get('email').errors.required"
+              color="danger"
+            >
+              <ion-icon name="warning"></ion-icon> Email is required
+            </ion-text>
+            <ion-text
+              *ngIf="regForm.get('email').errors.pattern"
+              color="danger"
+            >
+              <ion-icon name="warning"></ion-icon> Email should be valid
+            </ion-text>
+          </div>
+
+          <ion-item>
+            <ion-icon class="icons" name="lock-closed-outline"></ion-icon>
+            <ion-input
+              formControlName="password"
+              placeholder="password"
+              type="password"
+              class="input"
+            ></ion-input>
+          </ion-item>
+          <div
+            *ngIf="this.regForm.controls?.['password'].touched && this.regForm.controls?.['password'].invalid"
+          >
+            <ion-text
+              *ngIf="errorControl['password'].errors?.['required']"
+              color="danger"
+            >
+              <ion-icon name="warning"></ion-icon>Password is required
+            </ion-text>
+            <ion-text
+              *ngIf="errorControl['password'].errors?.['pattern']"
+              color="danger"
+            >
+              <ion-icon name="warning"></ion-icon>
+              Password must atleast have One Character One Capital One Number
+              Contain 8 digit
+            </ion-text>
+          </div>
+
+          <ion-item>
+            <ion-icon class="icons" name="person-outline"></ion-icon>
+            <ion-input
+              formControlName="parentEmail"
+              placeholder="Parent's Email"
+              class="input"
+              [value]="parentEmail ?? ''"
+            ></ion-input>
+          </ion-item>
+
+          <!-- <div class="signinLink">
+            <p>
+              Already a Member?<a
+                style="color: #57aba5"
+                [routerLink]="['/login']"
+                >Signin Now</a
+              >
+            </p>
+          </div> -->
+        </div>
+
+        <button class="center-button" (click)="signUp()">Sign Up</button>
+
+        <div class="line-shape"></div>
+      </form>
+    </div>
+  </div>
 </ion-content>

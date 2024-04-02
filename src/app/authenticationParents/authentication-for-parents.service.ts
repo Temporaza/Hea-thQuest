@@ -2,44 +2,46 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthenticationForParentsService {
-
-    isUserAuthenticated() {
-       return !!this.ngFireAuth.currentUser;
-    }
+  isUserAuthenticated() {
+    return !!this.ngFireAuth.currentUser;
+  }
 
   constructor(
     public ngFireAuth: AngularFireAuth,
-    private firestore: AngularFirestore,
+    private firestore: AngularFirestore
+  ) {}
 
-  ) { }
-
-
-  
-  async registerParent(email: string, password:string, gender:string, fullname:string){
+  async registerParent(
+    email: string,
+    password: string,
+    gender: string,
+    fullname: string
+  ) {
     // return await this.ngFireAuth.createUserWithEmailAndPassword(email, password)
-    try{
-      const userCredential = await this.ngFireAuth.createUserWithEmailAndPassword(email, password)
+    try {
+      const userCredential =
+        await this.ngFireAuth.createUserWithEmailAndPassword(email, password);
       const user = userCredential.user;
 
       const userData = {
         email: user.email,
         gender: gender,
         fullname: fullname,
-        role: 'parent'
-      }
+        role: 'parent',
+      };
 
       await this.addUserDataToFirestore(user.uid, userData);
+      this.setCurrentParentUID(user.uid);
 
       return user;
     } catch (error) {
       console.error('Error registering user:', error);
       throw error;
-      }
+    }
   }
   private async addUserDataToFirestore(userId: string, userData: any) {
     try {
@@ -51,17 +53,29 @@ export class AuthenticationForParentsService {
     }
   }
 
-   //check parent's role
-   async checkUserRole(userId: string): Promise<string | null> {
-    const userDoc = await this.firestore.collection('users').doc(userId).get().toPromise();
-    const doctorDoc = await this.firestore.collection('doctors').doc(userId).get().toPromise();
-    const parentDoc = await this.firestore.collection('parents').doc(userId).get().toPromise();
-  
+  //check parent's role
+  async checkUserRole(userId: string): Promise<string | null> {
+    const userDoc = await this.firestore
+      .collection('users')
+      .doc(userId)
+      .get()
+      .toPromise();
+    const doctorDoc = await this.firestore
+      .collection('doctors')
+      .doc(userId)
+      .get()
+      .toPromise();
+    const parentDoc = await this.firestore
+      .collection('parents')
+      .doc(userId)
+      .get()
+      .toPromise();
+
     if (userDoc.exists) {
       return 'user';
     } else if (doctorDoc.exists) {
       return 'doctor';
-    }else if (parentDoc.exists) {
+    } else if (parentDoc.exists) {
       return 'parent';
     } else {
       return null; // User does not exist in either role
@@ -70,7 +84,11 @@ export class AuthenticationForParentsService {
 
   async getUserDataByUid(uid: string): Promise<any> {
     try {
-      const userDoc = await this.firestore.collection('parents').doc(uid).get().toPromise();
+      const userDoc = await this.firestore
+        .collection('parents')
+        .doc(uid)
+        .get()
+        .toPromise();
       if (userDoc.exists) {
         const userData = userDoc.data();
         return userData;
@@ -89,20 +107,22 @@ export class AuthenticationForParentsService {
   }
 
   async loginParent(email: string, password: string) {
-    return await this.ngFireAuth.signInWithEmailAndPassword(email,password)
+    return await this.ngFireAuth.signInWithEmailAndPassword(email, password);
   }
 
-  async resetPassword(email:string){
-    return await this.ngFireAuth.sendPasswordResetEmail(email)
+  async resetPassword(email: string) {
+    return await this.ngFireAuth.sendPasswordResetEmail(email);
   }
 
-  async signOut(){
-    return await this.ngFireAuth.signOut()
+  async signOut() {
+    return await this.ngFireAuth.signOut();
   }
 
-  async getProfile(){
-    return await this.ngFireAuth.currentUser
+  async getProfile() {
+    return await this.ngFireAuth.currentUser;
   }
 
- 
+  async setCurrentParentUID(uid: string) {
+    localStorage.setItem('parentUID', uid);
+  }
 }

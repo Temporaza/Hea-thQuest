@@ -1,13 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthenticationForParentsService } from 'src/app/authenticationParents/authentication-for-parents.service';
 import { Router } from '@angular/router';
-import { LoadingController, ModalController } from '@ionic/angular';
+import {
+  LoadingController,
+  ModalController,
+  AlertController,
+} from '@ionic/angular';
 import { VaccineDetailsModalPage } from 'src/app/modals/vaccine-details-modal/vaccine-details-modal.page';
 import { EditUserModalPage } from 'src/app/modals/edit-user-modal/edit-user-modal.page';
 import { AddusermodalPage } from 'src/app/modals/addusermodal/addusermodal.page';
 import { ModalCalendarPage } from 'src/app/modals/modal-calendar/modal-calendar.page';
-
+import { Subscription } from 'rxjs';
+import { LoginPage } from 'src/app/pages/login/login.page';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 interface ParentData {
   users?: string[];
@@ -26,122 +32,142 @@ interface UserData {
   // Add other properties as needed
 }
 
-
 @Component({
   selector: 'app-vaccination',
   templateUrl: './vaccination.page.html',
   styleUrls: ['./vaccination.page.scss'],
 })
 export class VaccinationPage implements OnInit {
-
   parentUid: string;
   usersData: UserData[] = [];
   babies: any[] = [];
+  subscriptions: Subscription[] = [];
 
   constructor(
     private firestore: AngularFirestore,
     private authService: AuthenticationForParentsService,
     private router: Router,
     private loadingController: LoadingController,
-    private modalController: ModalController
-  ) { }
+    private modalController: ModalController,
+    private afAuth: AngularFireAuth,
+    private alertController: AlertController
+  ) {}
 
   async ngOnInit() {
-    await this.loadData();
-    await this.loadBabies();
+    this.subscribeToUserLogin();
   }
 
-    async loadData() {
-    const loading = await this.loadingController.create({
-      message: 'Loading...',
+  ngOnDestroy() {
+    // Unsubscribe from all Firestore subscriptions
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  subscribeToUserLogin() {
+    const subscription = this.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.parentUid = user.uid;
+        this.loadData();
+        this.loadBabies();
+      } else {
+        console.error('No user is logged in.');
+        // Handle case where no user is logged in, such as redirecting to login page
+      }
     });
 
-    try {
-      await loading.present();
+    this.subscriptions.push(subscription);
+  }
 
+  async loadData() {
+    try {
       const user = await this.authService.getProfile();
       if (user) {
         this.parentUid = user.uid;
 
-        const parentDoc = await this.firestore
+        const subscription = this.firestore
           .collection('parents')
           .doc<ParentData>(this.parentUid)
-          .get()
-          .toPromise();
+          .snapshotChanges()
+          .subscribe((parentDoc) => {
+            const data = parentDoc.payload.data();
+            this.babies = data?.babies || [];
+            this.usersData = [];
+            const usersUIDs: string[] = data?.users || [];
 
-        if (parentDoc.exists) {
-          this.babies = parentDoc.data()?.babies || [];
+            usersUIDs.forEach((userUID) => {
+              const userSubscription = this.firestore
+                .collection('parents')
+                .doc(this.parentUid)
+                .collection('users')
+                .doc<UserData>(userUID)
+                .valueChanges()
+                .subscribe((userData) => {
+                  if (userData) {
+                    const userWithUID: UserData = {
+                      fullname: userData.fullname || 'N/A',
+                      email: userData.email || 'N/A',
+                      age: userData.age,
+                      height: userData.height,
+                      weight: userData.weight,
+                      bmi: userData.bmi,
+                      status: userData.status,
+                      usersUID: userUID,
+                    };
+                    const existingIndex = this.usersData.findIndex(
+                      (user) => user.usersUID === userWithUID.usersUID
+                    );
+                    if (existingIndex !== -1) {
+                      // Update existing user
+                      this.usersData[existingIndex] = userWithUID;
+                    } else {
+                      // Add new user
+                      this.usersData.push(userWithUID);
+                    }
+                  }
+                });
 
-          const usersUIDs: string[] = parentDoc.data()?.users || [];
-          this.usersData = [];
-
-          const usersInfoPromises = usersUIDs.map(async (userUID) => {
-            const userDoc = await this.firestore
-              .collection('parents')
-              .doc(this.parentUid)
-              .collection('users')
-              .doc<UserData>(userUID)
-              .get()
-              .toPromise();
-
-            if (userDoc.exists) {
-              const userData = userDoc.data();
-              const userWithUID: UserData = {
-                fullname: userData?.fullname || 'N/A',
-                email: userData?.email || 'N/A',
-                age: userData?.age,
-                height: userData?.height,
-                weight: userData?.weight,
-                bmi: userData?.bmi,
-                status: userData?.status,
-                usersUID: userUID,
-              };
-              this.usersData.push(userWithUID);
-            }
+              // Add the user subscription to the subscriptions array
+              this.subscriptions.push(userSubscription);
+            });
           });
 
-          await Promise.all(usersInfoPromises);
-        }
+        // Add the parent subscription to the subscriptions array
+        this.subscriptions.push(subscription);
       }
     } catch (error) {
       console.error('Error fetching parent document:', error);
-    } finally {
-      await loading.dismiss();
     }
   }
 
-  
-
   // async showVaccineDetailsModal(userData: UserData) {
   //   console.log('Full Name:', userData.fullname);
-  
+
   //   try {
   //     // Get the UID of the currently logged-in parent
   //     const parentUID = await this.authService.getCurrentParentUID();
-  
+
   //     // Check if parentUID is available
   //     if (!parentUID) {
   //       console.error('Parent UID not available.');
   //       return;
   //     }
-  
+
   //     // Get the reference to the users collection under the currently logged-in parent
   //     const usersCollection = this.firestore
   //       .collection('parents')
   //       .doc(parentUID)
   //       .collection('users');
-  
+
   //     // Query Firestore to get the usersUID based on fullname
   //     const querySnapshot = await usersCollection.ref
   //       .where('fullname', '==', userData.fullname)
   //       .get();
-  
+
   //     if (!querySnapshot.empty) {
   //       // Assuming there's only one match, use the first document
   //       const userDoc = querySnapshot.docs[0];
   //       const usersUID = userDoc.id;
   //       console.log('UsersUID:', usersUID);
-  
+
   //       // Now you can pass usersUID to the modal
   //       const modal = await this.modalController.create({
   //         component: VaccineDetailsModalPage,
@@ -149,7 +175,7 @@ export class VaccinationPage implements OnInit {
   //           userData: { ...userData, usersUID },
   //         },
   //       });
-  
+
   //       await modal.present();
   //     } else {
   //       console.error('No matching user found for fullname:', userData.fullname);
@@ -166,60 +192,64 @@ export class VaccinationPage implements OnInit {
 
     await modal.present();
   }
-  
 
-  navigateToSignup() {
-    this.router.navigate(['/signup']); 
-  }
+  // navigateToSignup() {
+  //   this.router.navigate(['/signup']);
+  // }
 
   async editUser(userData: any) {
     try {
       // Get the UID of the currently logged-in parent
       const parentUID = await this.authService.getCurrentParentUID();
-  
+
       // Check if parentUID is available
       if (!parentUID) {
         console.error('Parent UID not available.');
         return;
       }
-  
+
       // Log the parent UID
       console.log('Parent UID:', parentUID);
-  
+
       // Find the user in usersData array based on fullname
-      const userToEdit = this.usersData.find(user => user.fullname === userData.fullname);
-  
+      const userToEdit = this.usersData.find(
+        (user) => user.fullname === userData.fullname
+      );
+
       // Check if userToEdit is found
       if (userToEdit) {
         // Log the user UID
         console.log('User UID:', userToEdit.usersUID);
-  
+
         const modal = await this.modalController.create({
           component: EditUserModalPage,
           componentProps: {
-            userData: { ...userData},
+            userData: { ...userData },
           },
         });
-  
+
         await modal.present();
       } else {
-        console.error('User not found in usersData array for fullname:', userData.fullname);
+        console.error(
+          'User not found in usersData array for fullname:',
+          userData.fullname
+        );
       }
     } catch (error) {
       console.error('Error getting parent UID:', error);
     }
   }
-  
+
   async openAddUserModal() {
     const modal = await this.modalController.create({
       component: AddusermodalPage, // Create a separate component for your modal
       componentProps: {
         // You can pass data if needed
-      }
+      },
     });
-  
+
     await modal.present();
-  
+
     // Handle modal dismissal
     const { data } = await modal.onDidDismiss();
     if (data) {
@@ -234,18 +264,22 @@ export class VaccinationPage implements OnInit {
 
   async loadBabies() {
     try {
-      const parentDoc = await this.firestore.collection('parents').doc(this.parentUid).get().toPromise();
-  
+      const parentDoc = await this.firestore
+        .collection('parents')
+        .doc(this.parentUid)
+        .get()
+        .toPromise();
+
       if (parentDoc.exists) {
         const babiesCollection = parentDoc.ref.collection('babies');
         const babiesSnapshot = await babiesCollection.get();
-  
-        this.babies = babiesSnapshot.docs.map(doc => doc.data());
+
+        this.babies = babiesSnapshot.docs.map((doc) => doc.data());
       }
     } catch (error) {
       console.error('Error loading babies:', error);
     }
-}
+  }
   async openVaccineModal(baby: any) {
     const modal = await this.modalController.create({
       component: VaccineDetailsModalPage,
@@ -253,8 +287,62 @@ export class VaccinationPage implements OnInit {
         baby: baby,
       },
     });
-  
+
     await modal.present();
   }
 
+  openSignupModal() {
+    this.router.navigate(['/signup']);
+  }
+
+  // async logUserId(userId: string) {
+  //   try {
+  //     console.log('kid UID:', userId);
+  //   } catch (error) {
+  //     console.error('Error logging user ID:', error);
+  //   }
+  // }
+  async openLoginPageModal(userId: string) {
+    // Check if any of the relevant fields (age, height, weight, BMI, status) are empty
+    const userData = this.usersData.find((user) => user.usersUID === userId);
+    if (
+      userData &&
+      (userData.age == null ||
+        userData.height == null ||
+        userData.weight == null ||
+        userData.bmi == null ||
+        userData.status == null)
+    ) {
+      // If any field is empty, show an alert to inform the user
+      const alert = await this.alertController.create({
+        header: 'Warning!',
+        message: "Please input your kid's information first.",
+        buttons: ['OK'],
+        cssClass: 'warning-alert', // Apply warning color to the alert
+      });
+      await alert.present();
+      return;
+    }
+
+    console.log('User ID:', userId); // Log the userId here to verify it's correct
+    const modal = await this.modalController.create({
+      component: LoginPage,
+      componentProps: {
+        userId: userId,
+      },
+    });
+
+    await modal.present();
+  }
+
+  async openVaccineDetailsModal(userData: UserData) {
+    const modal = await this.modalController.create({
+      component: VaccineDetailsModalPage,
+      componentProps: {
+        userUID: userData.usersUID
+      },
+    });
+
+    await modal.present();
+  }
 }

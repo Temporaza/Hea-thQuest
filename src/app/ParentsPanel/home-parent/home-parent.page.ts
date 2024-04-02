@@ -44,7 +44,6 @@ export class HomeParentPage implements OnInit {
 
   usersData: UserData[] = [];
 
-  
 
   constructor(
     
@@ -63,7 +62,6 @@ export class HomeParentPage implements OnInit {
   
     await this.loadData();
     this.fetchParentName();
-    this.fetchAppointments()
     // Retrieve the checked state from Firestore
     this.authFire.authState.subscribe(user => {
       if (user) {
@@ -89,7 +87,6 @@ export class HomeParentPage implements OnInit {
       }
     });
   }
-
   async loadData() {
     const loading = await this.loadingController.create({
       message: 'Loading...',
@@ -209,94 +206,6 @@ export class HomeParentPage implements OnInit {
   
     await alert.present();
   }
-
-  private fetchAppointments() {
-    this.authFire.authState.subscribe(async (user) => {
-      if (user) {
-        const parentUID = user.uid;
-        const appointmentsCollection = this.firestore.collection(`parents/${parentUID}/appointments`);
-  
-        appointmentsCollection.snapshotChanges().subscribe((appointments: any[]) => {
-          this.appointments = appointments.map(appointment => ({
-            id: appointment.payload.doc.id,
-            ...appointment.payload.doc.data(),
-            status: appointment.payload.doc.data().status || 'Pending'
-          }));
-        });
-      }
-    });
-  }
-
-  async deleteAppointment(appointment: any) {
-    const alert = await this.alertController.create({
-      header: 'Confirm Deletion',
-      message: 'Dedelete mo?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-        },
-        {
-          text: 'Delete',
-          handler: async () => {
-            try {
-              const user = await this.authFire.currentUser;
-              if (!user) {
-                // Handle the case where the user is not authenticated
-                console.error('User not authenticated.');
-                return;
-              }
-          
-              const parentUID = user.uid;
-              const parentAppointmentDocRef = this.firestore.collection('parents').doc(parentUID).collection('appointments').doc(appointment.id);
-              const doctorUID = appointment.doctorUID;
-              const doctorAppointmentDocRef = this.firestore.collection('doctors').doc(doctorUID).collection('appointments').doc(appointment.id);
-          
-              // Use Firestore batch write for atomic operation
-              const batch = this.firestore.firestore.batch();
-              batch.delete(parentAppointmentDocRef.ref);
-              batch.delete(doctorAppointmentDocRef.ref);
-          
-              await batch.commit();
-          
-              // Update the appointments array in your component to reflect the changes
-              this.appointments = this.appointments.filter((a) => a.id !== appointment.id);
-          
-              // Show a success message
-              this.presentSuccessMessage('Appointment deleted successfully.');
-            } catch (error) {
-              console.error('Error deleting appointment:', error);
-              this.presentErrorMessage('Error deleting appointment');
-            }
-          },
-        },
-      ],
-    });
-  
-    await alert.present();
-  }
-  
-
-  private async presentSuccessMessage(message: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000,
-      position: 'top',
-      color: 'success',
-    });
-    await toast.present();
-  }
-
-  private async presentErrorMessage(message: string) {
-    const toast = await this.toastController.create({
-      message: `Error: ${message}`,
-      duration: 2000,
-      position: 'top',
-      color: 'danger',
-    });
-    await toast.present();
-  }
   
   async openTaskDoneModal(userData: UserData) {
     console.log('User Data Tasks:', userData.tasks);
@@ -314,7 +223,7 @@ export class HomeParentPage implements OnInit {
     return await modal.present();
   }
   
-  
+
 
   getConfirmedTasks(tasks: any[]): any[] {
     return tasks.filter((task) => task.status === 'Completed' && task.confirmed);

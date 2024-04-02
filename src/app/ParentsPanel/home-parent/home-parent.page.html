@@ -6,145 +6,54 @@
         <ion-icon color="custom" name="log-out" size="large"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <!-- <ion-title>{{ parentFullName }}'s Home</ion-title> -->
-  
-  <ion-item class="avatar" lines="start">
-    <ion-avatar>
-      <img src="https://www.shareicon.net/data/512x512/2017/02/15/878685_user_512x512.png">
-    </ion-avatar>
-    <ion-label>
-      <p>Hello,</p>
-      <h3>{{ parentFullName }}</h3>
-    </ion-label>
-  </ion-item>
-</ion-toolbar>
+
+    <!-- <ion-item class="avatar" lines="start">
+      <ion-avatar>
+        <img src="https://www.shareicon.net/data/512x512/2017/02/15/878685_user_512x512.png">
+      </ion-avatar>
+      <ion-label>
+        <h3>Hello {{ parentFullName }}</h3>
+      </ion-label>
+    </ion-item> -->
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
-  <!-- <ion-label class="greeting">Greetings {{ parentFullName }}!!!</ion-label> -->
-
-
-  
-  <div class="wholeBody">
-
-    <button class="navigation-button" (click)="navigateToEBook()">
-      <img src="assets/ebook/ebook.png" alt="EBook" class="ebook-icon" />
-      <p>E-BabyBook</p>
-      <p>(Premium)</p>
-    </button>
-
-      <div class="cardwImg1">
-      
-          <ion-card class="cardImg1">
-            <img alt="daily task" src="assets/Frame 2.png" />
-            <ion-card-header>
-              <ion-button routerLink="/kids-progress">
-              <ion-card-subtitle>Quest Pending</ion-card-subtitle>
-              </ion-button>
-            </ion-card-header>
-          </ion-card>
-    
-
-        <ion-card class="cardImg2">
-          <img alt="daily task" src="assets/image 4.png" />
-          <ion-card-header>
-            <ion-button routerLink="/consultation">
-            <ion-card-subtitle>Kids Progress</ion-card-subtitle>
-          </ion-button>
-          </ion-card-header>
-        </ion-card>
-      </div>
-
-      <div class="cardwImg2">
-        <ion-card class="cardImg3">
-          <img alt="daily task" src="assets/image 1.png" />
-          <ion-card-header>
-            <ion-button routerLink="/vaccination">
-            <ion-card-subtitle>Kids</ion-card-subtitle>
-            </ion-button>
-          </ion-card-header>
-        </ion-card>
-
-        <ion-card class="cardImg4">
-          <img alt="daily task" src="assets/image 2.png" />
-          <ion-card-header>
-            <ion-button routerLink="/parents-acitvity">
-            <ion-card-subtitle>Acitivity</ion-card-subtitle>
-          </ion-button>
-          </ion-card-header>
-        </ion-card>
-      </div>
-    </div>
-
-    <br>
-
-    <!-- <div *ngIf="appointments.length > 0">
-      <ion-card *ngFor="let appointment of appointments">
-        <ion-card-header>
-          <ion-card-title>Date: {{ appointment.date }}</ion-card-title>
-        </ion-card-header>
-  
-        <ion-card-content>
-          <ion-list>
-            <ion-item>
-              <ion-label>
-                <ion-label>Time: {{ appointment.time }}</ion-label>
-                <ion-label>Doctor: {{ appointment.doctorFullName }}</ion-label>
-                <ion-label>Parent: {{ appointment.parentFullName }}</ion-label>
-                <ion-label>Status: {{ appointment.status }}</ion-label>
-              </ion-label>
-              <ion-button color="danger" (click)="deleteAppointment(appointment)">
-                <ion-icon name="trash"></ion-icon>
-              </ion-button>
-            </ion-item>
-          </ion-list>
-        </ion-card-content>
-      </ion-card>
-    </div> -->
-    <div class="container">
-      <h2>List of Kids</h2>
-        <ion-card *ngFor="let userData of usersData" class="user-card">
-          <ion-card-header>
-            <ion-card-title>Name: {{ userData.fullname }}</ion-card-title>
-            <ion-card-subtitle>{{ userData.email }}</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-list>
-              <ion-item>
-                <ion-label>Email: {{ userData.email }}</ion-label>
-              </ion-item>
-              <!-- Display BMI history -->
-              <!-- <ion-item>
-                <ion-label>Age: {{ userData.age || 'N/A' }}</ion-label>
-              </ion-item>
-       -->
-              <!-- <ion-item>
-                <ion-label>Height: {{ userData.height || 'N/A' }}</ion-label>
-              </ion-item>
-        
-              <ion-item>
-                <ion-label>Weight: {{ userData.weight || 'N/A' }}</ion-label>
-              </ion-item>
-        
-              <ion-item lines="none">
-                <ion-label>BMI: {{ userData.bmi || 'N/A' }}</ion-label>
-              </ion-item> -->
-<!--         
-              <ion-item lines="none">
-                <ion-label>Status: {{ userData.status || 'N/A' }}</ion-label>
-              </ion-item> -->
-            </ion-list>
-
-            <!-- <ion-button expand="full" (click)="openBmiDiffModal()">
-              BMI Differences
-            </ion-button> -->
-            <ion-button expand="full" (click)="openTaskDoneModal(userData)">
-              Task's Done
-            </ion-button>
-          </ion-card-content>
-        </ion-card>
-      </div>
-
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <app-custom-navigation class="stick"></app-custom-navigation>
+      </ion-col>
+      <ion-col class="second" size="12" size-md="6">
+        <ion-col class="outputs" size="12" size-md="6">
+          <div class="board">
+            <img alt="daily task" src="assets/ebook/board.png" />
+          </div>
+          <div class="parent-container">
+            <div class="container">
+              <h1>List of Kids</h1>
+              <ul class="kids-list">
+                <li
+                  *ngFor="let userData of usersData; let i = index"
+                  class="kid-item"
+                >
+                  <div class="kid-details">
+                    <span>Kid {{ i + 1 }}. {{ userData.fullname }}</span>
+                    <!-- <span>Email: {{ userData.email }}</span> -->
+                  </div>
+                  <button
+                    style="color: black"
+                    ion-button
+                    (click)="openTaskDoneModal(userData)"
+                  >
+                    Tasks Done
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ion-col>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
-

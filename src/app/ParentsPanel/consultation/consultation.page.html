@@ -1,41 +1,44 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home-parent"></ion-back-button>
+      <ion-button routerLink="/home-parent">Dashboard</ion-button>
     </ion-buttons>
     <ion-title class="header-title">Kids Progress</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <!-- Display user data -->
-  <ion-list *ngIf="usersData.length > 0">
-    <ion-card *ngFor="let user of usersData">
-      <ion-card-header class="card-header">
-        <ion-card-title class="card-title">Name: {{ user.fullname }}</ion-card-title>
-      </ion-card-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <app-custom-navigation class="stick"></app-custom-navigation>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <div class="SuperParent">
+          <div class="parentConsult">
+            <ion-list *ngIf="usersData.length > 0">
+              <div class="childs" *ngFor="let user of usersData">
+                <ion-card-header class="card-header">
+                  <ion-card-title class="card-title"
+                    >Name: {{ user.fullname }}</ion-card-title
+                  >
+                </ion-card-header>
 
-      <div class="lineGraph">
-        <h1>BMI Progress Graph</h1>
-        <!-- Graph canvas within the card -->
-        <canvas [id]="'lineCanvas_' + user.uid" #lineCanvas></canvas>
-      </div>
-<!-- 
-      <div class="bmi-history-container">
-        <ion-list *ngIf="user.bmiHistory && user.bmiHistory.length > 0">
-          <ion-item *ngFor="let record of user.bmiHistory" class="bmi-record-item">
-            <ion-label class="record-label">Date: {{ record.date }}</ion-label>
-            <ion-text slot="end" class="record-bmi">BMI: {{ record.bmi }}</ion-text>
-          </ion-item>
-        </ion-list>
-      </div> -->
-
-        <!-- Pie Graph on the right -->
-      <div class="pie-graph-container">
-        <h1>Tasks Percentage</h1>
-        <canvas [id]="'pieCanvas_' + user.uid" #pieCanvas></canvas>
-      </div>
-  
-    </ion-card>
-  </ion-list>
+                <div class="lineGraph">
+                  <h1>BMI Progress Graph</h1>
+                  <!-- Graph canvas within the card -->
+                  <canvas [id]="'lineCanvas_' + user.uid" #lineCanvas></canvas>
+                </div>
+                <div class="pie-graph-container">
+                  <h1>Tasks Percentage</h1>
+                  <canvas [id]="'pieCanvas_' + user.uid" #pieCanvas></canvas>
+                </div>
+              </div>
+            </ion-list>
+          </div>
+        </div>
+      </ion-col>
+      <!-- Display user data -->
+    </ion-row>
+  </ion-grid>
 </ion-content>

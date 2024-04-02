@@ -1,86 +1,135 @@
 <ion-content [fullscreen]="true">
-  <div class="curved2">
-    <svg xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 1440 320">
-      <path fill="#FF9A4F" fill-opacity="1" d="M0,224L80,208C160,192,320,160,480,122.7C640,85,800,43,960,74.7C1120,107,1280,213,1360,266.7L1440,320L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
-    </svg>
-  </div>
-
-  <div class="logo-container">
-    <img class="logo" src="assets/icon/new.png" alt="Your Logo">
-  </div>
-  
-  <div class="header">
-    <h1 class="title">Create Account as Parent</h1>
-  </div>
-  
-  <form [formGroup]="regisForm" novalidate>
-    <div class="ion-padding">
-      <!-- Fullname -->
-      <ion-item>
-        <ion-input formControlName="fullname" placeholder="name" class="input"></ion-input>
-        <ion-icon name="person-outline"></ion-icon>
-      </ion-item>
-      <div *ngIf="this.regisForm.controls?.['fullname'].touched && this.regisForm.controls?.['fullname'].invalid">
-        <ion-text *ngIf="errorControl['fullname'].errors?.['required']" color="danger">
-          <ion-icon name="warning"></ion-icon>Fullname is required
-        </ion-text>
-      </div>
-
-      <!-- Gender -->
-      <ion-item>
-        <ion-input formControlName="gender" placeholder="gender" class="input"></ion-input>
-        <ion-icon name="person-outline"></ion-icon>
-      </ion-item>
-      <div *ngIf="this.regisForm.controls?.['gender'].touched && this.regisForm.controls?.['gender'].invalid">
-        <ion-text *ngIf="errorControl['gender'].errors?.['required']" color="danger">
-          <ion-icon name="warning"></ion-icon>Gender is required
-        </ion-text>
-      </div>
-
-      <!-- Email -->
-      <ion-item>
-        <ion-input formControlName="email" placeholder="email" class="input"></ion-input>
-        <ion-icon name="person-outline"></ion-icon>
-      </ion-item>
-      <div *ngIf="this.regisForm.controls?.['email'].touched && this.regisForm.controls?.['email'].invalid" >
-        <ion-text *ngIf="errorControl['email'].errors?.['required']" color="danger">
-          <ion-icon name="warning"></ion-icon>Email is required
-        </ion-text>
-        <ion-text *ngIf="errorControl['email'].errors?.['pattern']" color="danger">
-          <ion-icon name="warning"></ion-icon>Email should be valid
-        </ion-text>
-      </div>
-
-      <!-- Password -->
-      <ion-item>
-        <ion-input formControlName="password" placeholder="password" type="password" class="input"></ion-input>
-        <ion-icon name="lock-closed-outline"></ion-icon>
-      </ion-item>
-      <div *ngIf="this.regisForm.controls?.['password'].touched && this.regisForm.controls?.['password'].invalid" >
-        <ion-text *ngIf="errorControl['password'].errors?.['required']" color="danger">
-          <ion-icon name="warning"></ion-icon>Password is required
-        </ion-text>
-        <ion-text *ngIf="errorControl['password'].errors?.['pattern']" color="danger">
-          <ion-icon name="warning"></ion-icon>
-          Password must atleast have 
-          One Character
-          One Capital
-          One Number
-          Contain 8 digit
-        </ion-text>
-      </div>
-
-      <div class="signinLink">
-        <p>Already a Member?<a  style="color:#ffc33f" [routerLink]="['/parent-login']">Sign up Now</a></p>
-      </div>
+  <div class="container">
+    <div class="Logo">
+      <img class="logo" src="assets/newAssets/Likha.png" alt="Your Logo" />
+      <img class="logo" src="assets/icon/new.png" alt="Your Logo" />
+      <img class="circle" src="assets/newAssets/circle.png" alt="Your Logo" />
     </div>
-    <!-- <ion-fab vertical="bottom" horizontal="end" style="margin-bottom: 30px;">
-      <ion-fab-button (click)="signUp()">
-        <ion-icon name="chevron-forward"></ion-icon>
-      </ion-fab-button>
-    </ion-fab> -->
-    <button class="center-button" (click)="signUp()">
-      Sign In
-   </button>
-  </form>
+    <div class="form">
+      <div class="header">
+        <div class="header-parent">
+          <div class="parent">
+            <ion-icon name="person-outline" class="header-icon"></ion-icon>
+            <div class="header-text">Parents</div>
+          </div>
+        </div>
+        <h1 class="title">Signup</h1>
+      </div>
+
+      <form [formGroup]="regisForm" novalidate>
+        <div class="ion-padding">
+          <!-- Fullname -->
+          <ion-item>
+            <ion-input
+              formControlName="fullname"
+              placeholder="name"
+              class="input"
+            ></ion-input>
+            <ion-icon name="person-outline"></ion-icon>
+          </ion-item>
+          <div
+            *ngIf="this.regisForm.controls?.['fullname'].touched && this.regisForm.controls?.['fullname'].invalid"
+          >
+            <ion-text
+              *ngIf="errorControl['fullname'].errors?.['required']"
+              color="danger"
+            >
+              <ion-icon name="warning"></ion-icon>Fullname is required
+            </ion-text>
+          </div>
+
+          <!-- Gender -->
+          <ion-item>
+            <ion-input
+              formControlName="gender"
+              placeholder="gender"
+              class="input"
+            ></ion-input>
+            <ion-icon name="person-outline"></ion-icon>
+          </ion-item>
+          <div
+            *ngIf="this.regisForm.controls?.['gender'].touched && this.regisForm.controls?.['gender'].invalid"
+          >
+            <ion-text
+              *ngIf="errorControl['gender'].errors?.['required']"
+              color="danger"
+            >
+              <ion-icon name="warning"></ion-icon>Gender is required
+            </ion-text>
+          </div>
+
+          <!-- Email -->
+          <ion-item>
+            <ion-input
+              formControlName="email"
+              placeholder="email"
+              class="input"
+            ></ion-input>
+            <ion-icon name="person-outline"></ion-icon>
+          </ion-item>
+          <div
+            *ngIf="this.regisForm.controls?.['email'].touched && this.regisForm.controls?.['email'].invalid"
+          >
+            <ion-text
+              *ngIf="errorControl['email'].errors?.['required']"
+              color="danger"
+            >
+              <ion-icon name="warning"></ion-icon>Email is required
+            </ion-text>
+            <ion-text
+              *ngIf="errorControl['email'].errors?.['pattern']"
+              color="danger"
+            >
+              <ion-icon name="warning"></ion-icon>Email should be valid
+            </ion-text>
+          </div>
+
+          <!-- Password -->
+          <ion-item>
+            <ion-input
+              formControlName="password"
+              placeholder="password"
+              type="password"
+              class="input"
+            ></ion-input>
+            <ion-icon name="lock-closed-outline"></ion-icon>
+          </ion-item>
+          <div
+            *ngIf="this.regisForm.controls?.['password'].touched && this.regisForm.controls?.['password'].invalid"
+          >
+            <ion-text
+              *ngIf="errorControl['password'].errors?.['required']"
+              color="danger"
+            >
+              <ion-icon name="warning"></ion-icon>Password is required
+            </ion-text>
+            <ion-text
+              *ngIf="errorControl['password'].errors?.['pattern']"
+              color="danger"
+            >
+              <ion-icon name="warning"></ion-icon>
+              Password must atleast have One Character One Capital One Number
+              Contain 8 digit
+            </ion-text>
+          </div>
+
+          <div class="signinLink">
+            <p>
+              Already a Member?<a
+                style="color: #ffc33f"
+                [routerLink]="['/parent-login']"
+                >Sign In Now</a
+              >
+            </p>
+          </div>
+        </div>
+        <!-- <ion-fab vertical="bottom" horizontal="end" style="margin-bottom: 30px;">
+        <ion-fab-button (click)="signUp()">
+          <ion-icon name="chevron-forward"></ion-icon>
+        </ion-fab-button>
+      </ion-fab> -->
+        <button class="center-button" (click)="signUp()">Sign In</button>
+      </form>
+    </div>
+  </div>
 </ion-content>

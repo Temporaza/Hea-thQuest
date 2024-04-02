@@ -1,59 +1,82 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home-parent"></ion-back-button>
+      <ion-button routerLink="/home-parent">Dashboard</ion-button>
     </ion-buttons>
     <ion-title>parents-acitvity</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <app-custom-navigation></app-custom-navigation>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <div class="board">
+          <div class="Tasks-container">
+            <div class="Tasks">
+              <h1>List of Kids</h1>
+              <ion-item>
+                <ion-label position="stacked">Select Kids</ion-label>
+                <ion-select
+                  [(ngModel)]="selectedUserId"
+                  (ionChange)="onUserSelected(selectedUserId)"
+                >
+                  <ion-select-option
+                    *ngFor="let user of usersData"
+                    [value]="user.id"
+                    >{{ user.fullname }}</ion-select-option
+                  >
+                </ion-select>
+              </ion-item>
+              <!-- Display Selected User's Status -->
+              <div *ngIf="selectedUserId">
+                <h1>User Status</h1>
+                <h2>Status: {{ userStatus || 'N/A' }}</h2>
+              </div>
+
+              <ion-item *ngIf="userStatus">
+                <ion-label position="stacked">Select Exercise</ion-label>
+                <ion-select
+                  [(ngModel)]="selectedExercise"
+                  (ionChange)="onExerciseSelected(selectedExercise)"
+                >
+                  <ion-select-option
+                    *ngFor="let exercise of getExercisesForStatus(userStatus)"
+                    [value]="exercise"
+                    >{{ exercise }}</ion-select-option
+                  >
+                </ion-select>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="stacked">Other Tasks</ion-label>
+                <ion-input
+                  [(ngModel)]="otherTasks"
+                  placeholder="Enter other tasks"
+                ></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="stacked">Points</ion-label>
+                <ion-select [(ngModel)]="points">
+                  <ion-select-option value="50">50 points</ion-select-option>
+                  <ion-select-option value="100">100 points</ion-select-option>
+                </ion-select>
+              </ion-item>
+
+              <ion-button class="btn-tsk" (click)="createTask()"
+                >Create Task</ion-button
+              >
+            </div>
+          </div>
+          <!-- <img class="board1" alt="daily task" src="assets/ebook/board.png"/> -->
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <!-- Task Creation Form -->
-  <ion-card class="Tasks">
-    <ion-card-header>
-      <ion-card-title>Task Details</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item>
-        <ion-label position="stacked">Select User</ion-label>
-        <ion-select [(ngModel)]="selectedUserId" (ionChange)="onUserSelected(selectedUserId)">
-          <ion-select-option *ngFor="let user of usersData" [value]="user.id">{{ user.email }}</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <!-- Display Selected User's Status -->
-      <ion-card *ngIf="selectedUserId">
-        <ion-card-header>
-          <ion-card-title>User Status</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-label>Status: {{ userStatus || 'N/A' }}</ion-label>
-        </ion-card-content>
-      </ion-card>
-    
-      <ion-item *ngIf="userStatus">
-        <ion-label position="stacked">Select Exercise</ion-label>
-        <ion-select [(ngModel)]="selectedExercise" (ionChange)="onExerciseSelected(selectedExercise)">
-          <ion-select-option *ngFor="let exercise of getExercisesForStatus(userStatus)" [value]="exercise">{{ exercise }}</ion-select-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Other Tasks</ion-label>
-        <ion-input [(ngModel)]="otherTasks" placeholder="Enter other tasks"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Points</ion-label>
-        <ion-select [(ngModel)]="points">
-          <ion-select-option value="50">50 points</ion-select-option>
-          <ion-select-option value="100">100 points</ion-select-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-button expand="full" (click)="createTask()">Create Task</ion-button>
-    </ion-card-content>
-  </ion-card>
-
-
-
 </ion-content>

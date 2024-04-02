@@ -1,54 +1,35 @@
 <ion-content [fullscreen]="true" class="Body">
- 
-  <div class="rectangle-container">
- 
-    <div class="rectangle">
-
-      <!-- <div class="details"> -->
-        <!-- <a href="/login">
-          <h1>About Us</h1>
-        </a> -->
-        <!-- <a href="/admin-panel"> 
-          <h1>Admin</h1>
-        </a> -->
-     <!-- </div> -->
-      <div class="logo-container">
-        <img class="logo" src="assets/icon/new.png" alt="Your Logo">
-        <h1>FitQuest Junior</h1>
-      </div>
-
-      <div class="two">
-        <div class="box-kids">
-          <img class="pet" src="assets/icon/Normal.png" alt="pet">
-          <button (click)="navigateToLogin()">
-            <h1>Let's Play!!</h1>
-          </button>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="auto">
+        <div style="width: 150px">
+          <img
+            class="logoTop"
+            src="assets/newAssets/Likha.png"
+            alt="Your Logo"
+          />
         </div>
-        
-        <div class="box-parents">
-          <button (click)="navigateToParentLogin()">
-            <h1>Parent's Panel</h1>
-          </button>
-        </div>
-      </div>
-
-    </div>
-
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+  <div
+    class="Logo"
+    onclick="window.location.href='https://fitquest-junior-website.web.app/';"
+  >
+    <img class="logo" src="assets/icon/new.png" alt="Your Logo" />
   </div>
-
- 
-</ion-content>
-
-<!-- <div [routerLink]="['/parent-login']">
-  <ion-button class="btn-parent" color="dark" >Parents Login</ion-button>
-</div>
-<div [routerLink]="['/login']">
-  <ion-button class="btn-kid" color="dark" >Kids Login</ion-button>
-</div> -->
-
-
-   <!-- <div class="footer">
-    <p>&copy; 2023 fitQuest. All rights reserved.</p>
-    <p>Email: fitQuest@gmail.com Contact#: 09810391315</p>
+  <!-- <div class="family">
+    <img class="fam" src="assets/newAssets/family.png" alt="Your Logo" />
   </div> -->
 
+  <div class="parent">
+    <div class="box-parents">
+      <ion-buttons>
+        <ion-button (click)="navigateToParentLogin()">
+          Parents Login
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </div>
+</ion-content>

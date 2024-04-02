@@ -11,59 +11,73 @@
   <!-- Display vaccine details using baby data -->
   <ion-card>
     <ion-card-header>
-      <ion-card-title>{{ baby.name }}'s Vaccine Details</ion-card-title>
+      <ion-card-title>Vaccine Details</ion-card-title>
     </ion-card-header>
-    
-    <ion-card-content>
 
+    <ion-card-content id="vaccineDetailsContent">
       <ion-item>
         <ion-label>BCG</ion-label>
-        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine1"></ion-checkbox>
-        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine1" slot="end"></ion-input>
+        <ion-checkbox [(ngModel)]="vaccines.BCG"></ion-checkbox>
+        <ion-button slot="end" (click)="openVaccineDetailsModal('BCG')"
+          >Details</ion-button
+        >
       </ion-item>
-      
+
       <ion-item>
         <ion-label>Hepatitis B</ion-label>
-        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine2"></ion-checkbox>
-        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine2" slot="end"></ion-input>
+        <ion-checkbox [(ngModel)]="vaccines['Hepatitis B']"></ion-checkbox>
+        <ion-button slot="end" (click)="openVaccineDetailsModal('Hepatitis B')"
+          >Details</ion-button
+        >
       </ion-item>
-      
+
       <ion-item>
         <ion-label>DPT/TdaP/Td</ion-label>
-        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine3"></ion-checkbox>
-        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine3" slot="end"></ion-input>
+        <ion-checkbox [(ngModel)]="vaccines['DPT/TdaP/Td']"></ion-checkbox>
+        <ion-button slot="end" (click)="openVaccineDetailsModal('DPT/TdaP/Td')"
+          >Details</ion-button
+        >
       </ion-item>
-      
+
       <ion-item>
         <ion-label>IPV</ion-label>
-        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine4"></ion-checkbox>
-        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine4" slot="end"></ion-input>
+        <ion-checkbox [(ngModel)]="vaccines.IPV"></ion-checkbox>
+        <ion-button slot="end" (click)="openVaccineDetailsModal('IPV')"
+          >Details</ion-button
+        >
       </ion-item>
 
       <ion-item>
         <ion-label>HiB</ion-label>
-        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine5"></ion-checkbox>
-        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine5" slot="end"></ion-input>
+        <ion-checkbox [(ngModel)]="vaccines.HiB"></ion-checkbox>
+        <ion-button slot="end" (click)="openVaccineDetailsModal('HiB')"
+          >Details</ion-button
+        >
       </ion-item>
 
       <ion-item>
         <ion-label>PCV</ion-label>
-        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine6"></ion-checkbox>
-        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine6" slot="end"></ion-input>
+        <ion-checkbox [(ngModel)]="vaccines.PCV"></ion-checkbox>
+        <ion-button slot="end" (click)="openVaccineDetailsModal('PCV')"
+          >Details</ion-button
+        >
       </ion-item>
 
       <ion-item>
         <ion-label>Measles/MMR</ion-label>
-        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine7"></ion-checkbox>
-        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine7" slot="end"></ion-input>
+        <ion-checkbox [(ngModel)]="vaccines['Measles/MMR']"></ion-checkbox>
+        <ion-button slot="end" (click)="openVaccineDetailsModal('Measles/MMR')"
+          >Details</ion-button
+        >
       </ion-item>
 
       <ion-item>
         <ion-label>Varicella</ion-label>
-        <ion-checkbox [(ngModel)]="baby.vaccines.vaccine8"></ion-checkbox>
-        <ion-input type="date" [(ngModel)]="baby.vaccineDates.vaccine8" slot="end"></ion-input>
+        <ion-checkbox [(ngModel)]="vaccines.Varicella"></ion-checkbox>
+        <ion-button slot="end" (click)="openVaccineDetailsModal('Varicella')"
+          >Details</ion-button
+        >
       </ion-item>
-      
     </ion-card-content>
   </ion-card>
 </ion-content>
@@ -72,15 +86,15 @@
   <div class="foot-btn">
     <ion-row>
       <ion-col class="save" size="auto">
-        <ion-button  color="secondary" (click)="save()">
+        <ion-button color="secondary" (click)="saveVaccines()">
           Save
         </ion-button>
       </ion-col>
-      <ion-col class="reg" size="auto">
+      <!-- <ion-col class="reg" size="auto">
         <ion-button color="success" (click)="navigateToSignup()" [disabled]="!isAllVaccinesChecked()">
           Register Now <ion-icon name="lock-open-outline"></ion-icon>
         </ion-button>
-      </ion-col>
+      </ion-col> -->
     </ion-row>
   </div>
 </ion-footer>

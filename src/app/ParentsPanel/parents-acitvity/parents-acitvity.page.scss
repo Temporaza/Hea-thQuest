@@ -1,75 +1,80 @@
 .activity-card {
-    background-color: #fff; /* Card background color */
-    border-radius: 10px; /* Rounded corners */
-    margin-bottom: 10px; /* Margin between cards */
-    
-  }
-  ion-content{
-    --background: #003366;
-   }
-
-  *{
-    font-family: 'Patrick Hand SC';
-  }
-  
-  ion-toolbar{
-    --background: #ff8200;
+  background-color: #fff; /* Card background color */
+  border-radius: 10px; /* Rounded corners */
+  margin-bottom: 10px; /* Margin between cards */
+}
+ion-content {
+  --background: url("/assets/ebook/bg.png") center/cover no-repeat;
+  height: 100vh;
+}
+* {
+  font-family: "Patrick Hand SC";
 }
 
-  .activity-title {
-    font-size: 18px; /* Title font size */
-    font-weight: bold; /* Bold text */
-  }
-  
-  .activity-content {
-    padding: 10px; /* Padding inside the card content */
-  }
-  
-  .star-icon {
-    width: 32px; /* Adjust the star icon size */
-    height: 32px;
-  }
-  
-  .points-label {
-    font-size: 14px; /* Points label font size */
-  }
-  
-  .icon-button {
-    font-size: 24px; /* Edit and Delete icon size */
-    color: #3498db; /* Icon color */
-  }
+ion-title {
+  text-align: center;
+  font-family: "IntegralCF-Bold";
+}
 
-  // ion-card {
-  //   max-width: 400px; /* Set a maximum width for the card */
-  //   width: 100%; /* Make the card take 100% width initially */
+.activity-title {
+  font-size: 18px; /* Title font size */
+  font-weight: bold; /* Bold text */
+}
 
-  // }
-  
-  ion-card-content {
-    padding: 10px;
-  }
-  
-  ion-card-title {
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  ion-item {
-    margin-bottom: 10px; /* Optional: Add margin between items inside the card */
-  }
-  
-  ion-button {
-    width: 100%;
-  }
+.activity-content {
+  padding: 10px; /* Padding inside the card content */
+}
 
-  @media (min-width: 680px) {
-    ion-card {
-      max-width: 500px; /* Set a maximum width for the card */
-      width: 100%; /* Make the card take 100% width initially */
-    }
-    .Tasks{
-      margin-left: 80vh;
-      margin-top: 10vh;
-    }
-    
- }
+.star-icon {
+  width: 32px; /* Adjust the star icon size */
+  height: 32px;
+}
+
+.points-label {
+  font-size: 14px; /* Points label font size */
+}
+
+.icon-button {
+  font-size: 24px; /* Edit and Delete icon size */
+  color: #3498db; /* Icon color */
+}
+
+ion-card-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+ion-item {
+  margin-bottom: 10px; /* Optional: Add margin between items inside the card */
+}
+
+.board {
+  display: flex;
+  justify-content: center;
+}
+
+.Tasks-container {
+  font-family: "IntegralCF-Bold";
+  background-color: white;
+  height: auto;
+  border-radius: 20px;
+  border: #0080ff 15px solid;
+  width: 65vh;
+  margin-top: 10vh;
+  padding-left: 10px;
+}
+
+.btn-task {
+  margin: 10px auto;
+}
+
+.Tasks {
+  h1 {
+    font-family: "IntegralCF-Bold";
+    text-align: center;
+  }
+  h2 {
+    text-align: center;
+  }
+  text-align: center;
+}

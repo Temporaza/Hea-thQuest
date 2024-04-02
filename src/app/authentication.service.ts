@@ -4,41 +4,43 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 
-
-
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthenticationService {
-
   constructor(
     public ngFireAuth: AngularFireAuth,
     private firestore: AngularFirestore
-    ) { }
+  ) {}
 
-    async isAuthenticated(): Promise<boolean> {
-      const user = await this.ngFireAuth.currentUser;
-      return !!user;
-    }
+  async isAuthenticated(): Promise<boolean> {
+    const user = await this.ngFireAuth.currentUser;
+    return !!user;
+  }
 
-  async registerUser(email: string, password:string, fullname:string, parentEmail?: string){
+  async registerUser(
+    email: string,
+    password: string,
+    fullname: string,
+    parentEmail?: string
+  ) {
     // return await this.ngFireAuth.createUserWithEmailAndPassword(email, password)
-    try{
-      const userCredential = await this.ngFireAuth.createUserWithEmailAndPassword(email, password)
+    try {
+      const userCredential =
+        await this.ngFireAuth.createUserWithEmailAndPassword(email, password);
       const user = userCredential.user;
 
       const userData = {
         email: user.email,
         fullname: fullname,
         role: 'user',
-        usersUID: user.uid,// Assign the 'doctor' role
+        usersUID: user.uid, // Assign the 'doctor' role
         petHealth: 100,
-      }
+      };
 
       await this.addUserDataToFirestore(user.uid, userData);
 
-       // If a parent email is provided, link the user to the parent
+      // If a parent email is provided, link the user to the parent
       if (parentEmail) {
         const parentUID = await this.getParentUIDByEmail(parentEmail);
         if (parentUID) {
@@ -50,12 +52,15 @@ export class AuthenticationService {
     } catch (error) {
       console.error('Error registering user:', error);
       throw error;
-      }
+    }
   }
 
   async getParentUIDByEmail(parentEmail: string): Promise<string | null> {
     try {
-      const snapshot = await this.firestore.collection('parents', ref => ref.where('email', '==', parentEmail)).get().toPromise();
+      const snapshot = await this.firestore
+        .collection('parents', (ref) => ref.where('email', '==', parentEmail))
+        .get()
+        .toPromise();
       if (!snapshot.empty) {
         return snapshot.docs[0].id;
       }
@@ -101,56 +106,72 @@ export class AuthenticationService {
     }
   }
 
-   //check doctor's role
-   async checkUserRole(userId: string): Promise<string | null> {
-    const userDoc = await this.firestore.collection('users').doc(userId).get().toPromise();
-  
+  //check doctor's role
+  async checkUserRole(userId: string): Promise<string | null> {
+    const userDoc = await this.firestore
+      .collection('users')
+      .doc(userId)
+      .get()
+      .toPromise();
+
     if (userDoc.exists) {
       return 'user';
     }
-  
-    const doctorDoc = await this.firestore.collection('doctors').doc(userId).get().toPromise();
+
+    const doctorDoc = await this.firestore
+      .collection('doctors')
+      .doc(userId)
+      .get()
+      .toPromise();
     if (doctorDoc.exists) {
       return 'doctor';
     }
-  
-    const parentDoc = await this.firestore.collection('parents').doc(userId).get().toPromise();
+
+    const parentDoc = await this.firestore
+      .collection('parents')
+      .doc(userId)
+      .get()
+      .toPromise();
     if (parentDoc.exists) {
       return 'parent';
     }
-  
+
     return null; // User does not exist in either role
   }
 
   async loginUser(email: string, password: string) {
-    return await this.ngFireAuth.signInWithEmailAndPassword(email,password)
+    return await this.ngFireAuth.signInWithEmailAndPassword(email, password);
   }
 
-  async resetPassword(email:string){
-    return await this.ngFireAuth.sendPasswordResetEmail(email)
+  async resetPassword(email: string) {
+    return await this.ngFireAuth.sendPasswordResetEmail(email);
   }
 
-  async signOut(){
-    return await this.ngFireAuth.signOut()
+  async signOut() {
+    return await this.ngFireAuth.signOut();
   }
 
-  async getProfile(){
-    return await this.ngFireAuth.currentUser
+  async getProfile() {
+    return await this.ngFireAuth.currentUser;
   }
 
   //fetching the fullname and display
   async getUserDataByUid(uid: string) {
     try {
-      const userDoc = await this.firestore.collection('users').doc(uid).get().toPromise();
+      const userDoc = await this.firestore
+        .collection('users')
+        .doc(uid)
+        .get()
+        .toPromise();
       if (userDoc.exists) {
-        return userDoc.data()
-      } else{
-        throw new Error('User data not found.')
+        return userDoc.data();
+      } else {
+        throw new Error('User data not found.');
       }
-    }catch (error) {
+    } catch (error) {
       console.error('Error fetching user data:', error);
       throw error;
-    } 
+    }
   }
 
   async getCurrentUser() {
@@ -163,6 +184,20 @@ export class AuthenticationService {
       }
     } catch (error) {
       console.error('Error fetching current user:', error);
+      throw error;
+    }
+  }
+
+  async checkUserIdExists(userId: string): Promise<boolean> {
+    try {
+      const userDoc = await this.firestore
+        .collection('users')
+        .doc(userId)
+        .get()
+        .toPromise();
+      return userDoc.exists;
+    } catch (error) {
+      console.error('Error checking if user exists:', error);
       throw error;
     }
   }

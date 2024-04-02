@@ -3,8 +3,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/authentication.service';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument,
+} from '@angular/fire/compat/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
+interface ParentData {
+  email: string;
+  // Define other fields if needed
+}
 
 @Component({
   selector: 'app-signup',
@@ -12,93 +20,147 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit {
-
-  regForm : FormGroup;
+  regForm: FormGroup;
+  parentUID: string;
+  parentEmail: string;
 
   constructor(
-    public formBuilder: FormBuilder, 
-    public loadingCtrl: LoadingController, 
+    public formBuilder: FormBuilder,
+    public loadingCtrl: LoadingController,
     public authService: AuthenticationService,
     public router: Router,
     private firestore: AngularFirestore,
-    private alertController: AlertController,  // Add this line
-  ) { }
-
- 
+    private alertController: AlertController,
+    private afAuth: AngularFireAuth
+  ) {}
 
   ngOnInit() {
+    this.afAuth.authState.subscribe(async (user) => {
+      if (user) {
+        this.parentUID = user.uid; // Set parentUID when user is authenticated
+        console.log('Parent UID:', this.parentUID);
+
+        // Get parent's email from Firestore using parentUID
+        const parentEmail = await this.getParentEmailByUID(user.uid);
+        if (parentEmail) {
+          // Set parent's email to the form control
+          this.regForm.patchValue({
+            parentEmail: parentEmail,
+          });
+        } else {
+          console.log('Parent email not found');
+        }
+      } else {
+        console.log('Parent UID not recognized');
+      }
+    });
+
     this.regForm = this.formBuilder.group({
       fullname: ['', [Validators.required]],
-      email: ['', [
-        Validators.required,
-        Validators.email,
-        Validators.pattern("[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"),
-
-      ]],
-      password: ['',[
-      // Validators.required,
-      // Validators.pattern("(?=.*\d)(?=.*[a-z])(?=.*[0-8])(?=.*[A-Z]).{8,}")
-      ]],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('[a-zA-Z0-9._%+-]+'),
+          // Validators.email,
+          // Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$'),
+        ],
+      ],
+      password: [
+        '',
+        [
+          // Validators.required,
+          // Validators.pattern("(?=.*\d)(?=.*[a-z])(?=.*[0-8])(?=.*[A-Z]).{8,}")
+        ],
+      ],
       parentEmail: ['', [Validators.required, Validators.email]],
-    })
+    });
   }
-  get errorControl(){
+
+  async getParentEmailByUID(parentUID: string): Promise<string | null> {
+    try {
+      const parentDoc = await this.firestore
+        .collection('parents')
+        .doc(parentUID)
+        .get()
+        .toPromise();
+      if (parentDoc.exists) {
+        const parentData = parentDoc.data() as ParentData;
+        return parentData.email;
+      } else {
+        console.log('Parent document not found for UID:', parentUID);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching parent email:', error);
+      return null;
+    }
+  }
+
+  get errorControl() {
     return this.regForm?.controls;
   }
 
   async signUp() {
-  const loading = await this.loadingCtrl.create();
-  await loading.present();
+    const loading = await this.loadingCtrl.create();
+    await loading.present();
 
-  if (this.regForm?.valid) {
-    const parentEmail = this.regForm.value.parentEmail;
+    if (this.regForm?.valid) {
+      const parentEmail = this.regForm.value.parentEmail;
+      const userEmail = `${this.regForm.value.email}@gmail.com`;
+      const fullname = this.regForm.value.fullname;
+      const password = this.regForm.value.password;
 
-    // Check if the parent's email exists in the parents' collection
-    const parentUID = await this.getParentUIDByEmail(parentEmail);
+      await this.authService
+        .registerUser(userEmail, password, fullname, parentEmail)
+        .then(async (user) => {
+          const parentUID = await this.getParentUIDByEmail(parentEmail);
 
-    if (!parentUID) {
-      // Parent's email not found, display an error message
-      loading.dismiss();
-      console.log('Parent not found for email:', parentEmail);
-      this.presentErrorAlert('Error', 'Parent Email does not exists.');
-      // Add your logic to display an error message to the user, e.g., using a toast or an alert
-      return;
+          if (!parentUID) {
+            loading.dismiss();
+            console.log('Parent not found for email:', parentEmail);
+            this.presentErrorAlert('Error', 'Parent Email does not exist.');
+            return;
+          }
+
+          await this.saveUserToParent(parentUID, user);
+
+          loading.dismiss();
+          this.clearFormFields();
+          this.router.navigate(['/home']);
+          // this.presentSuccessAlert('Success', 'Registration successful!');
+        })
+        .catch((error) => {
+          console.log(error);
+          loading.dismiss();
+          this.presentErrorAlert(
+            'Error',
+            'An error occurred during registration. Please try again.'
+          );
+        });
     }
+  }
 
-    const user = await this.authService.registerUser(
-      this.regForm.value.email, 
-      this.regForm.value.password,
-      this.regForm.value.fullname,
-      parentEmail
-    ).catch((error) => {
-      console.log(error);
-      loading.dismiss();
+  async presentSuccessAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK'],
     });
+    await alert.present();
+  }
 
-    if (user) {
-      // Save the new user information to the parent's UID
-      await this.saveUserToParent(parentUID, user);
-
-      loading.dismiss();
-      this.clearFormFields();
-      this.router.navigate(['/home']);
-    } else {
-      console.log('Provide correct values');
+  async getParentUIDByEmail(parentEmail: string): Promise<string | null> {
+    try {
+      // Call the method from AuthenticationService or wherever it's defined
+      const parentUID = await this.authService.getParentUIDByEmail(parentEmail);
+      return parentUID;
+    } catch (error) {
+      // Show error pop-up
+      this.presentErrorAlert('Error', 'An error occurred. Please try again.');
+      return null;
     }
   }
-}
-
-async getParentUIDByEmail(parentEmail: string): Promise<string | null> {
-  try {
-    // Call the method from AuthenticationService or wherever it's defined
-    const parentUID = await this.authService.getParentUIDByEmail(parentEmail);
-    return parentUID;
-  } catch (error) {
-    // Show error pop-up
-    this.presentErrorAlert('Error', 'An error occurred. Please try again.');
-    return null;
-  }
-}
 
   // Helper method to present error alert
   async presentErrorAlert(header: string, message: string) {
@@ -111,28 +173,31 @@ async getParentUIDByEmail(parentEmail: string): Promise<string | null> {
     await alert.present();
   }
 
-
   // Method to save user information to parent's UID
   async saveUserToParent(parentUID: string, user: any) {
     try {
       // Create a reference to the user document in the 'users' collection
       const userDocRef = this.firestore.collection('users').doc(user.uid);
-  
+
       // Get the user document data
       const userDataSnapshot = await userDocRef.get().toPromise();
-  
+
       // Check if the user document exists
       if (userDataSnapshot.exists) {
         // Get the user data
         const userData = userDataSnapshot.data();
-  
+
         // Create a reference to the 'users' subcollection under the parent
-        const parentUserCollectionRef = this.firestore.collection(`parents/${parentUID}/users`);
-  
+        const parentUserCollectionRef = this.firestore.collection(
+          `parents/${parentUID}/users`
+        );
+
         // Save the user data to the 'users' subcollection under the parent
         await parentUserCollectionRef.doc(user.uid).set(userData);
       } else {
-        console.error('Error updating parent document: User document does not exist');
+        console.error(
+          'Error updating parent document: User document does not exist'
+        );
         // Handle the error appropriately
         throw new Error('User document does not exist');
       }
@@ -141,11 +206,12 @@ async getParentUIDByEmail(parentEmail: string): Promise<string | null> {
       throw error;
     }
   }
-  
-  
-  
 
-  clearFormFields(){
+  clearFormFields() {
     this.regForm.reset();
+  }
+
+  navigateToVaccinationPage() {
+    this.router.navigate(['/vaccination']); // Navigate to the vaccination page
   }
 }
