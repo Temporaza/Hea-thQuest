@@ -46,16 +46,26 @@ ion-content {
   margin: 30px 10px;
   border-radius: 10px;
   background: #f1eedc;
-  box-shadow: 10px 14px 22px -9px rgba(0, 0, 0, 0.71);
+  box-shadow: 10px 9px 21px -10px rgba(0, 0, 0, 0.78);
+  transition: all 0.3s ease;
+}
+
+.lineGraph:hover {
+  transform: scale(1.02);
+  box-shadow: 10px 9px 37px -5px rgba(0, 0, 0, 0.83);
 }
 
 .pie-graph-container {
-  text-align: center;
-  font-weight: bold;
   margin: 30px 10px;
   border-radius: 10px;
   background: #f1eedc;
-  box-shadow: 10px 14px 22px -9px rgba(0, 0, 0, 0.71);
+  box-shadow: 10px 9px 21px -10px rgba(0, 0, 0, 0.78);
+  transition: all 0.3s ease;
+}
+
+.pie-graph-container:hover {
+  transform: scale(1.02);
+  box-shadow: 10px 9px 37px -5px rgba(0, 0, 0, 0.83);
 }
 
 .SuperParent {
@@ -82,3 +92,41 @@ ion-content {
   text-align: center;
   font-family: "IntegralCF-Bold";
 }
+
+.pie-graph{
+  width: 200px;
+}
+
+.task-table{
+  margin: 0 auto;
+}
+.task-table th,
+.task-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-center {
+  text-align: center;
+}
+
+@media only screen and (min-width: 550px) {
+  .pie-graph-container {
+     
+      display: flex;
+      align-items: center;
+    }
+}
+
+@media only screen and (max-width: 549px) {
+  .pie-graph {
+      width: 300px;
+      margin: 0 auto;
+    }
+}
+

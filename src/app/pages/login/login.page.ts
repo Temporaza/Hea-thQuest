@@ -48,7 +48,7 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.userId = this.navParams.get('userId');
-    console.log('User ID when navigate in this page:', this.userId);
+    console.log('Parent UID:', this.userId);
     this.loginForm = this.formBuilder.group({
       email: [
         '',

@@ -28,10 +28,33 @@
                   <h1>BMI Progress Graph</h1>
                   <!-- Graph canvas within the card -->
                   <canvas [id]="'lineCanvas_' + user.uid" #lineCanvas></canvas>
+             
                 </div>
                 <div class="pie-graph-container">
-                  <h1>Tasks Percentage</h1>
-                  <canvas [id]="'pieCanvas_' + user.uid" #pieCanvas></canvas>
+                  <div class="pie-graph">
+                    <h1 style="text-align: center;">Tasks Percentage</h1>
+                    <canvas [id]="'pieCanvas_' + user.uid" #pieCanvas></canvas>
+                  </div>
+
+                  <div class="task-details">
+                    <table class="task-table">
+                      <thead>
+                        <tr>
+                          <th class="align-left">Description</th>
+                          <th class="align-center">Count</th>
+                          <th class="align-center">Percent</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let task of taskData">
+                          <td class="align-left">{{ task.description }}</td>
+                          <td class="align-center">{{ task.count }}</td>
+                          <td class="align-center">{{ task.percentage }}%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
                 </div>
               </div>
             </ion-list>

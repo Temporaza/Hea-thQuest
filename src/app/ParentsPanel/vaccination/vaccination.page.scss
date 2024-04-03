@@ -44,6 +44,7 @@ ion-card-title {
   border-radius: 20px;
   border: #0080ff 15px solid;
   margin-top: 10vh;
+    width: 65vh;
 }
 
 @media (min-width: 700px) {
@@ -87,3 +88,9 @@ ion-card-footer {
   align-items: center;
   margin: 20px;
 }
+
+.parent{
+  display: flex;
+  justify-content: center;
+}
+

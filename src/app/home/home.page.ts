@@ -247,7 +247,7 @@ export class HomePage {
   //End of fetching
 
   async logout() {
-    // Pause the background music before logging out
+
     this.pauseBackgroundMusic();
 
     const alert = await this.alertControler.create({
@@ -276,14 +276,14 @@ export class HomePage {
 
               if (!isAuthenticated) {
                 // After logging out, navigate to the login page and clear history
-                this.route.navigate(['/landing'], { replaceUrl: true });
+                this.route.navigate(['/vaccination'], { replaceUrl: true });
 
                 // Log the message when the user is not authenticated
                 console.log('User is not authenticated.');
               }
             } catch (error) {
               console.error('Error logging out:', error);
-              // Handle any logout error, if needed
+              
             }
           },
         },

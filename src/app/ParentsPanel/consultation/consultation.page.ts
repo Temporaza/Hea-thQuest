@@ -36,8 +36,9 @@ interface Task {
 })
 export class ConsultationPage implements OnInit, AfterViewInit {
   parentUID: string;
-  usersData: any[] = []; // Array to store user data
+  usersData: any[] = []; 
   tasksDone$: Observable<Task[]>;
+  taskData: { description: string; count: number; percentage: number }[] = [];
 
   @ViewChildren('lineCanvas') lineCanvases: QueryList<ElementRef>;
   @ViewChildren('pieCanvas', { read: ElementRef })
@@ -49,16 +50,16 @@ export class ConsultationPage implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    // Get the currently authenticated user
+
     this.authFire.authState.subscribe((user) => {
       if (user) {
-        // Set the parent UID to the user's UID
+       
         this.parentUID = user.uid;
 
-        // Call the function to fetch user data
+     
         this.fetchUserData();
 
-        // Call the function to create the line graph after the view has been initialized
+      
         this.createLineGraphs();
       }
     });
@@ -119,19 +120,29 @@ export class ConsultationPage implements OnInit, AfterViewInit {
                 label: 'BMI Progress',
                 data: bmiData,
                 fill: true,
-                backgroundColor: 'rgb(90, 113, 149, 0.6)', // Fill color with opacity
-                borderColor: 'rgb(212, 144, 67)', // Line color
+                backgroundColor: 'rgb(206, 218, 227, 0.6)', // Fill color with opacity
+                borderColor: 'rgb(75, 192, 192)', // Line color
                 borderWidth: 3,
                 tension: 0.4,
-                pointRadius: 5,
-                pointBackgroundColor: 'rgb(212, 144, 67)', // Point color
-                pointBorderColor: 'rgb(212, 144, 67)', // Point border color
+                pointRadius: 8,
+                pointHoverRadius: 12,
+                pointBackgroundColor: 'rgb(68, 147, 201)', // Point color
+                pointBorderColor: 'rgb(68, 147, 201)', // Point border color
                 pointBorderWidth: 2, // Point border width
               },
             ],
           };
 
           const options: any = {
+            animations: {
+              tension: {
+                duration: 1000,
+                easing: 'linear',
+                from: 1,
+                to: 0,
+                loop: true
+              }
+            },
             scales: {
               x: {
                 type: 'category',
@@ -209,7 +220,7 @@ export class ConsultationPage implements OnInit, AfterViewInit {
         try {
           const uid = canvasRef.nativeElement.id.split('_')[1];
 
-          // Fetch tasks for the specific user using the usersUID
+         
           this.firestore
             .collection(`parents/${this.parentUID}/tasks`)
             .snapshotChanges()
@@ -223,13 +234,13 @@ export class ConsultationPage implements OnInit, AfterViewInit {
               })
             )
             .subscribe((tasks) => {
-              // Filter tasks based on userId matching userUID
+           
               const filteredTasks = tasks.filter((task) => task.userId === uid);
 
-              // Create a map to store task counts
+        
               const taskCounts = new Map<string, number>();
 
-              // Count occurrences of each task
+              
               filteredTasks.forEach((task) => {
                 const description = task.description;
                 taskCounts.set(
@@ -243,9 +254,17 @@ export class ConsultationPage implements OnInit, AfterViewInit {
                 0
               );
 
-              // Calculate the percentage for each task and limit to two decimal places
+             
               const percentageData = Array.from(taskCounts.values()).map(
                 (count) => parseFloat(((count / totalCount) * 100).toFixed(2))
+              );
+
+              this.taskData = Array.from(taskCounts.keys()).map(
+                (description, index) => ({
+                  description,
+                  count: taskCounts.get(description) || 0,
+                  percentage: percentageData[index],
+                })
               );
 
               const data = {
@@ -268,11 +287,14 @@ export class ConsultationPage implements OnInit, AfterViewInit {
               };
 
               const options: any = {
+                borderWidth: 10,
+                borderRadius: 2,
+                hoverBorderWidth: 0,
                 plugins: {
                   legend: {
-                    display: true,
+                    display: false,
                     position: 'top',
-                    align: 'start', // Align legend items to the start (left)
+                    align: 'start',
                     labels: {
                       textAlign: 'start', // Align legend text to the start (left)
                       generateLabels: function (chart: any) {
@@ -311,13 +333,13 @@ export class ConsultationPage implements OnInit, AfterViewInit {
                     right: 20, // Adjust the right padding of the legend container
                   },
                 },
-                legend: {
-                  labels: {
-                    boxWidth: 20, // Width of each legend item
-                    boxHeight: 50, // Height of each legend item
-                    padding: 10, // Padding between legend items
-                  },
-                },
+                // legend: {
+                //   labels: {
+                //     boxWidth: 20, // Width of each legend item
+                //     boxHeight: 50, // Height of each legend item
+                //     padding: 10, // Padding between legend items
+                //   },
+                // },
               };
 
               const ctx = canvasRef.nativeElement.getContext('2d');

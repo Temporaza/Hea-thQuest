@@ -138,53 +138,6 @@ export class VaccinationPage implements OnInit {
     }
   }
 
-  // async showVaccineDetailsModal(userData: UserData) {
-  //   console.log('Full Name:', userData.fullname);
-
-  //   try {
-  //     // Get the UID of the currently logged-in parent
-  //     const parentUID = await this.authService.getCurrentParentUID();
-
-  //     // Check if parentUID is available
-  //     if (!parentUID) {
-  //       console.error('Parent UID not available.');
-  //       return;
-  //     }
-
-  //     // Get the reference to the users collection under the currently logged-in parent
-  //     const usersCollection = this.firestore
-  //       .collection('parents')
-  //       .doc(parentUID)
-  //       .collection('users');
-
-  //     // Query Firestore to get the usersUID based on fullname
-  //     const querySnapshot = await usersCollection.ref
-  //       .where('fullname', '==', userData.fullname)
-  //       .get();
-
-  //     if (!querySnapshot.empty) {
-  //       // Assuming there's only one match, use the first document
-  //       const userDoc = querySnapshot.docs[0];
-  //       const usersUID = userDoc.id;
-  //       console.log('UsersUID:', usersUID);
-
-  //       // Now you can pass usersUID to the modal
-  //       const modal = await this.modalController.create({
-  //         component: VaccineDetailsModalPage,
-  //         componentProps: {
-  //           userData: { ...userData, usersUID },
-  //         },
-  //       });
-
-  //       await modal.present();
-  //     } else {
-  //       console.error('No matching user found for fullname:', userData.fullname);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error querying Firestore:', error);
-  //   }
-  // }
-
   async openCalendarModal() {
     const modal = await this.modalController.create({
       component: ModalCalendarPage,
@@ -226,6 +179,7 @@ export class VaccinationPage implements OnInit {
           componentProps: {
             userData: { ...userData },
           },
+          backdropDismiss: false,
         });
 
         await modal.present();
@@ -324,11 +278,13 @@ export class VaccinationPage implements OnInit {
       return;
     }
 
-    console.log('User ID:', userId); // Log the userId here to verify it's correct
+    console.log('User ID:', userId);
+    console.log('Parent UID:', this.parentUid)
     const modal = await this.modalController.create({
       component: LoginPage,
       componentProps: {
         userId: userId,
+        parentUid: this.parentUid,
       },
     });
 

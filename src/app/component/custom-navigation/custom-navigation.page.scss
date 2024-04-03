@@ -1,24 +1,78 @@
-.quest {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+// .quest {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+// img {
+//   width: 30vh;
+// }
+
+// .quest {
+//   box-shadow: rgba(0, 0, 0, 0.1);
+// }
+
+// @media (max-width: 768px) {
+//   img {
+//     width: 30vh;
+//   }
+// }
+// @media (min-width: 768px) {
+//   .rowParent {
+//     margin-top: 15vh;
+//   }
+// }
+
+.component-container{
+  margin-top: 10vh;
 }
 
-img {
-  width: 30vh;
+.rowParent{
+  position: fixed;
+  margin: 0 auto;
+  border: 1px solid blue;
+  width: 45%;
+  height: auto;
+ 
+  background: wheat;
+  border-radius: 10px;
 }
 
-.quest {
-  box-shadow: rgba(0, 0, 0, 0.1);
+.quest{
+  margin: 0vh auto;
 }
 
-@media (max-width: 768px) {
+img{
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 760px) {
+ .rowParent {
+    position: sticky;
+    border: 1px solid blue;
+    width: 90%;
+    height: auto;
+    background: wheat;
+    border-radius: 10px;
+  }
+  .component-container {
+    margin-top: 0vh;
+  }
   img {
-    width: 30vh;
+      width: 140px;
+      height: 110px;
+  }
+  .quest {
+    display: flex;
+    justify-content: center;
+  }
+  .component-container {
+    margin-top: 1vh;
   }
 }
-@media (min-width: 768px) {
+
+@media only screen and (min-width: 1400px) {
   .rowParent {
-    margin-top: 15vh;
+    left: 80px;
   }
 }

@@ -38,6 +38,8 @@ export class EditUserModalPage implements OnInit {
   @Input() userData: UserData;
   userInputDate: string;
   unsavedChanges: boolean = false;
+ isCloseButtonDisabled: boolean = true;
+ manualBMIDeleted: boolean = false;
 
   constructor(
     private modalController: ModalController,
@@ -49,13 +51,13 @@ export class EditUserModalPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.initializeUserData(); // Call the method to initialize user data
-    await this.getUserData(); // Retrieve user data, including bmiHistory
-    this.calculateBMI(); // Calculate BMI when the page initializes
+    this.initializeUserData(); 
+    await this.getUserData(); 
+    this.calculateBMI(); 
   }
 
   private initializeUserData() {
-    // Ensure that the userData and bmiHistory properties are initialized
+   
     this.userData = this.userData || {};
     this.userData.bmiHistory = this.userData.bmiHistory || [];
   }
@@ -106,6 +108,12 @@ export class EditUserModalPage implements OnInit {
         this.presentToast('Please add BMI history before saving user data.');
         return;
       }
+
+         // Check if manual BMI was deleted without saving
+      // if (this.manualBMIDeleted) {
+      //   this.presentToast('Please save changes after deleting a manual BMI.');
+      //   return;
+      // }
 
       // Show loading indicator while saving
       loading = await this.loadingController.create({
@@ -196,6 +204,7 @@ export class EditUserModalPage implements OnInit {
           }
 
           this.unsavedChanges = true;
+          this.isCloseButtonDisabled = false;
 
           // Log the usersUID when adding a manual BMI record
           console.log('UsersUID:', this.userData.usersUID);
@@ -213,25 +222,22 @@ export class EditUserModalPage implements OnInit {
   }
 
   async confirmCloseModal() {
-    const alert = await this.alertController.create({
-      header: 'Unsaved Changes',
-      message:
-        'You have unsaved changes. Are you sure you want to close without saving?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-        },
-        {
-          text: 'Close',
-          handler: () => {
-            // Dismiss the modal without saving changes
-            this.modalController.dismiss();
+    if (this.unsavedChanges) {
+      const alert = await this.alertController.create({
+        header: 'Unsaved Changes',
+        message:
+          'You have unsaved changes. Saved it',
+        buttons: [
+          {
+            text: 'Go Back',
+            role: 'cancel',
           },
-        },
-      ],
-    });
-    await alert.present();
+        ],
+      });
+      await alert.present();
+    } else {
+      this.modalController.dismiss();
+    }
   }
 
   async presentToast(
@@ -271,17 +277,20 @@ export class EditUserModalPage implements OnInit {
     }
   }
 
-  handleInputChange() {
+   handleInputChange() {
     this.calculateBMI();
+    this.unsavedChanges = true;
+    this.isCloseButtonDisabled = false; // Enable close button after input change
   }
 
-  close() {
-    if (this.unsavedChanges) {
-      this.confirmCloseModal();
-    } else {
-      this.modalController.dismiss();
-    }
+  async closeModal() {
+  if (this.unsavedChanges) {
+    await this.confirmCloseModal();
+  } else {
+    this.modalController.dismiss();
   }
+  }
+
   async deleteBMIRecord(index: number) {
     let loading;
 
@@ -306,6 +315,9 @@ export class EditUserModalPage implements OnInit {
               // Remove the BMI record from the local array
               this.userData.bmiHistory.splice(index, 1);
 
+              this.manualBMIDeleted = true;
+                this.unsavedChanges = true;
+
               // Update the Firestore document without the deleted BMI record
               const parentUID = await this.authService.getCurrentParentUID();
               const userDocRef = this.firestore
@@ -324,11 +336,11 @@ export class EditUserModalPage implements OnInit {
               // Close the loading indicator
               await loading.dismiss();
 
-              this.presentToast(
-                'BMI Record deleted successfully.',
-                'success',
-                3000
-              );
+              // this.presentToast(
+              //   'BMI Record deleted successfully.',
+              //   'success',
+              //   3000
+              // );
             },
           },
         ],

@@ -14,6 +14,7 @@
         <app-custom-navigation></app-custom-navigation>
       </ion-col>
       <ion-col size="12" size-lg="6">
+      <div class="parent">
         <div class="Users">
           <h1 style="text-align: center">Kids</h1>
           <!-- <ion-card class="Kids" *ngIf="usersData.length > 0"> -->
@@ -25,10 +26,10 @@
             </ion-card-header>
             <ion-card-content>
               <!-- <ion-item no-lines>
-                  <ion-icon slot="start" name="mail" size="large"></ion-icon>
-                  <ion-label>Email:</ion-label>
-                  <ion-text>{{ userData.email }}</ion-text>
-                </ion-item> -->
+                          <ion-icon slot="start" name="mail" size="large"></ion-icon>
+                          <ion-label>Email:</ion-label>
+                          <ion-text>{{ userData.email }}</ion-text>
+                        </ion-item> -->
               <!-- Add more items as needed -->
 
               <ion-item no-lines>
@@ -60,17 +61,15 @@
             <ion-card-footer>
               <!-- Button to navigate to vaccines page -->
               <!-- <ion-button fill="solid" color="primary" slot="end" (click)="showVaccineDetailsModal(userData)">
-                    Vaccines
-                  </ion-button> -->
+                            Vaccines
+                          </ion-button> -->
               <!-- Edit button -->
               <ion-buttons class="edit-btn">
                 <ion-button (click)="editUser(userData)"> Edit </ion-button>
               </ion-buttons>
               <ion-buttons class="edit-btn">
-                <ion-button
-                  (click)="openLoginPageModal(userData.usersUID)"
-                  [disabled]="userData.age === null || userData.height === null || userData.weight === null || userData.bmi === null || userData.status === null"
-                >
+                <ion-button (click)="openLoginPageModal(userData.usersUID)"
+                  [disabled]="userData.age === null || userData.height === null || userData.weight === null || userData.bmi === null || userData.status === null">
                   Play
                 </ion-button>
               </ion-buttons>
@@ -84,6 +83,7 @@
           </ion-card>
           <!-- </ion-card> -->
         </div>
+      </div>
       </ion-col>
     </ion-row>
   </ion-grid>
