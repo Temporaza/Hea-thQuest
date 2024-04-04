@@ -5,6 +5,7 @@ import { LoadingController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { ModalController, NavParams } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthenticationForParentsService } from 'src/app/authenticationParents/authentication-for-parents.service';
 
 interface UserData {
   email: string;
@@ -23,6 +24,7 @@ export class LoginPage implements OnInit {
   userId: string = '';
   email: string = '';
   password: string = '';
+ 
 
   constructor(
     public formBuilder: FormBuilder,
@@ -32,7 +34,9 @@ export class LoginPage implements OnInit {
     private route: ActivatedRoute,
     private modalController: ModalController,
     private afs: AngularFirestore,
-    private navParams: NavParams
+    private navParams: NavParams,
+  
+    
   ) {}
 
   clearErrorMessage() {
@@ -48,7 +52,6 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.userId = this.navParams.get('userId');
-    console.log('Parent UID:', this.userId);
     this.loginForm = this.formBuilder.group({
       email: [
         '',
@@ -70,6 +73,7 @@ export class LoginPage implements OnInit {
     if (this.userId) {
       this.getUserCredentials(this.userId);
     }
+  
   }
 
   async getUserCredentials(userId: string) {

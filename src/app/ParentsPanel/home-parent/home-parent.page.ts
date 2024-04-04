@@ -59,8 +59,9 @@ export class HomeParentPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-  
+    await this.presentLoading();
     await this.loadData();
+    await this.dismissLoading()
     this.fetchParentName();
     // Retrieve the checked state from Firestore
     this.authFire.authState.subscribe(user => {
@@ -87,6 +88,21 @@ export class HomeParentPage implements OnInit {
       }
     });
   }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Loading...',
+    });
+    await loading.present();
+  }
+
+  async dismissLoading() {
+  const loading = await this.loadingController.getTop();
+  if (loading) {
+    await loading.dismiss();
+  }
+}
+
   async loadData() {
     const loading = await this.loadingController.create({
       message: 'Loading...',

@@ -60,11 +60,6 @@ export class AuthenticationForParentsService {
       .doc(userId)
       .get()
       .toPromise();
-    const doctorDoc = await this.firestore
-      .collection('doctors')
-      .doc(userId)
-      .get()
-      .toPromise();
     const parentDoc = await this.firestore
       .collection('parents')
       .doc(userId)
@@ -73,8 +68,6 @@ export class AuthenticationForParentsService {
 
     if (userDoc.exists) {
       return 'user';
-    } else if (doctorDoc.exists) {
-      return 'doctor';
     } else if (parentDoc.exists) {
       return 'parent';
     } else {
@@ -125,4 +118,21 @@ export class AuthenticationForParentsService {
   async setCurrentParentUID(uid: string) {
     localStorage.setItem('parentUID', uid);
   }
+
+
+  async getAuthenticatedParentInfo(): Promise<any> {
+    try {
+      const uid = await this.getCurrentParentUID();
+      if (uid) {
+        const userData = await this.getUserDataByUid(uid);
+        return userData;
+      } else {
+        throw new Error('No authenticated parent found.');
+      }
+    } catch (error) {
+      console.error('Error fetching authenticated parent info:', error);
+      throw error;
+    }
+  }
+
 }

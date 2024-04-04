@@ -117,16 +117,6 @@ export class AuthenticationService {
     if (userDoc.exists) {
       return 'user';
     }
-
-    const doctorDoc = await this.firestore
-      .collection('doctors')
-      .doc(userId)
-      .get()
-      .toPromise();
-    if (doctorDoc.exists) {
-      return 'doctor';
-    }
-
     const parentDoc = await this.firestore
       .collection('parents')
       .doc(userId)

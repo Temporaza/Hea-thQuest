@@ -62,12 +62,13 @@ export class VaccinationPage implements OnInit {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  subscribeToUserLogin() {
-    const subscription = this.afAuth.authState.subscribe((user) => {
+ subscribeToUserLogin() {
+     const subscription = this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.parentUid = user.uid;
         this.loadData();
         this.loadBabies();
+    
       } else {
         console.error('No user is logged in.');
         // Handle case where no user is logged in, such as redirecting to login page
@@ -76,7 +77,6 @@ export class VaccinationPage implements OnInit {
 
     this.subscriptions.push(subscription);
   }
-
   async loadData() {
     try {
       const user = await this.authService.getProfile();

@@ -276,7 +276,7 @@ export class HomePage {
 
               if (!isAuthenticated) {
                 // After logging out, navigate to the login page and clear history
-                this.route.navigate(['/vaccination'], { replaceUrl: true });
+                this.route.navigate(['/parent-login'], { replaceUrl: true });
 
                 // Log the message when the user is not authenticated
                 console.log('User is not authenticated.');
