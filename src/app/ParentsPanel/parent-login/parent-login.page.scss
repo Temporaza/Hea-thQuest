@@ -48,6 +48,19 @@ ion-content {
   margin-top: 2vh;
   width: 80%;
   height: auto;
+  animation: slideFromRight 0.8s ease forwards;
+}
+
+@keyframes slideFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .Logo {

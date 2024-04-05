@@ -34,6 +34,7 @@
     "@ionic/angular": "^7.0.0",
     "@ionic/storage-angular": "^4.0.0",
     "chart.js": "^4.4.1",
+    "cordova-plugin-file-chooser": "^1.0.1",
     "dragula": "^3.7.3",
     "interactjs": "^1.10.26",
     "ionicons": "^7.0.0",

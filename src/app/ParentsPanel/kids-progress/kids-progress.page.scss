@@ -1,6 +1,8 @@
-ion-title {
+.title {
   text-align: center;
   font-family: "IntegralCF-Bold";
+  display: flex;
+  align-items: center;
 }
 
 ion-content {

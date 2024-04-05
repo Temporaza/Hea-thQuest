@@ -361,24 +361,25 @@ export class ConsultationPage implements OnInit, AfterViewInit {
   }
 
   fetchUserData() {
-    // Fetch user data from Firestore
-    this.firestore
-      .collection('parents')
-      .doc(this.parentUID)
-      .collection('users')
-      .get()
-      .subscribe((querySnapshot) => {
-        // Reset the usersData array
-        this.usersData = [];
+  // Fetch user data from Firestore in real-time
+  this.firestore
+    .collection('parents')
+    .doc(this.parentUID)
+    .collection('users')
+    .snapshotChanges() // Use snapshotChanges() to listen to real-time changes
+    .subscribe((querySnapshot) => {
+      // Reset the usersData array
+      this.usersData = [];
 
-        // Iterate through the user documents
-        querySnapshot.forEach((doc) => {
-          const userData: UserData = { uid: doc.id, ...doc.data() } as UserData;
-          this.usersData.push(userData);
-        });
-
-        // Call the function to create the line graphs after fetching user data
-        this.createLineGraphs();
+      // Iterate through the user documents
+      querySnapshot.forEach((doc) => {
+        const userData: UserData = { uid: doc.payload.doc.id, ...doc.payload.doc.data() } as UserData;
+        this.usersData.push(userData);
       });
-  }
+
+      // Call the function to create the line graphs after fetching user data
+      this.createLineGraphs();
+    });
+}
+
 }

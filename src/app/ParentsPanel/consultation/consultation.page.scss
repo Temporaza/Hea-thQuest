@@ -1,6 +1,8 @@
-ion-title {
+.title {
   text-align: center;
   font-family: "IntegralCF-Bold";
+  display: flex;
+  align-items: center;
 }
 
 ion-list {
@@ -30,6 +32,9 @@ ion-content {
     margin: 0 auto;
     margin-top: 6vh;
   }
+  .title {
+    width: 50%;
+  }
 }
 
 .findBtn {
@@ -48,6 +53,20 @@ ion-content {
   background: #f1eedc;
   box-shadow: 10px 9px 21px -10px rgba(0, 0, 0, 0.78);
   transition: all 0.3s ease;
+  animation: slideFromRight 0.8s ease forwards;
+  opacity: 0;
+}
+
+@keyframes slideFromRight {
+  from {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .lineGraph:hover {
@@ -61,6 +80,8 @@ ion-content {
   background: #f1eedc;
   box-shadow: 10px 9px 21px -10px rgba(0, 0, 0, 0.78);
   transition: all 0.3s ease;
+  animation: slideFromRight 0.8s ease forwards;
+  opacity: 0;
 }
 
 .pie-graph-container:hover {

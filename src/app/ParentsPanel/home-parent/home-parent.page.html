@@ -1,24 +1,27 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>Parents Dashboard</ion-title>
     <ion-buttons slot="end" class="bordered" fill="solid" color="light">
       <ion-button (click)="logout()">
         <ion-icon color="custom" name="log-out" size="large"></ion-icon>
       </ion-button>
     </ion-buttons>
-
-    <!-- <ion-item class="avatar" lines="start">
-      <ion-avatar>
-        <img src="https://www.shareicon.net/data/512x512/2017/02/15/878685_user_512x512.png">
-      </ion-avatar>
-      <ion-label>
-        <h3>Hello {{ parentFullName }}</h3>
-      </ion-label>
-    </ion-item> -->
+    <ion-buttons  class="avatar" (click)="openParentProfileModal()" lines="start">
+        <ion-card class="iconAva">
+          <ion-avatar>
+            <img [src]="profileImageUrl ? profileImageUrl : 'https://m.media-amazon.com/images/I/41jLBhDISxL.jpg'">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ parentFullName }}</h2>
+          </ion-label>
+        </ion-card>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-card class="title">
+    <ion-title>Dashboard</ion-title>
+  </ion-card>
   <ion-grid>
     <ion-row>
       <ion-col  class="com-nav" size="12" size-md="6">

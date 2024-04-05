@@ -1,10 +1,10 @@
-ion-title {
+
+
+.title {
   text-align: center;
   font-family: "IntegralCF-Bold";
-}
-
-ion-card-title {
-  font-family: "IntegralCF-Bold";
+  display: flex;
+  align-items: center;
 }
 
 ion-content {
@@ -49,7 +49,7 @@ ion-card-title {
 
 @media (min-width: 700px) {
   ion-card {
-    width: 60%;
+    width: 80%;
   }
 }
 

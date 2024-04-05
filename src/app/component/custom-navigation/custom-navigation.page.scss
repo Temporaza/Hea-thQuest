@@ -1,41 +1,32 @@
-// .quest {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// }
-
-// img {
-//   width: 30vh;
-// }
-
-// .quest {
-//   box-shadow: rgba(0, 0, 0, 0.1);
-// }
-
-// @media (max-width: 768px) {
-//   img {
-//     width: 30vh;
-//   }
-// }
-// @media (min-width: 768px) {
-//   .rowParent {
-//     margin-top: 15vh;
-//   }
-// }
 
 .component-container{
   margin-top: 10vh;
 }
 
 .rowParent{
+  margin-top: -100vh;
   position: fixed;
   margin: 0 auto;
-  border: 1px solid blue;
+  box-shadow: 10px 10px 16px 0px rgba(0, 0, 0, 0.75);
   width: 45%;
   height: auto;
- 
   background: wheat;
   border-radius: 10px;
+  animation: slideFromTop 0.8s ease forwards;
+ 
+}
+
+
+@keyframes slideFromTop {
+  from {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .quest{
@@ -49,7 +40,6 @@ img{
 @media only screen and (max-width: 760px) {
  .rowParent {
     position: sticky;
-    border: 1px solid blue;
     width: 90%;
     height: auto;
     background: wheat;

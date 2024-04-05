@@ -165,7 +165,11 @@ const routes: Routes = [
   {
     path: 'custom-navigation',
     loadChildren: () => import('./component/custom-navigation/custom-navigation.module').then( m => m.CustomNavigationPageModule)
+  },  {
+    path: 'parents-profile-page',
+    loadChildren: () => import('./modals/parents-profile-page/parents-profile-page.module').then( m => m.ParentsProfilePagePageModule)
   },
+
 
 
   

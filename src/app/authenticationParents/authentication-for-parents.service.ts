@@ -119,7 +119,6 @@ export class AuthenticationForParentsService {
     localStorage.setItem('parentUID', uid);
   }
 
-
   async getAuthenticatedParentInfo(): Promise<any> {
     try {
       const uid = await this.getCurrentParentUID();
@@ -134,5 +133,4 @@ export class AuthenticationForParentsService {
       throw error;
     }
   }
-
 }
