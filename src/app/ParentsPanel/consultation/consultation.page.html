@@ -2,22 +2,18 @@
   <ion-toolbar>
     <ion-grid>
       <ion-row style="text-align: center">
-          <ion-col>
-              <ion-button routerLink="/home-parent">Dashboard</ion-button>
-          </ion-col>
-          <ion-col class="title">
-            <ion-title >Progress</ion-title>
-          </ion-col>
-          <ion-col>
-              <ion-button>Parent</ion-button>
-          </ion-col>
+        <ion-col size="6">
+          <ion-button routerLink="/home-parent">Dashboard</ion-button>
+        </ion-col>
+        <ion-col size="6" class="title">
+          <h1>Progress</h1>
+        </ion-col>
       </ion-row>
     </ion-grid>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-md="6">
@@ -38,11 +34,10 @@
                   <h1>BMI Progress Graph</h1>
                   <!-- Graph canvas within the card -->
                   <canvas [id]="'lineCanvas_' + user.uid" #lineCanvas></canvas>
-             
                 </div>
                 <div class="pie-graph-container">
                   <div class="pie-graph">
-                    <h1 style="text-align: center;">Tasks Percentage</h1>
+                    <h1 style="text-align: center">Tasks Percentage</h1>
                     <canvas [id]="'pieCanvas_' + user.uid" #pieCanvas></canvas>
                   </div>
 
@@ -64,7 +59,6 @@
                       </tbody>
                     </table>
                   </div>
-
                 </div>
               </div>
             </ion-list>

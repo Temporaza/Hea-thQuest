@@ -33,7 +33,19 @@ ion-content {
   margin-top: 2vh;
   width: 80%;
   height: auto;
- 
+  animation: slideFromRight 0.8s ease forwards;
+}
+
+@keyframes slideFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .Logo {
@@ -78,6 +90,8 @@ ion-content {
   font-size: 18px;
   font-weight: bold;
   padding: 8px;
+  display: flex;
+  align-items: center;
 }
 
 .title {
@@ -87,7 +101,7 @@ ion-content {
 }
 
 .ion-padding {
-  margin-top: -3vh;
+  margin-top: 3vh;
 }
 
 .form {

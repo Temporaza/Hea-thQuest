@@ -1,10 +1,18 @@
 //NEW UI
 ion-title {
-  text-align: center;
   font-family: "IntegralCF-Bold";
-  border-radius: 10px;
-  background: white;
-  color: black;
+}
+
+
+@media (max-width: 500px) {
+  .iconAva h2 {
+    display: none;
+  }
+}
+.title, .btn-log{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .iconAva{
@@ -15,31 +23,18 @@ ion-title {
   gap: 5px;
   border-radius: 10px;
   color: black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 ion-avatar{
   border: 1px solid black;
 }
 
-.title{
-  margin: 3vh auto;
-  width: 80%;
-  padding: 10px;
-  box-shadow: 10px 10px 8px -7px rgba(0, 0, 0, 0.75);
-  animation: slideFromTop 0.8s ease forwards;
+.bordered{
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
-@keyframes slideFromTop {
-  from {
-    transform: translateY(-100vh);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
 
 ion-content {
   --background: url("/assets/ebook/bg.png") center/cover no-repeat;

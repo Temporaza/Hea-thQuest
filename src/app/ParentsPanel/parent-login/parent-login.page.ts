@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController, AlertController } from '@ionic/angular';
+import {
+  LoadingController,
+  AlertController,
+  NavController,
+} from '@ionic/angular';
 import { AuthenticationForParentsService } from 'src/app/authenticationParents/authentication-for-parents.service';
 
 @Component({
@@ -19,7 +23,8 @@ export class ParentLoginPage implements OnInit {
     public loadingCtrl: LoadingController,
     public authService: AuthenticationForParentsService,
     public router: Router,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public navCtrl: NavController
   ) {}
 
   ngOnInit() {
@@ -72,16 +77,14 @@ export class ParentLoginPage implements OnInit {
           this.logForm.value.password
         );
 
-        const user = userCredential.user; // Access the user object
+        const user = userCredential.user;
 
-        // Determine the user's role
         const role = await this.authService.checkUserRole(user.uid);
 
         if (role === 'parent') {
           loading.dismiss();
           this.clearFormFields();
-          this.router.navigate(['/home-parent']); // Redirect to the doctor home page
-        } else {
+          this.navCtrl.navigateRoot(['/home-parent'], { replaceUrl: true });
           loading.dismiss();
           this.notAuthorized();
         }

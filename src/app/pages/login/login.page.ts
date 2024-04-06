@@ -24,7 +24,6 @@ export class LoginPage implements OnInit {
   userId: string = '';
   email: string = '';
   password: string = '';
- 
 
   constructor(
     public formBuilder: FormBuilder,
@@ -34,9 +33,7 @@ export class LoginPage implements OnInit {
     private route: ActivatedRoute,
     private modalController: ModalController,
     private afs: AngularFirestore,
-    private navParams: NavParams,
-  
-    
+    private navParams: NavParams
   ) {}
 
   clearErrorMessage() {
@@ -73,7 +70,6 @@ export class LoginPage implements OnInit {
     if (this.userId) {
       this.getUserCredentials(this.userId);
     }
-  
   }
 
   async getUserCredentials(userId: string) {
@@ -97,7 +93,7 @@ export class LoginPage implements OnInit {
     return this.loginForm?.controls;
   }
 
-  async signUp() {
+  async signIn() {
     const loading = await this.loadingCtrl.create();
     await loading.present();
 

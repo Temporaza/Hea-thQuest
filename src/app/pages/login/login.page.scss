@@ -19,7 +19,7 @@ ion-content {
 
   .container {
     margin-top: 2vh;
-    max-width: 60%;
+    max-width: 80%;
     height: auto;
   }
 
@@ -30,9 +30,22 @@ ion-content {
 }
 
 .container {
-  margin-top: 2vh;
+  margin: 5vh auto;
   width: 80%;
   height: auto;
+  animation: slideFromRight 0.8s ease forwards;
+}
+
+@keyframes slideFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .Logo {
@@ -145,13 +158,6 @@ p {
   margin-top: 10px; /* Adjust the margin as needed */
 }
 
-.Footer {
-  border: 1px solid red;
-  height: auto;
-  width: 80%;
-  position: absolute;
-  bottom: 0;
-}
 
 .kids {
   display: flex;

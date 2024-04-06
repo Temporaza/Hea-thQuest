@@ -1,33 +1,43 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-buttons slot="end" class="bordered" fill="solid" color="light">
-      <ion-button (click)="logout()">
-        <ion-icon color="custom" name="log-out" size="large"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons  class="avatar" (click)="openParentProfileModal()" lines="start">
-        <ion-card class="iconAva">
-          <ion-avatar>
-            <img [src]="profileImageUrl ? profileImageUrl : 'https://m.media-amazon.com/images/I/41jLBhDISxL.jpg'">
-          </ion-avatar>
-          <ion-label>
-            <h2>{{ parentFullName }}</h2>
-          </ion-label>
-        </ion-card>
-    </ion-buttons>
+    <ion-grid>
+      <ion-row class="head-btn">
+        <ion-col size="4" size-sm="4">
+          <ion-buttons class="avatar" (click)="openParentProfileModal()">
+            <div class="iconAva">
+              <ion-avatar>
+                <img
+                  [src]="profileImageUrl ? profileImageUrl : 'https://m.media-amazon.com/images/I/41jLBhDISxL.jpg'"
+                />
+              </ion-avatar>
+              <ion-label>
+                <h2>{{ parentFullName }}</h2>
+              </ion-label>
+            </div>
+          </ion-buttons>
+        </ion-col>
+        <ion-col size="4" size-sm="4" class="title">
+          <ion-title style="text-align: center">Dashboard</ion-title>
+        </ion-col>
+        <ion-col size="4" size-sm="4" class="btn-log">
+          <ion-buttons class="bordered" fill="solid" color="light">
+            <ion-button (click)="logout()">
+              <ion-icon color="primary" name="log-out" size="large"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card class="title">
-    <ion-title>Dashboard</ion-title>
-  </ion-card>
   <ion-grid>
     <ion-row>
-      <ion-col  class="com-nav" size="12" size-md="6">
-          <div>
-        <app-custom-navigation class="stick"></app-custom-navigation>
-          </div>
+      <ion-col class="com-nav" size="12" size-md="6">
+        <div>
+          <app-custom-navigation class="stick"></app-custom-navigation>
+        </div>
       </ion-col>
       <ion-col class="second" size="12" size-md="6">
         <ion-col class="outputs" size="12" size-md="6">

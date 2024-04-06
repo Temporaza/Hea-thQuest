@@ -1,61 +1,3 @@
-<!-- <div class="curved2">
-    <svg xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 1440 320">
-     <path fill="#FF9A4F" fill-opacity="1" d="M0,0L40,16C80,32,160,64,240,85.3C320,107,400,117,480,101.3C560,85,640,43,720,53.3C800,64,880,128,960,144C1040,160,1120,128,1200,138.7C1280,149,1360,203,1400,229.3L1440,256L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path>
-    </svg>
-  </div> -->
-<!-- <div class="logo-container">
-    <img class="logo" src="assets/icon/new.png" alt="Your Logo">
-  </div> -->
-<!-- <div class="header">
-    <h1 class="title">Login</h1>
-    <p class="subTitle">Please sign in to continue.</p>
-  </div>
-  
-  <form [formGroup] = "loginForm" novalidate>
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
-    <div class="ion-padding"> 
-     
-       <ion-item>
-        <ion-input formControlName="email" placeholder="email" class="input"></ion-input>
-        <ion-icon name="person-outline"></ion-icon>
-      </ion-item>
-      <div *ngIf="this.loginForm.controls?.['email'].touched && this.loginForm.controls?.['email'].invalid">
-        <ion-text *ngIf="errorControl['email'].errors?.['required']" color="danger">
-          <ion-icon name="warning"></ion-icon>Email is required
-        </ion-text>
-        <ion-text *ngIf="errorControl['email'].errors?.['pattern']" color="danger">
-          <ion-icon name="warning"></ion-icon>Email should be valid
-        </ion-text>
-      </div>
-
-
-       <ion-item>
-        <ion-input formControlName="password" placeholder="Password" type="password" class="input"></ion-input>
-        <ion-icon name="lock-closed-outline"></ion-icon>
-      </ion-item>
-      <div *ngIf="this.loginForm.controls?.['password'].touched && this.loginForm.controls?.['password'].invalid">
-        <ion-text *ngIf="errorControl['password'].errors?.['required']" color="danger">
-          <ion-icon name="warning"></ion-icon> Password is required
-        </ion-text>
-        <ion-text *ngIf="errorControl['password'].errors?.['pattern']" color="danger">
-          <ion-icon name="warning"></ion-icon> Password should be at least 8 characters and include numbers and letters
-        </ion-text>
-      </div> 
-
-       <div class="forgotPassword">
-        <a [routerLink]="['/reset-password']" style="color:#ffc33f">Forgot Password?</a>
-      </div> 
-       <div class="signupLink">
-        <p>Don't Have an Account?<a style="color:#ffc33f" [routerLink]="['/signup']">Sign Up</a></p>
-      </div>
-    </div>
-    <button class="center-button" (click)="signUp()">
-      Login
-      </button>
-  </form>  -->
-
 <!-- New Ui -->
 
 <ion-header [translucent]="true">
@@ -84,8 +26,8 @@
             <div class="header-text">Kids</div>
           </div>
         </div>
-        <h1 class="title">Login</h1>
-        <p class="subTitle">Please sign in to continue.</p>
+        <h1 class="title">Start</h1>
+        <p class="subTitle">Enter your kids password.</p>
       </div>
 
       <form [formGroup]="loginForm" novalidate>
@@ -94,15 +36,15 @@
         <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
         <div class="ion-padding">
           <!-- Username -->
-          <ion-item>
+          <!-- <ion-item>
             <ion-icon class="icons" name="person-outline"></ion-icon>
             <ion-input
               formControlName="email"
               placeholder="email"
               class="input"
             ></ion-input>
-          </ion-item>
-          <div
+          </ion-item> -->
+          <!-- <div
             *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].invalid"
           >
             <ion-text
@@ -117,7 +59,7 @@
             >
               <ion-icon name="warning"></ion-icon>Email should be valid
             </ion-text>
-          </div>
+          </div> -->
 
           <!-- Password -->
           <ion-item>
@@ -159,11 +101,10 @@
             </p>
           </div> -->
         </div>
-        <button class="center-button" (click)="signUp()">Login</button>
+        <button class="center-button" (click)="signIn()">Play</button>
 
         <div class="line-shape"></div>
       </form>
     </div>
   </div>
-  <div class="Footer"></div>
 </ion-content>

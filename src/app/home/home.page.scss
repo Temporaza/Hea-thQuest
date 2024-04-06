@@ -131,14 +131,14 @@ ion-card {
 //pet style
 .pet-container {
   position: relative;
-  cursor: grab; /* Set cursor to grab when hovering over the draggable area */
+  cursor: grab;
   animation: floatAnimation 1s ease-in-out infinite alternate;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1;
   margin-top: 25vh;
-  // border: 2px solid violet;
+
   margin-bottom: 20px;
 }
 
@@ -165,7 +165,6 @@ ion-card {
   margin-top: 4vh;
   margin-left: 2vh;
   transition: height 2s ease-in-out;
-  border: 1px solid red;
 }
 
 @keyframes floatAnimation {

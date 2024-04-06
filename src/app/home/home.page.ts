@@ -12,6 +12,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 
 import { PointsServiceService } from 'src/app/services/points.service.service';
+import { CdkDragStart, CdkDragEnd } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-home',
@@ -48,14 +49,14 @@ export class HomePage {
       mouth: '/assets/Mouth/M3.png',
     },
     {
-      min: 61,
+      min: 51,
       max: 80,
       eyes: '/assets/eyes/eye2.png',
       mouth: '/assets/Mouth/M4.png',
     },
     {
       min: 41,
-      max: 60,
+      max: 50,
       eyes: '/assets/eyes/eye3.png',
       mouth: '/assets/Mouth/mouth2.png',
     },
@@ -95,9 +96,7 @@ export class HomePage {
     this.taskStatusService.getTaskStatus().subscribe((statusWithPoints) => {
       const { status, points } = statusWithPoints;
 
-      // Now you have both status and points to work with
       if (status === 'Completed') {
-        // Update the total points when a task is completed
         this.updateTotalPoints(points);
       }
     });
@@ -110,7 +109,6 @@ export class HomePage {
   }
 
   ngOnDestroy() {
-    // Unsubscribe from the health update interval when the component is destroyed
     this.stopHealthUpdateInterval();
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
@@ -118,18 +116,16 @@ export class HomePage {
   }
 
   async ionViewDidEnter() {
-    // Show loading spinner
     this.createLoading();
-    // Get the audio element and play the music
+
     this.playBackgroundMusic();
-    // Fetch download URLs for pet images from Firebase Storage
+
     this.fetchPetImages();
 
     const currentUser = await this.authService.getCurrentUser();
     if (currentUser) {
       await this.fetchPetHealth(currentUser.uid);
 
-      // Check if the user has a pet body URL, if not, set a default one
       if (!this.petBodyUrl) {
         this.setDefaultPetBodyUrl();
       }
@@ -247,7 +243,6 @@ export class HomePage {
   //End of fetching
 
   async logout() {
-
     this.pauseBackgroundMusic();
 
     const alert = await this.alertControler.create({
@@ -283,7 +278,6 @@ export class HomePage {
               }
             } catch (error) {
               console.error('Error logging out:', error);
-              
             }
           },
         },
@@ -393,20 +387,25 @@ export class HomePage {
         .doc(userId)
         .get()
         .toPromise();
+
       if (userDoc.exists) {
         const petHealth = userDoc.get('petHealth');
+
         if (typeof petHealth === 'number' && !isNaN(petHealth)) {
-          // Assign fetched petHealth if it's a valid number
           this.petHealth = petHealth;
         } else {
-          // If petHealth is not a valid number, assign a default value
           console.error(
             'Invalid petHealth value fetched from Firestore:',
             petHealth
           );
-          this.petHealth = 100; // Assign a default value, such as 100
+          this.petHealth = 100;
         }
-        this.updatePetImages(); // Update images based on the fetched pet health
+
+        console.log('Fetched pet health:', this.petHealth);
+
+        this.updatePetImages();
+      } else {
+        console.error('User document does not exist for user ID:', userId);
       }
     } catch (error) {
       console.error('Error fetching pet health:', error);

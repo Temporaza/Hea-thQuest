@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FirebaseApp } from '@angular/fire/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -14,6 +15,7 @@ import { AuthenticationForParentsService } from 'src/app/authenticationParents/a
 import { BmiDiffPage } from 'src/app/modals/bmi-diff/bmi-diff.page';
 import { OpenTaskDoneModalPage } from 'src/app/modals/open-task-done-modal/open-task-done-modal.page';
 import { ParentsProfilePagePage } from 'src/app/modals/parents-profile-page/parents-profile-page.page';
+
 interface BMIRecord {
   date: string;
   bmi: number;
@@ -61,16 +63,24 @@ export class HomeParentPage implements OnInit {
     private toastController: ToastController,
     private alertController: AlertController,
     private authService: AuthenticationForParentsService,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private location: Location
   ) {}
 
+  private listenToBackButton() {
+    window.addEventListener('popstate', () => {
+      // Reload the current page when the back button is clicked
+      window.location.reload();
+    });
+  }
+
   async ngOnInit() {
+    this.listenToBackButton();
     await this.presentLoading();
     await this.loadData();
     await this.dismissLoading();
     this.fetchParentName();
 
-    // Retrieve the checked state from Firestore
     this.authFire.authState.subscribe((user) => {
       if (user) {
         console.log('Authenticated user:', user);
@@ -90,6 +100,7 @@ export class HomeParentPage implements OnInit {
         this.router.navigate(['/parent-login']);
       }
     });
+    this.location.replaceState('/home-parent');
   }
 
   async presentLoading() {
