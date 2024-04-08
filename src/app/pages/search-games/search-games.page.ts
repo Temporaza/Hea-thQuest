@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, DocumentData } from '@angular/fire/compat/firestore';
+
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+  QueryDocumentSnapshot,
+  DocumentData,
+} from '@angular/fire/compat/firestore';
 
 interface UserData {
   age?: number; // Adjust the type according to your actual data structure
@@ -23,21 +29,20 @@ interface Game {
   styleUrls: ['./search-games.page.scss'],
 })
 export class SearchGamesPage implements OnInit {
-
   usersUID: string;
   agePreference: number;
   foundGames: Game[];
   buttonClicked: boolean = false;
-  
+
   // Explicitly type the Firestore collection
   private gamesCollection: AngularFirestoreCollection<Game>;
 
   constructor(
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore
-  ) { 
-      // Initialize the games collection
-      this.gamesCollection = this.firestore.collection<Game>('games');
+  ) {
+    // Initialize the games collection
+    this.gamesCollection = this.firestore.collection<Game>('games');
   }
 
   ngOnInit() {
@@ -58,7 +63,6 @@ export class SearchGamesPage implements OnInit {
       }
     });
   }
-
 
   async fetchUserData(usersUID: string) {
     try {
@@ -88,24 +92,24 @@ export class SearchGamesPage implements OnInit {
   findGames() {
     if (this.usersUID && this.agePreference) {
       console.log('Current User Age:', this.agePreference);
-  
+
       const collectionRef = this.gamesCollection.ref;
-  
+
       // Query games where user's age matches minAge exactly
       const exactMinAgeQuery = collectionRef
         .where('minAge', '==', this.agePreference)
         .get();
-  
+
       // Query games where user's age matches maxAge exactly
       const exactMaxAgeQuery = collectionRef
         .where('maxAge', '==', this.agePreference)
         .get();
-  
+
       // Combine the results of the two queries
       Promise.all([exactMinAgeQuery, exactMaxAgeQuery])
         .then((querySnapshots) => {
           const foundGames: Game[] = [];
-  
+
           querySnapshots.forEach((querySnapshot) => {
             if (!querySnapshot.empty) {
               const games = querySnapshot.docs.map(
@@ -114,7 +118,7 @@ export class SearchGamesPage implements OnInit {
               foundGames.push(...games);
             }
           });
-  
+
           if (foundGames.length > 0) {
             console.log('Found Games:', foundGames);
             this.foundGames = foundGames;
@@ -122,7 +126,7 @@ export class SearchGamesPage implements OnInit {
           } else {
             console.log('No games found for the specified age range.');
           }
-  
+
           this.buttonClicked = true;
         })
         .catch((error) => {
@@ -132,10 +136,11 @@ export class SearchGamesPage implements OnInit {
       console.error('Invalid user or age preference.');
     }
   }
-  
+
   displayMatchingGames() {
     const matchingGames = this.foundGames.filter(
-      (game) => game.minAge <= this.agePreference && game.maxAge >= this.agePreference
+      (game) =>
+        game.minAge <= this.agePreference && game.maxAge >= this.agePreference
     );
 
     matchingGames.forEach((game) => {
@@ -143,5 +148,4 @@ export class SearchGamesPage implements OnInit {
       console.log('Matching Game Description:', game.description);
     });
   }
-  
 }

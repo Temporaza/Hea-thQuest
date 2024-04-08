@@ -154,3 +154,30 @@ ion-content {
     }
 }
 
+.bmi-table {
+  margin: 0 auto;
+  width: 80%;
+  /* Adjust the width as needed */
+}
+
+.bmi-table th,
+.bmi-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.bmi-table th {
+  background-color: #f2f2f2;
+  /* Background color for table header */
+  font-weight: bold;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-center {
+  text-align: center;
+}
+

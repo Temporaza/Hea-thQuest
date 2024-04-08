@@ -23,24 +23,58 @@
         <div class="SuperParent">
           <div class="parentConsult">
             <ion-list *ngIf="usersData.length > 0">
+              <div class="dropD">
+                <ion-select [(ngModel)]="selectedGraph">
+                  <ion-select-option value="lineGraph"
+                    >Line Graph</ion-select-option
+                  >
+                  <ion-select-option value="pieGraph"
+                    >Pie Graph</ion-select-option
+                  >
+                </ion-select>
+              </div>
+
               <div class="childs" *ngFor="let user of usersData">
                 <ion-card-header class="card-header">
                   <ion-card-title class="card-title"
                     >Name: {{ user.fullname }}</ion-card-title
                   >
+                  <!-- Dropdown button for graph selection -->
                 </ion-card-header>
 
-                <div class="lineGraph">
+                <!-- Graph container based on selected graph type -->
+                <div *ngIf="selectedGraph === 'lineGraph'" class="lineGraph">
                   <h1>BMI Progress Graph</h1>
                   <!-- Graph canvas within the card -->
                   <canvas [id]="'lineCanvas_' + user.uid" #lineCanvas></canvas>
+                  <!-- Display BMI history below the line graph -->
+                  <div class="bmiHistory">
+                    <h2>BMI History</h2>
+                    <table class="bmi-table">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>BMI</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let bmiRecord of user.bmiHistory">
+                          <td>{{ bmiRecord.date | date: 'yyyy-MM-dd' }}</td>
+                          <td>{{ bmiRecord.bmi }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-                <div class="pie-graph-container">
+                <div
+                  *ngIf="selectedGraph === 'pieGraph'"
+                  class="pie-graph-container"
+                >
                   <div class="pie-graph">
                     <h1 style="text-align: center">Tasks Percentage</h1>
                     <canvas [id]="'pieCanvas_' + user.uid" #pieCanvas></canvas>
                   </div>
-
+                  <!-- Display tasks data only when pie graph is selected -->
                   <div class="task-details">
                     <table class="task-table">
                       <thead>

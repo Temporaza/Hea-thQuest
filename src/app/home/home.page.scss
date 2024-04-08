@@ -1,5 +1,7 @@
-ion-content::part(scroll) {
-  position: relative;
+
+
+ion-content{
+  height: 100vh;
 }
 
 * {
@@ -10,9 +12,6 @@ ion-toolbar {
   --background: #ff8200;
 }
 
-ion-router-outlet {
-  z-index: 1; /* Ensure that this value is not higher than the z-index of clickable images */
-}
 
 .background {
   --background: url("/assets/house.png") no-repeat center center fixed;
@@ -224,16 +223,16 @@ ion-card {
   }
 }
 
-.foodCount {
-  display: flex;
-  justify-content: center; /* Center the content horizontally */
-  margin-bottom: 2vh;
+// .foodCount {
+//   display: flex;
+//   justify-content: center; /* Center the content horizontally */
+//   margin-bottom: 2vh;
 
-  h1 {
-    font-size: 40px;
-  }
+//   h1 {
+//     font-size: 40px;
+//   }
 
-}
+// }
 
 .attitude {
   z-index: 3;
@@ -309,28 +308,14 @@ ion-card {
   color: black;
 }
 
-.example-box {
-  width: 200px;
-  height: 200px;
-  border: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
-  cursor: move;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background: #fff;
-  border-radius: 4px;
-  position: relative;
-  z-index: 1;
-  transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0 2px 2px 0 rgba(0, 0, 0, 0.14),
-    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+.cookie-image {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
 }
 
-.example-box:active {
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+.cookie-image img {
+  width: 70px;
 }

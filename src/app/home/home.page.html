@@ -80,9 +80,12 @@
     <img src="assets/salad.png" alt="Food" />
   </div>
 
-  <div class="foodCount">
-    <!-- <h1>Food Count</h1> -->
+  <div
+    class="cookie-image"
+    *ngIf="showCookieImage"
+    cdkDrag
+    (cdkDragEnded)="handleCookieDragged($event)"
+  >
+    <img src="assets/newAssets/cookie.png" alt="Cookie" />
   </div>
-
-  <div class="example-box" cdkDrag>Drag me around</div>
 </ion-content>

@@ -1,21 +1,33 @@
-*{
-  font-family: 'Patrick Hand SC';
-}
+
 ion-content{
   --background: #003366;
  }
 
 .custom-card {
-    max-width: 700px; /* Set a maximum width */
-    width: 100%; /* Make sure it takes up 100% of the available width */
-    margin: 5vh auto; /* Center the card horizontally */
-    overflow: hidden; /* Prevent content from overflowing */
+    max-width: 700px; 
+    width: 100%; 
+    margin: 5vh auto; 
+    overflow: hidden; 
   }
   
-  /* Apply styles only when the screen width is 700 pixels or less */
+ 
   @media (max-width: 700px) {
     .custom-card {
-      max-width: none; /* Remove the maximum width */
-      width: 100%; /* Take up the full available width */
+      max-width: none; 
+      width: 100%; 
     }
+  }
+
+  .gamesFound{
+    margin: 5vh auto;
+    h2{
+      text-align: center;
+      font-family: "IntegralCF-Bold";
+      color: black;
+    }
+  }
+
+  .list-games{
+    margin: 3vh auto;
+    text-align: center;
   }

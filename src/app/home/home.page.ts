@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ElementRef, Renderer2 } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -12,7 +12,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 
 import { PointsServiceService } from 'src/app/services/points.service.service';
-import { CdkDragStart, CdkDragEnd } from '@angular/cdk/drag-drop';
+import { CdkDragStart, CdkDragEnd, CdkDrag } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-home',
@@ -41,6 +41,9 @@ export class HomePage {
   showYumImage: boolean = false;
   showHmmImage: boolean = false;
 
+  showCookieImage: boolean = false;
+  availableCookies: number = 10;
+
   healthRangeMap = [
     {
       min: 81,
@@ -52,7 +55,7 @@ export class HomePage {
       min: 51,
       max: 80,
       eyes: '/assets/eyes/eye2.png',
-      mouth: '/assets/Mouth/M4.png',
+      mouth: '/assets/Mouth/M3.png',
     },
     {
       min: 41,
@@ -88,7 +91,8 @@ export class HomePage {
     private firestore: AngularFirestore,
     private cdr: ChangeDetectorRef,
     private alertControler: AlertController,
-    private pointsService: PointsServiceService
+    private pointsService: PointsServiceService,
+    private renderer: Renderer2
   ) {
     this.user = authService.getProfile;
 
@@ -157,20 +161,15 @@ export class HomePage {
         try {
           const userId = user.uid;
 
-          // Pass the userId to fetchTotalPoints
           await this.fetchTotalPoints(userId);
 
-          // Log the user ID for debugging
           console.log('User ID:', userId);
 
-          // Fetch total points using the user ID
           const totalPoints =
             await this.taskStatusService.getTotalPointsFromFirestore(userId);
 
-          // Update the total points in the local subject
           this.taskStatusService.setTotalPoints(totalPoints);
 
-          // Load saved pet body URL from Firestore
           const userDoc = await this.firestore
             .collection('users')
             .doc(userId)
@@ -178,20 +177,14 @@ export class HomePage {
             .toPromise();
 
           if (userDoc.exists) {
-            // Get the 'petBodyUrl' field from the user document
             this.petBodyUrl = userDoc.get('petBodyUrl');
 
             console.log('Selected PetBodyImage URL:', this.petBodyUrl);
 
-            // Subscribe to changes in the selected pet body URL
             this.petBodyService.setSelectedPetBodyUrl(this.petBodyUrl);
           } else {
             console.error('User document not found.');
-            // Handle the case when the user document is not found
-            // For example, redirect to a different page or show an error message
           }
-
-          // Fetch download URLs for pet images from Firebase Storage
           await this.fetchPetImages();
 
           // Other initialization code
@@ -362,20 +355,68 @@ export class HomePage {
   }
 
   handleSaladClick() {
-    // Show the Yum image
-    this.showYumImage = true;
-    // After 1 second, hide the Yum image
+    // Show the cookie image
+    this.showCookieImage = true;
+
+    // Use a timeout to ensure the DOM is fully loaded before accessing elements
     setTimeout(() => {
-      this.showYumImage = false;
-    }, 2000);
+      // Start the drag action programmatically
+      const cookieElement = document.querySelector(
+        '.cookie-image'
+      ) as HTMLElement;
+      if (cookieElement) {
+        cookieElement.style.position = 'absolute';
+        cookieElement.style.zIndex = '9999'; // Ensure the cookie is above other elements
+        const cookieDragEvent = new PointerEvent('pointerdown', {
+          bubbles: true,
+          cancelable: true,
+          clientX: 0,
+          clientY: 0,
+        });
+        cookieElement.dispatchEvent(cookieDragEvent);
 
-    // Add 5 to the pet's health when the salad is clicked
-    const newHealth = Math.min(this.petHealth + 5, 100); // Cap the health at 100
-    this.updatePetHealth(newHealth);
-    this.updatePetImages(); // Update images based on the current health
+        console.log('Cookie is shown.');
+      } else {
+        console.error('Cookie element not found.');
+      }
+    }, 0);
+  }
 
-    // Log the click for debugging
-    console.log('Salad clicked. Pet health increased by 5.');
+  handleCookieDragged(event: CdkDragEnd) {
+    const cookieImage = event.source.element.nativeElement;
+    const petMouth = document.querySelector('.pet-mouth') as HTMLElement;
+
+    const cookieRect = cookieImage.getBoundingClientRect();
+    const petMouthRect = petMouth.getBoundingClientRect();
+
+    if (
+      cookieRect.left < petMouthRect.right &&
+      cookieRect.right > petMouthRect.left &&
+      cookieRect.top < petMouthRect.bottom &&
+      cookieRect.bottom > petMouthRect.top
+    ) {
+      console.log("Cookie collided with the pet's mouth!");
+
+      // Hide the cookie image
+      this.showCookieImage = false;
+
+      // Change the pet-mouth image to M4.png
+      this.petMouthUrl = '/assets/Mouth/M4.png';
+
+      // Add health to the pet
+      const newHealth = Math.min(this.petHealth + 10, 100); // Increase health by 10 (adjust as needed)
+      this.updatePetHealth(newHealth);
+
+      setTimeout(() => {
+        this.showYumImage = true;
+        setTimeout(() => {
+          this.showYumImage = false;
+        }, 2000);
+      }, 500);
+      setTimeout(() => {
+        this.petMouthUrl = '/assets/Mouth/mouth1.png';
+      }, 1000);
+    }
   }
 
   async fetchPetHealth(userId: string) {
@@ -391,19 +432,19 @@ export class HomePage {
       if (userDoc.exists) {
         const petHealth = userDoc.get('petHealth');
 
+        // Check if petHealth is a valid number
         if (typeof petHealth === 'number' && !isNaN(petHealth)) {
           this.petHealth = petHealth;
+          console.log('Fetched pet health:', this.petHealth);
+          this.updatePetImages();
         } else {
           console.error(
             'Invalid petHealth value fetched from Firestore:',
             petHealth
           );
-          this.petHealth = 100;
+          // Handle the case of invalid petHealth value, perhaps set a default value
+          this.petHealth = 100; // Set a default value
         }
-
-        console.log('Fetched pet health:', this.petHealth);
-
-        this.updatePetImages();
       } else {
         console.error('User document does not exist for user ID:', userId);
       }

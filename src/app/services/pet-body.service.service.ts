@@ -2,27 +2,25 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PetBodyServiceService {
-
   private selectedPetBodyUrlSubject = new BehaviorSubject<string>(null);
 
-    selectedPetBodyUrl$: Observable<string | null> = this.selectedPetBodyUrlSubject.asObservable();
+  selectedPetBodyUrl$: Observable<string | null> =
+    this.selectedPetBodyUrlSubject.asObservable();
 
-    constructor() { }
+  constructor() {}
 
+  setSelectedPetBodyUrl(url: string) {
+    this.selectedPetBodyUrlSubject.next(url);
+  }
 
-    setSelectedPetBodyUrl(url: string) {
-      this.selectedPetBodyUrlSubject.next(url);
-    }
-  
-  
   // Get the selected pet body URL from local storage
   getSelectedPetBodyUrl(): string {
     const firestorePetBodyUrl = this.selectedPetBodyUrlSubject.getValue();
-    return firestorePetBodyUrl || localStorage.getItem('selectedPetBodyUrl') || null;
+    return (
+      firestorePetBodyUrl || localStorage.getItem('selectedPetBodyUrl') || null
+    );
   }
-
-
 }
