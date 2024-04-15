@@ -133,4 +133,20 @@ export class AuthenticationForParentsService {
       throw error;
     }
   }
+
+  async sendEmailVerification() {
+    const user = await this.ngFireAuth.currentUser;
+    if (user) {
+      await user.sendEmailVerification();
+    }
+  }
+
+  async sendPasswordResetEmail(email: string) {
+    try {
+      await this.ngFireAuth.sendPasswordResetEmail(email);
+    } catch (error) {
+      console.error('Error sending password reset email:', error);
+      throw error;
+    }
+  }
 }

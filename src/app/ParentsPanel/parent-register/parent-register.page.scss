@@ -112,6 +112,10 @@ ion-content {
   margin-top: 1vh;
 }
 
+ion-select {
+  color: #a1fff9;
+}
+
 .ion-padding {
   margin-top: -3vh;
 }
@@ -181,4 +185,16 @@ a {
   text-decoration: none;
   margin-left: 5px;
   color: #57aba5;
+}
+
+.permission {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  color: #a1fff9;
+}
+
+.permission-text {
+  text-align: justify;
 }

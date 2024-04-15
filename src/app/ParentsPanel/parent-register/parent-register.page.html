@@ -40,21 +40,19 @@
 
           <!-- Gender -->
           <ion-item>
-            <ion-input
-              formControlName="gender"
-              placeholder="gender"
-              class="input"
-            ></ion-input>
-            <ion-icon name="person-outline"></ion-icon>
+            <ion-select formControlName="sex" placeholder="Select sex">
+              <ion-select-option value="Male">Male</ion-select-option>
+              <ion-select-option value="Female">Female</ion-select-option>
+            </ion-select>
           </ion-item>
           <div
-            *ngIf="this.regisForm.controls?.['gender'].touched && this.regisForm.controls?.['gender'].invalid"
+            *ngIf="this.regisForm.controls?.['sex'].touched && this.regisForm.controls?.['sex'].invalid"
           >
             <ion-text
-              *ngIf="errorControl['gender'].errors?.['required']"
+              *ngIf="errorControl['sex'].errors?.['required']"
               color="danger"
             >
-              <ion-icon name="warning"></ion-icon>Gender is required
+              <ion-icon name="warning"></ion-icon>Sex is required
             </ion-text>
           </div>
 
@@ -65,7 +63,7 @@
               placeholder="email"
               class="input"
             ></ion-input>
-            <ion-icon name="person-outline"></ion-icon>
+            <ion-icon name="mail-outline"></ion-icon>
           </ion-item>
           <div
             *ngIf="this.regisForm.controls?.['email'].touched && this.regisForm.controls?.['email'].invalid"
@@ -113,6 +111,24 @@
             </ion-text>
           </div>
 
+          <!-- Permission to use personal data -->
+          <div class="permission">
+            <ion-checkbox
+              formControlName="permission"
+              [(ngModel)]="permission"
+            ></ion-checkbox>
+            <p class="permission-text">
+              By checking this box, I acknowledge that I have read and
+              understood the
+              <a (click)="openDataPrivacyModal()">Data Privacy Policy (10173)</a
+              >.
+            </p>
+          </div>
+
+          <!-- and hereby give
+              permission to FitQuest Junior to use my personal data, including
+              email, sex, and fullname, that will be saved on this website. -->
+
           <div class="signinLink">
             <p>
               Already a Member?<a
@@ -128,7 +144,13 @@
           <ion-icon name="chevron-forward"></ion-icon>
         </ion-fab-button>
       </ion-fab> -->
-        <button class="center-button" (click)="signUp()">Sign In</button>
+        <button
+          class="center-button"
+          (click)="signUp()"
+          [disabled]="!permission"
+        >
+          Sign In
+        </button>
       </form>
     </div>
   </div>

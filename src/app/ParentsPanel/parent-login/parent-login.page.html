@@ -39,7 +39,7 @@
               placeholder="email"
               class="input"
             ></ion-input>
-            <ion-icon name="person-outline"></ion-icon>
+            <ion-icon name="mail-outline"></ion-icon>
           </ion-item>
           <div
             *ngIf="this.logForm.controls?.['email'].touched && this.logForm.controls?.['email'].invalid"
@@ -84,6 +84,16 @@
               characters and include numbers and letters
             </ion-text>
           </div>
+
+          <div class="forgot-password-link">
+            <p>
+              Forgot Password?
+              <a [routerLink]="['/forgot-password']" style="color: #57aba5"
+                >Click Here</a
+              >
+            </p>
+          </div>
+
           <div class="signupLink">
             <p>
               Don't Have an Account?
@@ -92,7 +102,18 @@
               </a>
             </p>
           </div>
+
+          <!-- Remember Me -->
+          <div class="remember-me">
+            <p class="remember-text">Remember Me</p>
+            <ion-checkbox
+              formControlName="rememberMe"
+              [(ngModel)]="rememberMe"
+              class="custom-checkbox"
+            ></ion-checkbox>
+          </div>
         </div>
+
         <button class="center-button" (click)="signUp()">Login</button>
 
         <div class="line-shape"></div>

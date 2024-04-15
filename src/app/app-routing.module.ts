@@ -279,6 +279,18 @@ const routes: Routes = [
     path: 'trash',
     loadChildren: () => import('./pages/trash/trash.module').then( m => m.TrashPageModule)
   },
+  {
+    path: 'email-verification-required',
+    loadChildren: () => import('./ParentsPanel/email-verification-required/email-verification-required.module').then( m => m.EmailVerificationRequiredPageModule)
+  },
+  {
+    path: 'forgot-password',
+    loadChildren: () => import('./ParentsPanel/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
+  },
+  {
+    path: 'data-privacy',
+    loadChildren: () => import('./modals/data-privacy/data-privacy.module').then( m => m.DataPrivacyPageModule)
+  },
 
 ];
 
