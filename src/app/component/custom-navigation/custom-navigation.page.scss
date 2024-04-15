@@ -1,37 +1,40 @@
 
 .component-container{
-  margin-top: 10vh;
+  
+  
 }
 
 .rowParent{
-  margin-top: -100vh;
+  // margin-top: -100vh;
   position: fixed;
   margin: 0 auto;
-  box-shadow: 10px 10px 16px 0px rgba(0, 0, 0, 0.75);
+  // box-shadow: 10px 10px 16px 0px rgba(0, 0, 0, 0.75);
   width: 45%;
   height: auto;
-  background: wheat;
-  border-radius: 10px;
-  animation: slideFromTop 0.8s ease forwards;
+  // background: wheat;
+  // border-radius: 10px;
+  // animation: slideFromTop 0.8s ease forwards;
  
 }
 
 
-@keyframes slideFromTop {
-  from {
-    transform: translateY(-100vh);
-    opacity: 0;
-  }
+// @keyframes slideFromTop {
+//   from {
+//     transform: translateY(-100vh);
+//     opacity: 0;
+//   }
 
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
+//   to {
+//     transform: translateY(0);
+//     opacity: 1;
+//   }
+// }
 
 .quest{
   margin: 0vh auto;
 }
+
+
 
 img{
   margin: 0 auto;
@@ -40,22 +43,20 @@ img{
 @media only screen and (max-width: 760px) {
  .rowParent {
     position: sticky;
-    width: 90%;
-    height: auto;
-    background: wheat;
-    border-radius: 10px;
-  }
-  .component-container {
-    margin-top: 0vh;
+    width: 100%;
+    // height: auto;
+    // background: wheat;
+    // border-radius: 10px;
   }
   img {
-      width: 140px;
-      height: 110px;
+    min-width: 175px;
+    height: 155px;
   }
   .quest {
     display: flex;
     justify-content: center;
   }
+
   .component-container {
     margin-top: 1vh;
   }
@@ -65,4 +66,10 @@ img{
   .rowParent {
     left: 80px;
   }
+}
+
+ion-col{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

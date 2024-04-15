@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-custom-navigation',
@@ -10,25 +11,27 @@ export class CustomNavigationPage implements OnInit {
   @Input() imageUrl: string;
   @Input() routerLink: string;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private navCtrl: NavController) {}
 
   ngOnInit() {}
 
+  navigateToEBook() {
+    this.navCtrl.navigateForward('/babyBook', { animated: false });
+  }
+
   navigateToConsultation() {
-    this.router.navigateByUrl('/consultation');
+    this.navCtrl.navigateForward('/consultation', { animated: false });
+  }
+
+  navigateToKids() {
+    this.navCtrl.navigateForward('/vaccination', { animated: false });
   }
 
   navigateToActivity() {
-    this.router.navigateByUrl('/parents-acitvity');
+    this.navCtrl.navigateForward('/parents-acitvity', { animated: false });
   }
 
   navigateToQuest() {
-    this.router.navigateByUrl('/kids-progress');
-  }
-  navigateToKids() {
-    this.router.navigateByUrl('/vaccination');
-  }
-  navigateToEBook() {
-    this.router.navigateByUrl('/babybook');
+    this.navCtrl.navigateForward('/kids-progress', { animated: false });
   }
 }

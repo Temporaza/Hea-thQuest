@@ -66,9 +66,6 @@ ion-card-title {
   font-size: 20px;
 }
 
-.plain-button ion-icon {
-  margin-right: 8px; /* Add spacing between icon and text */
-}
 
 .edit-btn {
   color: black;
@@ -96,5 +93,33 @@ ion-card-footer {
 .parent{
   display: flex;
   justify-content: center;
+}
+
+.healthy-weight {
+  background-color: green;
+  padding: 5px;
+    border-radius: 10px;
+    color: white;
+}
+
+.underweight {
+  background-color: lightblue;
+  padding: 5px;
+    border-radius: 10px;
+    color: white;
+}
+
+.overweight {
+  background-color: yellow;
+  padding: 5px;
+    border-radius: 10px;
+    color: white;
+}
+
+.obese {
+  background-color: orange;
+  padding: 5px;
+    border-radius: 10px;
+    color: white;
 }
 

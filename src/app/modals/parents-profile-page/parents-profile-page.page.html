@@ -80,6 +80,18 @@
             <ion-label>Role:</ion-label>
             <ion-text>{{ currentUser.role }}</ion-text>
           </ion-item>
+          <h1 style="text-align: center">Kids</h1>
+          <ion-item *ngFor="let user of parentUsers; let i = index">
+            <ion-label>Kid #{{ i + 1 }}</ion-label>
+            <ion-text>{{ user.fullname }}</ion-text>
+            <div>
+              <img
+                [src]="'https://m.media-amazon.com/images/I/41jLBhDISxL.jpg'"
+                alt="Profile Picture"
+                style="width: 50px; height: 50px; margin: 0 10px"
+              />
+            </div>
+          </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>

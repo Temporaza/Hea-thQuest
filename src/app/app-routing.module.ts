@@ -275,7 +275,11 @@ const routes: Routes = [
       import('./modals/parents-profile-page/parents-profile-page.module').then(
         (m) => m.ParentsProfilePagePageModule
       ),
+  },  {
+    path: 'trash',
+    loadChildren: () => import('./pages/trash/trash.module').then( m => m.TrashPageModule)
   },
+
 ];
 
 @NgModule({

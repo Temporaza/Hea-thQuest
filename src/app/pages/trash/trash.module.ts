@@ -4,10 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { TrashGamePageRoutingModule } from './trash-game-routing.module';
+import { TrashPageRoutingModule } from './trash-routing.module';
 
-import { TrashGamePage } from './trash-game.page';
-
+import { TrashPage } from './trash.page';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
@@ -15,9 +14,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     CommonModule,
     FormsModule,
     IonicModule,
-    TrashGamePageRoutingModule,
+    TrashPageRoutingModule,
     DragDropModule,
   ],
-  declarations: [TrashGamePage],
+  declarations: [TrashPage],
 })
-export class TrashGamePageModule {}
+export class TrashPageModule {}

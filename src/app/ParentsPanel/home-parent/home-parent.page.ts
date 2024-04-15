@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FirebaseApp } from '@angular/fire/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -67,15 +67,15 @@ export class HomeParentPage implements OnInit {
     private location: Location
   ) {}
 
-  private listenToBackButton() {
-    window.addEventListener('popstate', () => {
-      // Reload the current page when the back button is clicked
-      window.location.reload();
-    });
-  }
+  // private listenToBackButton() {
+  //   window.addEventListener('popstate', () => {
+  //     // Reload the current page when the back button is clicked
+  //     window.location.reload();
+  //   });
+  // }
 
   async ngOnInit() {
-    this.listenToBackButton();
+    // this.listenToBackButton();
     await this.presentLoading();
     await this.loadData();
     await this.dismissLoading();
@@ -283,5 +283,10 @@ export class HomeParentPage implements OnInit {
       },
     });
     return await modal.present();
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.location.forward();
   }
 }

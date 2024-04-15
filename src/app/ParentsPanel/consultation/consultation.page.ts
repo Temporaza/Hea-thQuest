@@ -5,11 +5,13 @@ import {
   ElementRef,
   ViewChildren,
   QueryList,
+  HostListener,
 } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Chart } from 'chart.js/auto';
 import { Observable, map } from 'rxjs';
+import { Location } from '@angular/common';
 
 interface BMIRecord {
   date: string;
@@ -36,7 +38,7 @@ interface Task {
 })
 export class ConsultationPage implements OnInit, AfterViewInit {
   parentUID: string;
-  usersData: any[] = []; 
+  usersData: any[] = [];
   tasksDone$: Observable<Task[]>;
   taskData: { description: string; count: number; percentage: number }[] = [];
 
@@ -46,20 +48,17 @@ export class ConsultationPage implements OnInit, AfterViewInit {
 
   constructor(
     private firestore: AngularFirestore,
-    private authFire: AngularFireAuth
+    private authFire: AngularFireAuth,
+    private location: Location
   ) {}
 
   ngOnInit() {
-
     this.authFire.authState.subscribe((user) => {
       if (user) {
-       
         this.parentUID = user.uid;
 
-     
         this.fetchUserData();
 
-      
         this.createLineGraphs();
       }
     });
@@ -140,8 +139,8 @@ export class ConsultationPage implements OnInit, AfterViewInit {
                 easing: 'linear',
                 from: 1,
                 to: 0,
-                loop: true
-              }
+                loop: true,
+              },
             },
             scales: {
               x: {
@@ -220,7 +219,6 @@ export class ConsultationPage implements OnInit, AfterViewInit {
         try {
           const uid = canvasRef.nativeElement.id.split('_')[1];
 
-         
           this.firestore
             .collection(`parents/${this.parentUID}/tasks`)
             .snapshotChanges()
@@ -234,13 +232,10 @@ export class ConsultationPage implements OnInit, AfterViewInit {
               })
             )
             .subscribe((tasks) => {
-           
               const filteredTasks = tasks.filter((task) => task.userId === uid);
 
-        
               const taskCounts = new Map<string, number>();
 
-              
               filteredTasks.forEach((task) => {
                 const description = task.description;
                 taskCounts.set(
@@ -254,7 +249,6 @@ export class ConsultationPage implements OnInit, AfterViewInit {
                 0
               );
 
-             
               const percentageData = Array.from(taskCounts.values()).map(
                 (count) => parseFloat(((count / totalCount) * 100).toFixed(2))
               );
@@ -361,25 +355,32 @@ export class ConsultationPage implements OnInit, AfterViewInit {
   }
 
   fetchUserData() {
-  // Fetch user data from Firestore in real-time
-  this.firestore
-    .collection('parents')
-    .doc(this.parentUID)
-    .collection('users')
-    .snapshotChanges() // Use snapshotChanges() to listen to real-time changes
-    .subscribe((querySnapshot) => {
-      // Reset the usersData array
-      this.usersData = [];
+    // Fetch user data from Firestore in real-time
+    this.firestore
+      .collection('parents')
+      .doc(this.parentUID)
+      .collection('users')
+      .snapshotChanges() // Use snapshotChanges() to listen to real-time changes
+      .subscribe((querySnapshot) => {
+        // Reset the usersData array
+        this.usersData = [];
 
-      // Iterate through the user documents
-      querySnapshot.forEach((doc) => {
-        const userData: UserData = { uid: doc.payload.doc.id, ...doc.payload.doc.data() } as UserData;
-        this.usersData.push(userData);
+        // Iterate through the user documents
+        querySnapshot.forEach((doc) => {
+          const userData: UserData = {
+            uid: doc.payload.doc.id,
+            ...doc.payload.doc.data(),
+          } as UserData;
+          this.usersData.push(userData);
+        });
+
+        // Call the function to create the line graphs after fetching user data
+        this.createLineGraphs();
       });
+  }
 
-      // Call the function to create the line graphs after fetching user data
-      this.createLineGraphs();
-    });
-}
-
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.location.forward();
+  }
 }

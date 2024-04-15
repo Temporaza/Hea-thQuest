@@ -14,6 +14,11 @@ interface ParentData {
   profile?: string;
 }
 
+interface User {
+  fullname: string;
+  // Add other properties if needed
+}
+
 @Component({
   selector: 'app-parents-profile-page',
   templateUrl: './parents-profile-page.page.html',
@@ -29,6 +34,7 @@ export class ParentsProfilePagePage implements OnInit {
   selectedImage: any;
   selectedFile: File | null = null;
   profileImageUrl: string | null = null;
+  parentUsers: any[];
 
   constructor(
     private modalController: ModalController,
@@ -77,6 +83,19 @@ export class ParentsProfilePagePage implements OnInit {
           .subscribe((data: any) => {
             this.currentUser.fullname = data.fullname;
           });
+
+        const usersSnapshot = await this.firestore
+          .collection('parents')
+          .doc(this.parentUID)
+          .collection('users')
+          .get()
+          .toPromise();
+
+        // Map users data to parentUsers array
+        this.parentUsers = usersSnapshot.docs.map((doc) => doc.data());
+
+        // Log parentUsers array
+        console.log('Parent Users:', this.parentUsers);
       }
     } catch (error) {
       console.error('Error fetching current parent information:', error);

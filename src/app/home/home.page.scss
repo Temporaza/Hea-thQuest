@@ -146,6 +146,21 @@ ion-card {
   // border: 2px solid green;
 }
 
+.pet-hat{
+  width: 150px;
+    position: absolute;
+    height: auto;
+    margin-bottom: 67%;
+}
+
+@media screen and (min-width: 422px) {
+  .pet-hat {
+    margin-bottom: 22vh;
+    height: fit-content;
+  }
+
+}
+
 .pet-eyes {
   // border: 2px solid red;
   width: 300px; /* Adjust the size as needed */
@@ -215,7 +230,7 @@ ion-card {
   z-index: 3;
   position: absolute;
   display: flex;
-  justify-content: center; /* Center the content horizontally */
+  justify-content: center;
   img {
     height: 140px;
     width: 140px;
@@ -237,7 +252,7 @@ ion-card {
 .attitude {
   z-index: 3;
   display: flex;
-  justify-content: center; /* Center the content horizontally */
+  justify-content: center; 
   img {
     height: 140px;
     width: 140px;
@@ -246,17 +261,6 @@ ion-card {
   position: absolute;
 }
 
-// ion-footer {
-//   max-width: 70%;
-//   margin: 0 auto;
-//   position: fixed;
-//   bottom: 0;
-//   left: 0;
-//   right: 0;
-//   border-top-left-radius: 25px;
-//   border-top-right-radius: 25px;
-//   background-color: #003366;
-// }
 .menu-inner {
   display: flex;
   justify-content: center;

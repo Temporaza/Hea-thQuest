@@ -31,6 +31,13 @@ ion-content {
   // border: 2px solid green;
 }
 
+.wizard-hat{
+  width: 150px;
+  position: absolute;
+  height: auto;
+  margin-bottom: 60%;
+}
+
 .pet-eyes {
   // border: 2px solid red;
   width: 250px; /* Adjust the size as needed */
@@ -61,6 +68,16 @@ ion-content {
     transform: translateY(-10px);
   }
 }
+
+@media screen and (min-width: 422px) {
+  .wizard-hat{
+    margin-bottom: 22vh;
+    height: fit-content;
+  }
+
+}
+
+
 //save
 .save-button {
   display: flex;
@@ -137,7 +154,7 @@ button {
     ); // Adjust the width of each column as needed
     gap: 20px; // Adjust the gap between items
 
-    .duzzy {
+    .duzzy, .cosmetic-item {
       display: flex;
       flex-direction: column;
       align-items: center;

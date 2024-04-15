@@ -1,6 +1,7 @@
 // babybook.page.ts
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-babybook',
@@ -8,7 +9,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./babybook.page.scss'],
 })
 export class BabybookPage implements OnInit {
-
   images: string[] = [
     'assets/ebook/content/Ebook FitQuest Junior-01.png',
     'assets/ebook/content/Ebook FitQuest Junior-02.png',
@@ -51,10 +51,9 @@ export class BabybookPage implements OnInit {
 
   currentPage: number = 0;
 
-  constructor() { }
+  constructor(private location: Location) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   nextPage() {
     if (this.currentPage < this.images.length - 1) {
@@ -66,5 +65,10 @@ export class BabybookPage implements OnInit {
     if (this.currentPage > 0) {
       this.currentPage--;
     }
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.location.forward();
   }
 }

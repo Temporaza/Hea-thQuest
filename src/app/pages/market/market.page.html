@@ -14,6 +14,16 @@
   </div>
 
   <div class="pet-container">
+    <img
+      *ngIf="equippedHat === 'wizardHat'"
+      [src]="wizardPurpleUrl"
+      class="wizard-hat"
+    />
+    <img
+      *ngIf="equippedHat === 'santaHat'"
+      [src]="santaUrl"
+      class="wizard-hat"
+    />
     <img [src]="petEyesUrl" class="pet-eyes blinking" />
     <img [src]="petMouthUrl" class="pet-mouth talking" />
     <img [src]="petBodyUrl" class="pet-body" />
@@ -154,11 +164,36 @@
           </div>
         </div>
       </div>
+
       <!-- Cosmetics section -->
       <div class="pet-cosmetics">
         <div class="closet-container" *ngIf="currentCategory === 'cosmetics'">
-          <div class="cosmetic-item"></div>
-          <div class="cosmetic-item"></div>
+          <div class="cosmetic-item">
+            <img [src]="wizardPurpleUrl" alt="Wizard Hat" />
+            <ng-container *ngIf="!isWizardHatOwned; else hatOwned">
+              <button (click)="buyHat('wizardHat', 50)">Buy Wizard Hat</button>
+              <span class="pet-price">Price: 50 Points</span>
+            </ng-container>
+            <ng-template #hatOwned>
+              <button (click)="equipWizardHat()" [disabled]="!isWizardHatOwned">
+                Equip Wizard Hat
+              </button>
+              <span>Owned</span>
+            </ng-template>
+          </div>
+          <div class="cosmetic-item">
+            <img [src]="santaUrl" alt="Santa Hat" />
+            <ng-container *ngIf="!isSantaHatOwned; else santaHatOwned">
+              <button (click)="buyHat('santaHat', 50)">Buy Santa Hat</button>
+              <span class="pet-price">Price: 50 Points</span>
+            </ng-container>
+            <ng-template #santaHatOwned>
+              <button (click)="equipSantaHat()" [disabled]="!isSantaHatOwned">
+                Equip Santa Hat
+              </button>
+              <span>Owned</span>
+            </ng-template>
+          </div>
         </div>
       </div>
     </div>

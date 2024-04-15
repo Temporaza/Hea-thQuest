@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthenticationService } from 'src/app/authentication.service';
@@ -7,6 +7,8 @@ import { TaskStatusService } from 'src/app/services/task-status.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { PointsServiceService } from 'src/app/services/points.service.service';
+import { Location } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-market',
@@ -22,7 +24,12 @@ export class MarketPage implements OnInit {
   petMouthUrl: string;
   petBodyUrl: string;
 
+  petHatUrl: string | null;
+
   selectedPetBodyUrl: string;
+
+  isWizardHatEquipped: boolean = false;
+  isSantaHatEquipped: boolean = false;
 
   //body parts
   duzzyUrl: string;
@@ -32,12 +39,20 @@ export class MarketPage implements OnInit {
   sumoUrl: string;
   wet_dogUrl: string;
 
+  wizardPurpleUrl: string;
+  santaUrl: string;
+
   isDuzzyOwned: boolean = false;
   isBigYakOwned: boolean = false;
   isCurlyOwned: boolean = false;
   isSpikeyOwned: boolean = false;
   isSumoOwned: boolean = false;
   isWetDogOwned: boolean = false;
+
+  isWizardHatOwned: boolean = false;
+  isSantaHatOwned: boolean = false;
+
+  equippedHat: string | null = null;
 
   constructor(
     private storage: AngularFireStorage,
@@ -48,44 +63,62 @@ export class MarketPage implements OnInit {
     private afAuth: AngularFireAuth,
     private alertController: AlertController,
     private pointsService: PointsServiceService,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private location: Location
   ) {}
 
   updatePointsAfterPurchase(newPoints: number) {
-    // Update points in the service
     this.pointsService.updatePoints(newPoints);
   }
 
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.location.forward();
+  }
+
   async ngOnInit() {
+    const loading = await this.loadingController.create({
+      message: 'Loading...', // Message displayed in the loading spinner
+      translucent: true, // Make the loading spinner background translucent
+    });
+    await loading.present();
     try {
-      // Get the current user
       const currentUser = await this.authService.getCurrentUser();
-      // Log the user's information
       console.log('Current User:', currentUser);
-      // Fetch the user's document from Firestore
       const userId = currentUser.uid;
 
-      // Fetch total points using the user ID
       const totalPoints =
         await this.taskStatusService.getTotalPointsFromFirestore(userId);
-      // Update the total points in the component
       this.totalPoints = totalPoints;
 
+      await this.fetchUserData(userId);
+
       const userDocRef = this.firestore.collection('users').doc(userId);
-      // Use a snapshot to check if the document exists
       const userDocSnapshot = await userDocRef.get().toPromise();
 
+      const storedEquippedHat = localStorage.getItem('equippedHat');
+      if (storedEquippedHat === 'wizardHat') {
+        this.equippedHat = 'wizardHat';
+        this.isWizardHatEquipped = true;
+        this.petHatUrl = this.wizardPurpleUrl;
+      } else if (storedEquippedHat === 'santaHat') {
+        this.equippedHat = 'santaHat';
+        this.isSantaHatEquipped = true;
+        this.petHatUrl = this.santaUrl;
+      }
+
       if (userDocSnapshot.exists) {
-        // Extract user data from the document
         const userData = userDocSnapshot.data() as {
           petBodyUrl?: string; // Include other fields if needed
+          petHatUrl?: string; // Include the hat URL field
         };
 
-        // If user data exists and contains a saved pet body URL, use it; otherwise, fetch the default URL
         this.petBodyUrl =
           userData && userData.petBodyUrl
             ? userData.petBodyUrl
             : 'default-pet-body-url';
+        this.petHatUrl =
+          userData && userData.petHatUrl ? userData.petHatUrl : null;
 
         // Fetch other pet images
         this.petEyesUrl = await this.getDownloadUrl('mata', 'One.png');
@@ -97,6 +130,12 @@ export class MarketPage implements OnInit {
         this.sumoUrl = await this.getDownloadUrl('Body', 'Sumo.png');
         this.wet_dogUrl = await this.getDownloadUrl('Body', 'WetDog.png');
 
+        this.wizardPurpleUrl = await this.getDownloadUrl(
+          'Hat',
+          'wizardPurple.png'
+        );
+        this.santaUrl = await this.getDownloadUrl('Hat', 'santa.png');
+
         // Fetch the user's owned pet bodies from Firestore or another source
         const ownedPetBodies = await this.fetchOwnedPetBodies(userId);
 
@@ -107,11 +146,20 @@ export class MarketPage implements OnInit {
         this.isSpikeyOwned = ownedPetBodies.includes('Spikey');
         this.isSumoOwned = ownedPetBodies.includes('Sumo');
         this.isWetDogOwned = ownedPetBodies.includes('wetDog');
+
+        // Check if the hat is equipped and update the flag
+        const ownedCosmetics = await this.getOwnedCosmetics();
+
+        // Set the ownership flags based on the fetched data
+        this.isWizardHatOwned = ownedCosmetics.includes('wizardHat');
+        this.isSantaHatOwned = ownedCosmetics.includes('santaHat');
+        await loading.dismiss();
       } else {
         console.log('User document does not exist.');
         // Handle the case when the user document does not exist
       }
     } catch (error) {
+      await loading.dismiss();
       console.error('Error fetching total points:', error);
       console.error('Error fetching current user:', error);
     }
@@ -130,12 +178,16 @@ export class MarketPage implements OnInit {
       const userId = currentUser.uid;
 
       // Update or add data to the document
-      await this.firestore.collection('users').doc(userId).update({
-        petEyesUrl: this.petEyesUrl,
-        petMouthUrl: this.petMouthUrl,
-        petBodyUrl: this.petBodyUrl,
-        // Add other properties as needed
-      });
+      await this.firestore
+        .collection('users')
+        .doc(userId)
+        .update({
+          petEyesUrl: this.petEyesUrl,
+          petMouthUrl: this.petMouthUrl,
+          petBodyUrl: this.petBodyUrl,
+          petHatUrl: this.isWizardHatEquipped ? this.wizardPurpleUrl : null,
+          // Add other properties as needed
+        });
 
       // Log the name and URL of the selected pet body when saved
       console.log('Data saved successfully!', this.petBodyUrl);
@@ -262,7 +314,8 @@ export class MarketPage implements OnInit {
           {
             totalPoints: this.totalPoints,
             ownedPetBodies: this.getOwnedPetBodies(),
-            petBodyUrl: this.petBodyUrl, // Add this line to include pet body URL
+            ownedCosmetics: this.getOwnedCosmetics(),
+            petBodyUrl: this.petBodyUrl,
           },
           { merge: true }
         );
@@ -324,5 +377,93 @@ export class MarketPage implements OnInit {
   // Method to switch to the previous category
   previousCategory(category: string) {
     this.currentCategory = category;
+  }
+
+  //Cosmetics
+
+  async fetchUserData(userId: string) {
+    const userDoc = await this.firestore
+      .collection('users')
+      .doc(userId)
+      .get()
+      .toPromise();
+    const userData = userDoc.data() as {
+      ownedCosmetics: string[];
+      petHatUrl?: string; // Add petHatUrl property to userData type
+    };
+
+    // Check if user owns the wizard hat
+    this.isWizardHatOwned = userData.ownedCosmetics.includes('wizardHat');
+    this.isSantaHatOwned = userData.ownedCosmetics.includes('santaHat');
+    // Set the petHatUrl
+    this.petHatUrl = userData.petHatUrl || null;
+  }
+
+  async buyHat(hatName: string, price: number) {
+    try {
+      // Check if the user has enough points to buy the hat
+      if (this.totalPoints >= price) {
+        // Deduct the price from the user's total points
+        this.totalPoints -= price;
+        // Update ownership status for the hat
+        switch (hatName) {
+          case 'wizardHat':
+            this.isWizardHatOwned = true;
+            break;
+          case 'santaHat':
+            this.isSantaHatOwned = true;
+            break;
+          // Add cases for other hats as needed
+        }
+        // Save updated user data to Firestore
+        await this.updateUserData();
+        // Notify the user that the purchase was successful
+        await this.presentAlert(
+          `Successfully purchased ${hatName} for ${price} Points.`
+        );
+      } else {
+        // Notify the user that they don't have enough points
+        await this.presentAlert(`Not enough Points to buy ${hatName}.`);
+      }
+    } catch (error) {
+      console.error('Error during purchase:', error);
+    }
+  }
+
+  async equipWizardHat() {
+    try {
+      this.equippedHat = 'wizardHat';
+      this.isWizardHatEquipped = true;
+      this.petHatUrl = this.wizardPurpleUrl;
+      await this.updateUserData();
+      // Store the equipped hat in local storage
+      localStorage.setItem('equippedHat', 'wizardHat');
+    } catch (error) {
+      console.error('Error equipping Wizard Hat:', error);
+    }
+  }
+
+  async equipSantaHat() {
+    try {
+      this.equippedHat = 'santaHat';
+      this.isSantaHatEquipped = true;
+      this.petHatUrl = this.santaUrl;
+      await this.updateUserData();
+      // Store the equipped hat in local storage
+      localStorage.setItem('equippedHat', 'santaHat');
+    } catch (error) {
+      console.error('Error equipping Santa Hat:', error);
+    }
+  }
+  getOwnedCosmetics(): string[] {
+    const ownedCosmetics: string[] = [];
+    if (this.isWizardHatOwned) {
+      ownedCosmetics.push('wizardHat');
+    }
+    if (this.isSantaHatOwned) {
+      ownedCosmetics.push('santaHat');
+    }
+    // Add similar conditions for other cosmetics if needed
+    return ownedCosmetics;
   }
 }

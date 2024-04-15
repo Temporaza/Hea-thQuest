@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.fitQuestJunior.app;
 
 import com.getcapacitor.BridgeActivity;
 

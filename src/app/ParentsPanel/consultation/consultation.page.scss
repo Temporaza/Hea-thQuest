@@ -181,3 +181,17 @@ ion-content {
   text-align: center;
 }
 
+.dropD{
+border: 1px solid;
+border-radius: 10px;
+margin: 30px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.select{
+  --font-family: "IntegralCF-Bold";
+  font-size: 1.5em;
+  font-weight: bold;
+}

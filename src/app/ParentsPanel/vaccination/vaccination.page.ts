@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthenticationForParentsService } from 'src/app/authenticationParents/authentication-for-parents.service';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { ModalCalendarPage } from 'src/app/modals/modal-calendar/modal-calendar.
 import { Subscription } from 'rxjs';
 import { LoginPage } from 'src/app/pages/login/login.page';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Location } from '@angular/common';
 
 interface ParentData {
   users?: string[];
@@ -50,7 +51,8 @@ export class VaccinationPage implements OnInit {
     private loadingController: LoadingController,
     private modalController: ModalController,
     private afAuth: AngularFireAuth,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private location: Location
   ) {}
 
   async ngOnInit() {
@@ -62,13 +64,12 @@ export class VaccinationPage implements OnInit {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
- subscribeToUserLogin() {
-     const subscription = this.afAuth.authState.subscribe((user) => {
+  subscribeToUserLogin() {
+    const subscription = this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.parentUid = user.uid;
         this.loadData();
         this.loadBabies();
-    
       } else {
         console.error('No user is logged in.');
         // Handle case where no user is logged in, such as redirecting to login page
@@ -279,7 +280,7 @@ export class VaccinationPage implements OnInit {
     }
 
     console.log('User ID:', userId);
-    console.log('Parent UID:', this.parentUid)
+    console.log('Parent UID:', this.parentUid);
     const modal = await this.modalController.create({
       component: LoginPage,
       componentProps: {
@@ -295,10 +296,30 @@ export class VaccinationPage implements OnInit {
     const modal = await this.modalController.create({
       component: VaccineDetailsModalPage,
       componentProps: {
-        userUID: userData.usersUID
+        userUID: userData.usersUID,
       },
     });
 
     await modal.present();
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.location.forward();
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'Healthy Weight':
+        return 'healthy-weight';
+      case 'Underweight':
+        return 'underweight';
+      case 'Overweight':
+        return 'overweight';
+      case 'Obese':
+        return 'obese';
+      default:
+        return ''; // Default class
+    }
   }
 }

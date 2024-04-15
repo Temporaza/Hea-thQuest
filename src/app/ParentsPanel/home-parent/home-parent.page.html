@@ -35,9 +35,7 @@
   <ion-grid>
     <ion-row>
       <ion-col class="com-nav" size="12" size-md="6">
-        <div>
-          <app-custom-navigation class="stick"></app-custom-navigation>
-        </div>
+        <app-custom-navigation class="stick"></app-custom-navigation>
       </ion-col>
       <ion-col class="second" size="12" size-md="6">
         <ion-col class="outputs" size="12" size-md="6">
@@ -71,4 +69,10 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <ion-fab class="fab-btn" slot="fixed" vertical="bottom" horizontal="center">
+    <ion-fab-button (click)="navigateToEBook()">
+      <img alt="daily task" src="assets/ebook/babyBook.png" />
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, combineLatest, of } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -7,6 +7,7 @@ import { LoadingController, AlertController } from '@ionic/angular';
 import { TaskStatusService } from 'src/app/services/task-status.service';
 import { Subscription } from 'rxjs';
 import { CustomNavigationPage } from 'src/app/component/custom-navigation/custom-navigation.page';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-parents-acitvity',
@@ -34,7 +35,8 @@ export class ParentsAcitvityPage implements OnInit {
     private afAuth: AngularFireAuth,
     private loadingController: LoadingController,
     private alertController: AlertController,
-    private taskStatusService: TaskStatusService
+    private taskStatusService: TaskStatusService,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -363,5 +365,10 @@ export class ParentsAcitvityPage implements OnInit {
     } finally {
       await loading.dismiss();
     }
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.location.forward();
   }
 }

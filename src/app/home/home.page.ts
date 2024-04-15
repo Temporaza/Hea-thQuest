@@ -1,4 +1,10 @@
-import { Component, OnDestroy, ElementRef, Renderer2 } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  ElementRef,
+  Renderer2,
+  HostListener,
+} from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -13,6 +19,8 @@ import { interval, Subscription } from 'rxjs';
 
 import { PointsServiceService } from 'src/app/services/points.service.service';
 import { CdkDragStart, CdkDragEnd, CdkDrag } from '@angular/cdk/drag-drop';
+import { Location } from '@angular/common';
+import { PetHatServiceService } from '../services/pet-hat-service.service';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +35,7 @@ export class HomePage {
   petEyesUrl: string;
   petMouthUrl: string;
   petBodyUrl: string;
+  petHatUrl: string;
 
   selectedPetBodyUrl: string;
 
@@ -92,7 +101,9 @@ export class HomePage {
     private cdr: ChangeDetectorRef,
     private alertControler: AlertController,
     private pointsService: PointsServiceService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private location: Location,
+    private petHatService: PetHatServiceService
   ) {
     this.user = authService.getProfile;
 
@@ -119,10 +130,15 @@ export class HomePage {
     }
   }
 
-  async ionViewDidEnter() {
-    this.createLoading();
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.location.forward();
+  }
 
-    this.playBackgroundMusic();
+  async ionViewDidEnter() {
+    // this.createLoading();
+
+    // this.playBackgroundMusic();
 
     this.fetchPetImages();
 
@@ -178,10 +194,13 @@ export class HomePage {
 
           if (userDoc.exists) {
             this.petBodyUrl = userDoc.get('petBodyUrl');
+            this.petHatUrl = userDoc.get('petHatUrl');
 
             console.log('Selected PetBodyImage URL:', this.petBodyUrl);
+            console.log('Selected PetHatImage URL:', this.petHatUrl);
 
             this.petBodyService.setSelectedPetBodyUrl(this.petBodyUrl);
+            this.petHatService.setSelectedPetHatUrl(this.petHatUrl);
           } else {
             console.error('User document not found.');
           }
@@ -201,20 +220,19 @@ export class HomePage {
   }
 
   async fetchPetImages() {
-    const loading = await this.createLoading();
+    // const loading = await this.createLoading();
     try {
-      await loading.present();
+      // await loading.present();
 
       this.petEyesUrl = await this.getDownloadUrl('eyes', 'eye1.png');
       this.petMouthUrl = await this.getDownloadUrl('Mouth', 'M3.png');
       this.petBodyUrl = this.petBodyService.getSelectedPetBodyUrl() || '';
-
-      // Perform additional tasks if needed after fetching all images
+      this.petHatUrl = this.petHatService.getSelectedPetHatUrl() || '';
     } catch (error) {
       console.error('Error fetching pet images:', error);
     } finally {
       // Dismiss the loading spinner whether successful or not
-      await loading.dismiss();
+      // await loading.dismiss();
     }
   }
 

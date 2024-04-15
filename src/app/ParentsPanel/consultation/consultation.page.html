@@ -24,14 +24,19 @@
           <div class="parentConsult">
             <ion-list *ngIf="usersData.length > 0">
               <div class="dropD">
-                <ion-select [(ngModel)]="selectedGraph">
-                  <ion-select-option value="lineGraph"
-                    >Line Graph</ion-select-option
+                <div class="select">
+                  <ion-select
+                    [(ngModel)]="selectedGraph"
+                    placeholder="Select Type"
                   >
-                  <ion-select-option value="pieGraph"
-                    >Pie Graph</ion-select-option
-                  >
-                </ion-select>
+                    <ion-select-option value="lineGraph"
+                      >Line Graph</ion-select-option
+                    >
+                    <ion-select-option value="pieGraph"
+                      >Pie Graph</ion-select-option
+                    >
+                  </ion-select>
+                </div>
               </div>
 
               <div class="childs" *ngFor="let user of usersData">
