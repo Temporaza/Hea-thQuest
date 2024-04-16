@@ -14,16 +14,7 @@
   </div>
 
   <div class="pet-container">
-    <img
-      *ngIf="equippedHat === 'wizardHat'"
-      [src]="wizardPurpleUrl"
-      class="wizard-hat"
-    />
-    <img
-      *ngIf="equippedHat === 'santaHat'"
-      [src]="santaUrl"
-      class="wizard-hat"
-    />
+    <img *ngIf="petHatUrl" [src]="petHatUrl" class="wizard-hat" />
     <img [src]="petEyesUrl" class="pet-eyes blinking" />
     <img [src]="petMouthUrl" class="pet-mouth talking" />
     <img [src]="petBodyUrl" class="pet-body" />

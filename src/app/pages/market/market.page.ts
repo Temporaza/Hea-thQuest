@@ -77,11 +77,6 @@ export class MarketPage implements OnInit {
   }
 
   async ngOnInit() {
-    const loading = await this.loadingController.create({
-      message: 'Loading...', // Message displayed in the loading spinner
-      translucent: true, // Make the loading spinner background translucent
-    });
-    await loading.present();
     try {
       const currentUser = await this.authService.getCurrentUser();
       console.log('Current User:', currentUser);
@@ -92,6 +87,19 @@ export class MarketPage implements OnInit {
       this.totalPoints = totalPoints;
 
       await this.fetchUserData(userId);
+
+      if (
+        (this.isWizardHatEquipped || this.isSantaHatEquipped) &&
+        this.petHatUrl
+      ) {
+        if (this.isWizardHatEquipped) {
+          this.petHatUrl = this.wizardPurpleUrl;
+        } else if (this.isSantaHatEquipped) {
+          this.petHatUrl = this.santaUrl;
+        }
+      } else {
+        this.petHatUrl = null;
+      }
 
       const userDocRef = this.firestore.collection('users').doc(userId);
       const userDocSnapshot = await userDocRef.get().toPromise();
@@ -153,13 +161,11 @@ export class MarketPage implements OnInit {
         // Set the ownership flags based on the fetched data
         this.isWizardHatOwned = ownedCosmetics.includes('wizardHat');
         this.isSantaHatOwned = ownedCosmetics.includes('santaHat');
-        await loading.dismiss();
       } else {
         console.log('User document does not exist.');
         // Handle the case when the user document does not exist
       }
     } catch (error) {
-      await loading.dismiss();
       console.error('Error fetching total points:', error);
       console.error('Error fetching current user:', error);
     }
@@ -178,16 +184,13 @@ export class MarketPage implements OnInit {
       const userId = currentUser.uid;
 
       // Update or add data to the document
-      await this.firestore
-        .collection('users')
-        .doc(userId)
-        .update({
-          petEyesUrl: this.petEyesUrl,
-          petMouthUrl: this.petMouthUrl,
-          petBodyUrl: this.petBodyUrl,
-          petHatUrl: this.isWizardHatEquipped ? this.wizardPurpleUrl : null,
-          // Add other properties as needed
-        });
+      await this.firestore.collection('users').doc(userId).update({
+        petEyesUrl: this.petEyesUrl,
+        petMouthUrl: this.petMouthUrl,
+        petBodyUrl: this.petBodyUrl,
+        petHatUrl: this.petHatUrl,
+        // Add other properties as needed
+      });
 
       // Log the name and URL of the selected pet body when saved
       console.log('Data saved successfully!', this.petBodyUrl);
@@ -199,6 +202,8 @@ export class MarketPage implements OnInit {
           this.petBodyUrl
         }`
       );
+
+      console.log(`Saved Pet Hat URL: ${this.petHatUrl}`);
     } catch (error) {
       console.error('Error saving data:', error);
     }
@@ -393,8 +398,11 @@ export class MarketPage implements OnInit {
     };
 
     // Check if user owns the wizard hat
-    this.isWizardHatOwned = userData.ownedCosmetics.includes('wizardHat');
-    this.isSantaHatOwned = userData.ownedCosmetics.includes('santaHat');
+    if (userData && userData.ownedCosmetics) {
+      this.isWizardHatOwned = userData.ownedCosmetics.includes('wizardHat');
+      this.isSantaHatOwned = userData.ownedCosmetics.includes('santaHat');
+    }
+
     // Set the petHatUrl
     this.petHatUrl = userData.petHatUrl || null;
   }

@@ -17,6 +17,9 @@ export class PetHatServiceService {
   }
 
   getSelectedPetHatUrl(): string {
-    return this.selectedPetHatUrlSubject.getValue();
+    const selectedPetHatUrl = this.selectedPetHatUrlSubject.getValue();
+    return (
+      selectedPetHatUrl || localStorage.getItem('selectedPetHatUrl') || null
+    );
   }
 }

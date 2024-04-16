@@ -37,6 +37,8 @@ export class HomePage {
   petBodyUrl: string;
   petHatUrl: string;
 
+  petHatSubscription: Subscription;
+
   selectedPetBodyUrl: string;
 
   totalPoints: number = 0; // Initialize with a default value
@@ -107,6 +109,12 @@ export class HomePage {
   ) {
     this.user = authService.getProfile;
 
+    this.petHatSubscription = this.petHatService.selectedPetHatUrl$.subscribe(
+      (hatUrl) => {
+        this.petHatUrl = hatUrl;
+      }
+    );
+
     // Subscribe to changes in the task status
     this.taskStatusService.getTaskStatus().subscribe((statusWithPoints) => {
       const { status, points } = statusWithPoints;
@@ -128,6 +136,10 @@ export class HomePage {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
     }
+
+    if (this.petHatSubscription) {
+      this.petHatSubscription.unsubscribe();
+    }
   }
 
   @HostListener('window:popstate', ['$event'])
@@ -136,8 +148,7 @@ export class HomePage {
   }
 
   async ionViewDidEnter() {
-    // this.createLoading();
-
+    this.createLoading();
     // this.playBackgroundMusic();
 
     this.fetchPetImages();
@@ -156,9 +167,7 @@ export class HomePage {
 
   ngOnInit() {
     this.checkUser();
-    // Subscribe to points updates
     this.pointsService.points$.subscribe((points) => {
-      // Handle points update in the home component
       this.totalPoints = points;
     });
   }
@@ -200,7 +209,7 @@ export class HomePage {
             console.log('Selected PetHatImage URL:', this.petHatUrl);
 
             this.petBodyService.setSelectedPetBodyUrl(this.petBodyUrl);
-            this.petHatService.setSelectedPetHatUrl(this.petHatUrl);
+            this.petBodyService.setSelectedPetHatUrl(this.petHatUrl);
           } else {
             console.error('User document not found.');
           }
@@ -220,19 +229,19 @@ export class HomePage {
   }
 
   async fetchPetImages() {
-    // const loading = await this.createLoading();
+    const loading = await this.createLoading();
     try {
-      // await loading.present();
+      await loading.present();
 
       this.petEyesUrl = await this.getDownloadUrl('eyes', 'eye1.png');
       this.petMouthUrl = await this.getDownloadUrl('Mouth', 'M3.png');
+      this.petHatUrl = this.petBodyService.getSelectedPetHatUrl() || '';
       this.petBodyUrl = this.petBodyService.getSelectedPetBodyUrl() || '';
-      this.petHatUrl = this.petHatService.getSelectedPetHatUrl() || '';
     } catch (error) {
       console.error('Error fetching pet images:', error);
     } finally {
       // Dismiss the loading spinner whether successful or not
-      // await loading.dismiss();
+      await loading.dismiss();
     }
   }
 
@@ -282,7 +291,7 @@ export class HomePage {
 
               if (!isAuthenticated) {
                 // After logging out, navigate to the login page and clear history
-                this.route.navigate(['/parent-login'], { replaceUrl: true });
+                this.route.navigate(['/landing'], { replaceUrl: true });
 
                 // Log the message when the user is not authenticated
                 console.log('User is not authenticated.');
