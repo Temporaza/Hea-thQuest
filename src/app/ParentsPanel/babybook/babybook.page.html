@@ -11,16 +11,28 @@
 
 <ion-content [fullscreen]="true">
   <div class="book-page-container">
-    <img [src]="images[currentPage]" alt="Baby Book Page" class="book-page">
+    <img [src]="images[currentPage]" alt="Baby Book Page" class="book-page" />
   </div>
 
   <div class="pagination">
-    <ion-button (click)="prevPage()" fill="clear" color="primary" [disabled]="currentPage === 0">
+    <ion-button
+      (click)="prevPage()"
+      fill="clear"
+      color="primary"
+      [disabled]="currentPage === 0"
+    >
       <ion-icon name="arrow-back"></ion-icon>
       <ion-label>Previous</ion-label>
     </ion-button>
-    <span class="page-counter">{{ currentPage + 1 }} / {{ images.length }}</span>
-    <ion-button (click)="nextPage()" fill="clear" color="primary" [disabled]="currentPage === images.length - 1">
+    <span class="page-counter"
+      >{{ currentPage + 1 }} / {{ images.length }}</span
+    >
+    <ion-button
+      (click)="nextPage()"
+      fill="clear"
+      color="primary"
+      [disabled]="currentPage === images.length - 1"
+    >
       <ion-label>Next</ion-label>
       <ion-icon name="arrow-forward"></ion-icon>
     </ion-button>

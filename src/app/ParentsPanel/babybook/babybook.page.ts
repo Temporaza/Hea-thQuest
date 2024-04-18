@@ -10,17 +10,17 @@ import { Location } from '@angular/common';
 })
 export class BabybookPage implements OnInit {
   images: string[] = [
-    'assets/ebook/content/Ebook FitQuest Junior-01.png',
-    'assets/ebook/content/Ebook FitQuest Junior-02.png',
-    'assets/ebook/content/Ebook FitQuest Junior-03.png',
-    'assets/ebook/content/Ebook FitQuest Junior-04.png',
-    'assets/ebook/content/Ebook FitQuest Junior-06.png',
-    'assets/ebook/content/Ebook FitQuest Junior-07.png',
-    'assets/ebook/content/Ebook FitQuest Junior-08.png',
-    'assets/ebook/content/Ebook FitQuest Junior-09.png',
-    'assets/ebook/content/Ebook FitQuest Junior-10.png',
+    'assets/ebook/content/Ebook FitQuest Junior-01.jpg',
+    'assets/ebook/content/Ebook FitQuest Junior-02.jpg',
+    'assets/ebook/content/Ebook FitQuest Junior-03.jpg',
+    'assets/ebook/content/Ebook FitQuest Junior-04.jpg',
+    'assets/ebook/content/Ebook FitQuest Junior-06.jpg',
+    'assets/ebook/content/Ebook FitQuest Junior-07.jpg',
+    'assets/ebook/content/Ebook FitQuest Junior-08.jpg',
+    'assets/ebook/content/Ebook FitQuest Junior-09.jpg',
+    'assets/ebook/content/Ebook FitQuest Junior-10.jpg',
 
-    'assets/ebook/content/Ebook FitQuest Junior-11.png',
+    'assets/ebook/content/Ebook FitQuest Junior-11.jpg',
     'assets/ebook/content/Ebook FitQuest Junior-12.png',
     'assets/ebook/content/Ebook FitQuest Junior-13.png',
     'assets/ebook/content/Ebook FitQuest Junior-14.png',

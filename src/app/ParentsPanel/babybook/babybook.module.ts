@@ -10,7 +10,6 @@ import { BabybookPage } from './babybook.page';
 
 import { SwiperModule } from 'swiper/angular';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -19,6 +18,6 @@ import { SwiperModule } from 'swiper/angular';
     BabybookPageRoutingModule,
     SwiperModule,
   ],
-  declarations: [BabybookPage]
+  declarations: [BabybookPage],
 })
 export class BabybookPageModule {}

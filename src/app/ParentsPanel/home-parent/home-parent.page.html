@@ -70,9 +70,11 @@
     </ion-row>
   </ion-grid>
 
-  <ion-fab class="fab-btn" slot="fixed" vertical="bottom" horizontal="center">
-    <ion-fab-button (click)="navigateToEBook()">
-      <img alt="daily task" src="assets/ebook/babyBook.png" />
-    </ion-fab-button>
+  <ion-fab class="fab-btn" slot="fixed" vertical="bottom" horizontal="start">
+    <div class="centered-wrapper">
+      <ion-fab-button class="larger-button" (click)="navigateToEBook()">
+        <img alt="daily task" src="assets/ebook/babyBook.png" />
+      </ion-fab-button>
+    </div>
   </ion-fab>
 </ion-content>
