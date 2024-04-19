@@ -1,8 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  ToastController,
+  LoadingController,
+} from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, map } from 'rxjs';
-
 
 @Component({
   selector: 'app-open-task-done-modal',
@@ -10,7 +14,6 @@ import { Observable, map } from 'rxjs';
   styleUrls: ['./open-task-done-modal.page.scss'],
 })
 export class OpenTaskDoneModalPage implements OnInit {
-
   @Input() userData: any;
   @Input() usersUID: string;
   @Input() confirmedTasks: any[]; // Add this line
@@ -20,8 +23,9 @@ export class OpenTaskDoneModalPage implements OnInit {
     private modalController: ModalController,
     private firestore: AngularFirestore,
     private alertControler: AlertController,
-    private toastController: ToastController
-    ) { }
+    private toastController: ToastController,
+    private loadingController: LoadingController
+  ) {}
 
   ngOnInit() {
     console.log('usersUID in modal:', this.usersUID);
@@ -30,18 +34,20 @@ export class OpenTaskDoneModalPage implements OnInit {
 
   loadTasks() {
     // Fetch tasks for the specific user using the usersUID
-    this.tasks$ = this.firestore.collection(`users/${this.usersUID}/tasks`).snapshotChanges()
+    this.tasks$ = this.firestore
+      .collection(`users/${this.usersUID}/tasks`)
+      .snapshotChanges()
       .pipe(
-        map(actions => {
-          return actions.map(a => {
+        map((actions) => {
+          return actions.map((a) => {
             const data = a.payload.doc.data() as any;
             const id = a.payload.doc.id;
             return { id, ...data };
           });
         })
       );
-  
-    this.tasks$.subscribe(tasks => {
+
+    this.tasks$.subscribe((tasks) => {
       console.log('Tasks for the user:', tasks);
     });
   }
@@ -61,9 +67,23 @@ export class OpenTaskDoneModalPage implements OnInit {
         {
           text: 'Delete',
           handler: async () => {
+            const loading = await this.presentLoading();
             try {
               // Delete the task from Firestore
-              await this.firestore.collection('users').doc(task.userId).collection('tasks').doc(task.id).delete();
+              await this.firestore
+                .collection('users')
+                .doc(task.userId)
+                .collection('tasks')
+                .doc(task.id)
+                .delete();
+              await this.firestore
+                .collection('parents')
+                .doc(task.parentId)
+                .collection('tasks')
+                .doc(task.id)
+                .delete();
+
+              await loading.dismiss();
 
               // Show a success toast message
               await this.presentSuccessMessage('Task deleted successfully.');
@@ -100,4 +120,12 @@ export class OpenTaskDoneModalPage implements OnInit {
     await toast.present();
   }
 
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Deleting task...',
+      duration: 5000, // Optional: Set a maximum duration for the loading spinner
+    });
+    await loading.present();
+    return loading; // Return the loading instance to dismiss it later
+  }
 }

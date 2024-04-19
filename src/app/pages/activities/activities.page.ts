@@ -3,7 +3,11 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { LoadingController, AlertController } from '@ionic/angular';
+import {
+  LoadingController,
+  AlertController,
+  ModalController,
+} from '@ionic/angular';
 import {
   trigger,
   state,
@@ -12,6 +16,7 @@ import {
   animate,
 } from '@angular/animations';
 import { TaskStatusService } from 'src/app/services/task-status.service';
+import { ExerciseExplanationPage } from 'src/app/modals/exercise-explanation/exercise-explanation.page';
 
 @Component({
   selector: 'app-activities',
@@ -31,7 +36,8 @@ export class ActivitiesPage implements OnInit {
     private afAuth: AngularFireAuth,
     private loadingController: LoadingController,
     private alertController: AlertController,
-    private taskStatusService: TaskStatusService
+    private taskStatusService: TaskStatusService,
+    private modalController: ModalController
   ) {}
 
   ngOnInit() {
@@ -45,6 +51,17 @@ export class ActivitiesPage implements OnInit {
       // Continue with the rest of your code...
       this.loadUserTasks();
     });
+  }
+
+  async openExerciseExplanationModal(task: any) {
+    const modal = await this.modalController.create({
+      component: ExerciseExplanationPage,
+      componentProps: {
+        task: task,
+        selectedExercise: task.description,
+      },
+    });
+    return await modal.present();
   }
 
   async loadUserTasks() {

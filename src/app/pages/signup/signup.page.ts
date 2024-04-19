@@ -127,7 +127,7 @@ export class SignupPage implements OnInit {
 
           loading.dismiss();
           this.clearFormFields();
-          this.router.navigate(['/home']);
+          this.router.navigate(['/landing']);
           // this.presentSuccessAlert('Success', 'Registration successful!');
         })
         .catch((error) => {
@@ -174,56 +174,66 @@ export class SignupPage implements OnInit {
   }
 
   // Method to save user information to parent's UID
- async saveUserToParent(parentUID: string, user: any) {
-  try {
-    // Create a reference to the user document in the 'users' collection
-    const userDocRef = this.firestore.collection('users').doc(user.uid);
+  async saveUserToParent(parentUID: string, user: any) {
+    try {
+      // Create a reference to the user document in the 'users' collection
+      const userDocRef = this.firestore.collection('users').doc(user.uid);
 
-    // Get the user document data
-    const userDataSnapshot = await userDocRef.get().toPromise();
+      // Get the user document data
+      const userDataSnapshot = await userDocRef.get().toPromise();
 
-    // Check if the user document exists
-    if (userDataSnapshot.exists) {
-      // Get the user data
-      const userData = userDataSnapshot.data();
+      // Check if the user document exists
+      if (userDataSnapshot.exists) {
+        // Get the user data
+        const userData = userDataSnapshot.data();
 
-      // Create a reference to the 'users' subcollection under the parent
-      const parentUserCollectionRef = this.firestore.collection(`parents/${parentUID}/users`);
+        // Create a reference to the 'users' subcollection under the parent
+        const parentUserCollectionRef = this.firestore.collection(
+          `parents/${parentUID}/users`
+        );
 
-      // Save the user data to the 'users' subcollection under the parent
-      await parentUserCollectionRef.doc(user.uid).set(userData);
+        // Save the user data to the 'users' subcollection under the parent
+        await parentUserCollectionRef.doc(user.uid).set(userData);
 
-      // Create a reference to the parent document in the 'parents' collection
-      const parentDocRef = this.firestore.collection('parents').doc(parentUID);
+        // Create a reference to the parent document in the 'parents' collection
+        const parentDocRef = this.firestore
+          .collection('parents')
+          .doc(parentUID);
 
-      // Get the parent document data
-      const parentDataSnapshot = await parentDocRef.get().toPromise();
+        // Get the parent document data
+        const parentDataSnapshot = await parentDocRef.get().toPromise();
 
-      // Check if the parent document exists
-      if (parentDataSnapshot.exists) {
-        // Get the parent data
-        const parentData = parentDataSnapshot.data();
+        // Check if the parent document exists
+        if (parentDataSnapshot.exists) {
+          // Get the parent data
+          const parentData = parentDataSnapshot.data();
 
-        // Create a reference to the 'parents' subcollection under the user
-        const userParentCollectionRef = this.firestore.collection(`users/${user.uid}/parents`);
+          // Create a reference to the 'parents' subcollection under the user
+          const userParentCollectionRef = this.firestore.collection(
+            `users/${user.uid}/parents`
+          );
 
-        // Save the parent data to the 'parents' subcollection under the user
-        await userParentCollectionRef.doc(parentUID).set(parentData);
+          // Save the parent data to the 'parents' subcollection under the user
+          await userParentCollectionRef.doc(parentUID).set(parentData);
+        } else {
+          console.error(
+            'Error updating user document: Parent document does not exist'
+          );
+          // Handle the error appropriately
+          throw new Error('Parent document does not exist');
+        }
       } else {
-        console.error('Error updating user document: Parent document does not exist');
+        console.error(
+          'Error updating parent document: User document does not exist'
+        );
         // Handle the error appropriately
-        throw new Error('Parent document does not exist');
+        throw new Error('User document does not exist');
       }
-    } else {
-      console.error('Error updating parent document: User document does not exist');
-      // Handle the error appropriately
-      throw new Error('User document does not exist');
+    } catch (error) {
+      console.error('Error updating documents:', error);
+      throw error;
     }
-  } catch (error) {
-    console.error('Error updating documents:', error);
-    throw error;
   }
-}
 
   clearFormFields() {
     this.regForm.reset();

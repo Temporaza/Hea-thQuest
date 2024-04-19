@@ -33,13 +33,17 @@ export class TrashPage implements OnInit {
   @ViewChild('draggableBanana') draggableBananaRef: ElementRef;
   @ViewChild('draggablePaint') draggablePaintRef: ElementRef;
 
+  @ViewChild('draggableApple') draggableAppleRef: ElementRef;
+  @ViewChild('draggableBottle') draggableBottleRef: ElementRef;
+  @ViewChild('draggableSpray') draggableSprayRef: ElementRef;
+
   recycleBinRect: DOMRect;
   wasteBinRect: DOMRect;
   hazardBinRect: DOMRect;
 
   paperRect: DOMRect | undefined;
 
-  constructor() {}
+  constructor(private alertController: AlertController) {}
 
   async ngOnInit() {}
 
@@ -49,13 +53,20 @@ export class TrashPage implements OnInit {
     this.setHazardBinRect();
   }
 
-  drop(itemName: string) {
+  async drop(itemName: string) {
     console.log(`Drop method triggered.`);
     console.log(`${itemName} reached the bin.`);
     console.log(`${itemName} Rect:`, this.paperRect);
     console.log(`Recycle Bin Rect:`, this.recycleBinRect);
     console.log(`Waste Bin Rect:`, this.wasteBinRect);
     console.log(`Hazard Bin Rect:`, this.hazardBinRect);
+
+    // Check if the item is in the correct bin
+    const isInCorrectBin = this.isItemInCorrectBin(itemName);
+    if (isInCorrectBin) {
+      // Show alert if the item is in the correct bin
+      await this.showAlert('Correct Bin', `${itemName} is in the correct bin.`);
+    }
   }
 
   dragEnd(itemName: string) {
@@ -66,6 +77,7 @@ export class TrashPage implements OnInit {
     const wasteBinRect = this.wasteBinRef.nativeElement.getBoundingClientRect();
     const hazardBinRect =
       this.hazardBinRef.nativeElement.getBoundingClientRect();
+
     let itemRect;
 
     if (itemName === 'paper') {
@@ -74,6 +86,15 @@ export class TrashPage implements OnInit {
       itemRect = this.draggableBananaRef.nativeElement.getBoundingClientRect();
     } else if (itemName === 'paint') {
       itemRect = this.draggablePaintRef.nativeElement.getBoundingClientRect();
+    } else if (itemName === 'apple') {
+      itemRect = this.draggableAppleRef.nativeElement.getBoundingClientRect();
+      console.log('Apple is for waste bin.');
+    } else if (itemName === 'bottle') {
+      itemRect = this.draggableBottleRef.nativeElement.getBoundingClientRect();
+      console.log('Bottle is for recycle bin.');
+    } else if (itemName === 'spray') {
+      itemRect = this.draggableSprayRef.nativeElement.getBoundingClientRect();
+      console.log('Spray is for hazard bin.');
     }
 
     if (!itemRect || !recycleBinRect || !wasteBinRect || !hazardBinRect) {
@@ -82,18 +103,21 @@ export class TrashPage implements OnInit {
     }
 
     const recycleBinOverlap =
+      (itemName === 'paper' || itemName === 'bottle') &&
       itemRect.left < recycleBinRect.right &&
       itemRect.right > recycleBinRect.left &&
       itemRect.top < recycleBinRect.bottom &&
       itemRect.bottom > recycleBinRect.top;
 
     const wasteBinOverlap =
+      (itemName === 'banana' || itemName === 'apple') &&
       itemRect.left < wasteBinRect.right &&
       itemRect.right > wasteBinRect.left &&
       itemRect.top < wasteBinRect.bottom &&
       itemRect.bottom > wasteBinRect.top;
 
     const hazardBinOverlap =
+      (itemName === 'paint' || itemName === 'spray') &&
       itemRect.left < hazardBinRect.right &&
       itemRect.right > hazardBinRect.left &&
       itemRect.top < hazardBinRect.bottom &&
@@ -109,6 +133,8 @@ export class TrashPage implements OnInit {
       console.log(
         `Overlap detected. Item: ${itemName} reached the hazard bin.`
       );
+    } else {
+      console.log(`Incorrect bin. Item: ${itemName} placed in the wrong bin.`);
     }
   }
 
@@ -139,5 +165,69 @@ export class TrashPage implements OnInit {
       const hazardBinRect = hazardBinElement.getBoundingClientRect();
       console.log('Hazard bin rect:', hazardBinRect);
     }
+  }
+
+  private async showAlert(title: string, message: string) {
+    const alert = await this.alertController.create({
+      header: title,
+      message: message,
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  private isItemInCorrectBin(itemName: string): boolean {
+    if (
+      (itemName === 'paper' || itemName === 'bottle') &&
+      this.isOverlapWithRect(itemName, this.recycleBinRect)
+    ) {
+      return true;
+    } else if (
+      (itemName === 'banana' || itemName === 'apple') &&
+      this.isOverlapWithRect(itemName, this.wasteBinRect)
+    ) {
+      return true;
+    } else if (
+      (itemName === 'paint' || itemName === 'spray') &&
+      this.isOverlapWithRect(itemName, this.hazardBinRect)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private isOverlapWithRect(itemName: string, binRect: DOMRect): boolean {
+    let itemRect;
+    switch (itemName) {
+      case 'paper':
+        itemRect = this.draggableImageRef.nativeElement.getBoundingClientRect();
+        break;
+      case 'banana':
+        itemRect =
+          this.draggableBananaRef.nativeElement.getBoundingClientRect();
+        break;
+      case 'paint':
+        itemRect = this.draggablePaintRef.nativeElement.getBoundingClientRect();
+        break;
+      case 'apple':
+        itemRect = this.draggableAppleRef.nativeElement.getBoundingClientRect();
+        break;
+      case 'bottle':
+        itemRect =
+          this.draggableBottleRef.nativeElement.getBoundingClientRect();
+        break;
+      case 'spray':
+        itemRect = this.draggableSprayRef.nativeElement.getBoundingClientRect();
+        break;
+    }
+
+    return (
+      itemRect &&
+      itemRect.left < binRect.right &&
+      itemRect.right > binRect.left &&
+      itemRect.top < binRect.bottom &&
+      itemRect.bottom > binRect.top
+    );
   }
 }

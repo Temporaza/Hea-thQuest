@@ -11,24 +11,8 @@
   // box-shadow: 10px 10px 16px 0px rgba(0, 0, 0, 0.75);
   width: 45%;
   height: auto;
-  // background: wheat;
-  // border-radius: 10px;
-  // animation: slideFromTop 0.8s ease forwards;
  
 }
-
-
-// @keyframes slideFromTop {
-//   from {
-//     transform: translateY(-100vh);
-//     opacity: 0;
-//   }
-
-//   to {
-//     transform: translateY(0);
-//     opacity: 1;
-//   }
-// }
 
 .quest{
   margin: 0vh auto;
@@ -37,7 +21,9 @@
 
 
 img{
-  margin: 0 auto;
+  margin: 2vh auto;
+  height: 250px;
+    width: 310px;
 }
 
 @media only screen and (max-width: 760px) {

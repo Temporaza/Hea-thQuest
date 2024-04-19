@@ -291,6 +291,10 @@ const routes: Routes = [
     path: 'data-privacy',
     loadChildren: () => import('./modals/data-privacy/data-privacy.module').then( m => m.DataPrivacyPageModule)
   },
+  {
+    path: 'exercise-explanation',
+    loadChildren: () => import('./modals/exercise-explanation/exercise-explanation.module').then( m => m.ExerciseExplanationPageModule)
+  },
 
 ];
 

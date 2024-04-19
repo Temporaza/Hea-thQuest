@@ -65,4 +65,34 @@
   >
     <img src="assets/paint.png" alt="Paint" />
   </div>
+
+  <div
+    class="draggable center"
+    id="draggableApple"
+    cdkDrag
+    (cdkDragEnded)="dragEnd('apple')"
+    #draggableApple
+  >
+    <img src="assets/apple.png" alt="Apple" />
+  </div>
+
+  <div
+    class="draggable center"
+    id="draggableBottle"
+    cdkDrag
+    (cdkDragEnded)="dragEnd('bottle')"
+    #draggableBottle
+  >
+    <img src="assets/bottle.png" alt="Bottle" />
+  </div>
+
+  <div
+    class="draggable center"
+    id="draggableSpray"
+    cdkDrag
+    (cdkDragEnded)="dragEnd('spray')"
+    #draggableSpray
+  >
+    <img src="assets/spray.png" alt="Spray" />
+  </div>
 </ion-content>

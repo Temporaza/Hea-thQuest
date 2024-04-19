@@ -73,23 +73,28 @@ export class ParentsAcitvityPage implements OnInit {
           'dance',
         ];
       case 'Healthy Weight':
-        return ['Running', 'Jump Rope', 'Dance Routines', 'Yoga for kids'];
+        return [
+          'Running',
+          'Jump Rope',
+          'Dance Routines',
+          'Arm Circles',
+          'Squats',
+        ];
       case 'Overweight':
         return [
           'Brisk Walking',
           'Hula Hooping',
-          'Dance-based Video Games',
           'Balancing Exercise One Leg',
-          'Biking',
-          'Plank',
+          'Neck Stretch',
+          'Leg Stretch',
         ];
       case 'Obesity':
         return [
           'Chair Exercise',
-          'Strength Training',
-          'Low-impact Cardio',
+          'Run',
+          'Bunny Hops',
           'Gentle Yoga',
-          'Cycling',
+          'Walking',
           'Balance Exercise',
         ];
       // Add more cases for different statuses
