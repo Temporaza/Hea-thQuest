@@ -34,7 +34,7 @@ ion-content {
 }
 
 .points-label {
-  font-size: 14px;
+  font-size: 20px;
 }
 
 .icon-button {
@@ -47,8 +47,15 @@ ion-card-title {
   font-weight: bold;
 }
 
+ion-label{
+  margin-bottom: 4px;
+  font-weight: bold;
+  font-size: 20px !important;
+}
+
 ion-item {
   margin-bottom: 10px; 
+  font-size: 20px;
 }
 
 .board {

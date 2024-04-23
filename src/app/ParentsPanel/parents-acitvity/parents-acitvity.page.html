@@ -41,8 +41,8 @@
               </ion-item>
               <!-- Display Selected User's Status -->
               <div *ngIf="selectedUserId">
-                <h1>User Status</h1>
-                <h2>Status: {{ userStatus || 'N/A' }}</h2>
+                <h3>Status:</h3>
+                <h4>{{ userStatus || 'N/A' }}</h4>
               </div>
 
               <ion-item *ngIf="userStatus">

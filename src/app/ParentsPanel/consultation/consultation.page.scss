@@ -14,7 +14,7 @@ ion-list {
 
 ion-content {
   --background: url("/assets/ebook/bg.png") center/cover no-repeat;
-  height: 100vh;
+    height: 100vh;
 }
 
 .custom-card {
@@ -194,4 +194,8 @@ align-items: center;
   --font-family: "IntegralCF-Bold";
   font-size: 1.5em;
   font-weight: bold;
+}
+
+.bmiHistory{
+  padding: 10px;
 }

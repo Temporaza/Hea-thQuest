@@ -127,7 +127,7 @@ export class SignupPage implements OnInit {
 
           loading.dismiss();
           this.clearFormFields();
-          this.router.navigate(['/landing']);
+          this.router.navigate(['/parent-login']);
           // this.presentSuccessAlert('Success', 'Registration successful!');
         })
         .catch((error) => {

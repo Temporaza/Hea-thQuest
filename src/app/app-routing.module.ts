@@ -295,6 +295,10 @@ const routes: Routes = [
     path: 'exercise-explanation',
     loadChildren: () => import('./modals/exercise-explanation/exercise-explanation.module').then( m => m.ExerciseExplanationPageModule)
   },
+  {
+    path: 'pet-name',
+    loadChildren: () => import('./modals/pet-name/pet-name.module').then( m => m.PetNamePageModule)
+  },
 
 ];
 
