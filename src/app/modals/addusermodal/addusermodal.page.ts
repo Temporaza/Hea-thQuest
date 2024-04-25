@@ -90,6 +90,9 @@ export class AddusermodalPage implements OnInit {
           this.regForm.value.email,
           this.regForm.value.password,
           this.regForm.value.fullname,
+          this.regForm.value.age, // Add age parameter
+          this.regForm.value.birthday, // Add birthday parameter
+          this.regForm.value.petName, // Add petName parameter
           parentEmail
         )
         .catch((error) => {

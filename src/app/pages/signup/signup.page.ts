@@ -74,6 +74,9 @@ export class SignupPage implements OnInit {
         ],
       ],
       parentEmail: ['', [Validators.required, Validators.email]],
+      age: [''],
+      birthday: [''],
+      petName: [''],
     });
   }
 
@@ -111,8 +114,21 @@ export class SignupPage implements OnInit {
       const fullname = this.regForm.value.fullname;
       const password = this.regForm.value.password;
 
+      // Retrieve age, birthday, and petName from the form
+      const age = this.regForm.value.age;
+      const birthday = this.regForm.value.birthday;
+      const petName = this.regForm.value.petName;
+
       await this.authService
-        .registerUser(userEmail, password, fullname, parentEmail)
+        .registerUser(
+          userEmail,
+          password,
+          fullname,
+          age,
+          birthday,
+          petName,
+          parentEmail
+        ) // Pass all required arguments
         .then(async (user) => {
           const parentUID = await this.getParentUIDByEmail(parentEmail);
 
@@ -127,7 +143,7 @@ export class SignupPage implements OnInit {
 
           loading.dismiss();
           this.clearFormFields();
-          this.router.navigate(['/parent-login']);
+          this.presentRedirectAlert();
           // this.presentSuccessAlert('Success', 'Registration successful!');
         })
         .catch((error) => {
@@ -141,12 +157,21 @@ export class SignupPage implements OnInit {
     }
   }
 
-  async presentSuccessAlert(header: string, message: string) {
+  async presentRedirectAlert() {
     const alert = await this.alertController.create({
-      header: header,
-      message: message,
-      buttons: ['OK'],
+      header: 'Success',
+      message:
+        'You will be redirected to the parent login page for verification.',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.router.navigate(['/parent-login']);
+          },
+        },
+      ],
     });
+
     await alert.present();
   }
 

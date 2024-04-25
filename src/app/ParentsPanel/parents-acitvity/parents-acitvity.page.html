@@ -35,8 +35,9 @@
                   <ion-select-option
                     *ngFor="let user of usersData"
                     [value]="user.id"
-                    >{{ user.fullname }}</ion-select-option
                   >
+                    {{ user.fullname }}
+                  </ion-select-option>
                 </ion-select>
               </ion-item>
               <!-- Display Selected User's Status -->

@@ -14,14 +14,13 @@ ion-content {
 
 .giant-box {
     width: 100%;
-    max-width: 300px; /* Adjust the maximum width as per your design */
-    height: 300px; /* Adjust the height as per your design */
-    background-image: url('/assets/shapes/wood.png');
-    background-size: contain; /* Ensure the background image covers the entire container */
-    background-repeat: no-repeat;
-    border-radius: 10px; /* Adjust border-radius for rounded corners */
-    padding: 20px; /* Adjust padding as needed */
-    margin: 0 auto;
+    max-width: 300px;
+    height: auto; 
+    // background-image: url('/assets/shapes/wood.png');
+    // background-size: contain; 
+    // background-repeat: no-repeat;
+    // background-position: center;
+    margin: 20px auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,17 +30,17 @@ ion-content {
   .shape-description {
     font-family: 'Patrick Hand SC', cursive;
     font-size: 24px;
-    color: #333; /* Adjust color as needed */
-    margin-top: 10px; /* Add some spacing */
+    color: #333;
+    margin-top: 10px; 
   }
 
 
   .box-typing{
     width: 100%;
-    max-width: 400px; /* Adjust the maximum width as per your design */
-    height: 300px; /* Adjust the height as per your design */
+    max-width: 400px; 
+    height: 300px; 
     background-image: url('/assets/shapes/board.png');
-    background-size: contain; /* Ensure the background image covers the entire container */
+    background-size: contain;
     background-repeat: no-repeat;
     border-radius: 10px; /* Adjust border-radius for rounded corners */
     padding: 20px; /* Adjust padding as needed */
@@ -72,7 +71,6 @@ ion-content {
   }
 
   .text-field-container {
-    margin-top: 20px;
     text-align: center;
   }
   

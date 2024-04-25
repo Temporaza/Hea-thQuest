@@ -35,7 +35,7 @@ export class HomePage {
   petEyesUrl: string;
   petMouthUrl: string;
   petBodyUrl: string;
-  petHatUrl: string;
+  // petHatUrl: string;
 
   petHatSubscription: Subscription;
 
@@ -54,6 +54,8 @@ export class HomePage {
 
   showCookieImage: boolean = false;
   availableCookies: number = 10;
+
+  petName: string;
 
   healthRangeMap = [
     {
@@ -109,11 +111,11 @@ export class HomePage {
   ) {
     this.user = authService.getProfile;
 
-    this.petHatSubscription = this.petHatService.selectedPetHatUrl$.subscribe(
-      (hatUrl) => {
-        this.petHatUrl = hatUrl;
-      }
-    );
+    // this.petHatSubscription = this.petHatService.selectedPetHatUrl$.subscribe(
+    //   (hatUrl) => {
+    //     this.petHatUrl = hatUrl;
+    //   }
+    // );
 
     // Subscribe to changes in the task status
     this.taskStatusService.getTaskStatus().subscribe((statusWithPoints) => {
@@ -137,9 +139,9 @@ export class HomePage {
       this.authSubscription.unsubscribe();
     }
 
-    if (this.petHatSubscription) {
-      this.petHatSubscription.unsubscribe();
-    }
+    // if (this.petHatSubscription) {
+    //   this.petHatSubscription.unsubscribe();
+    // }
   }
 
   @HostListener('window:popstate', ['$event'])
@@ -203,13 +205,14 @@ export class HomePage {
 
           if (userDoc.exists) {
             this.petBodyUrl = userDoc.get('petBodyUrl');
-            this.petHatUrl = userDoc.get('petHatUrl');
+            // this.petHatUrl = userDoc.get('petHatUrl');
+            this.petName = userDoc.get('petName');
 
             console.log('Selected PetBodyImage URL:', this.petBodyUrl);
-            console.log('Selected PetHatImage URL:', this.petHatUrl);
+            // console.log('Selected PetHatImage URL:', this.petHatUrl);
 
             this.petBodyService.setSelectedPetBodyUrl(this.petBodyUrl);
-            this.petBodyService.setSelectedPetHatUrl(this.petHatUrl);
+            // this.petBodyService.setSelectedPetHatUrl(this.petHatUrl);
           } else {
             console.error('User document not found.');
           }
@@ -235,7 +238,7 @@ export class HomePage {
 
       this.petEyesUrl = await this.getDownloadUrl('eyes', 'eye1.png');
       this.petMouthUrl = await this.getDownloadUrl('Mouth', 'M3.png');
-      this.petHatUrl = this.petBodyService.getSelectedPetHatUrl() || '';
+      // this.petHatUrl = this.petBodyService.getSelectedPetHatUrl() || '';
       this.petBodyUrl = this.petBodyService.getSelectedPetBodyUrl() || '';
     } catch (error) {
       console.error('Error fetching pet images:', error);

@@ -24,50 +24,57 @@
       </ion-item>
 
       <ion-button (click)="findGames()" expand="full">Find Games</ion-button>
-
-      <div
-        class="gamesFound"
-        *ngIf="buttonClicked && foundGames !== undefined && foundGames.length > 0"
-      >
-        <h2>Found Games:</h2>
-        <!-- Display matched games in card format -->
-        <ion-list>
-          <ion-item *ngFor="let game of foundGames">
-            <ion-card class="list-games">
-              <ion-card-header>
-                <ion-card-title>{{ game.title }}</ion-card-title>
-              </ion-card-header>
-              <ion-card-content> {{ game.description }} </ion-card-content>
-              <ion-button
-                *ngIf="game.title === 'ShapeMatch'"
-                [routerLink]="['/shape-match']"
-                -
-                >Play</ion-button
-              >
-              <ion-button
-                *ngIf="game.title === 'Trash Game'"
-                [routerLink]="['/trash-game']"
-                >Play</ion-button
-              >
-              <ion-button
-                *ngIf="game.title === 'SoundsAnimals'"
-                [routerLink]="['/sound-animals']"
-                >Play</ion-button
-              >
-              <ion-button
-                *ngIf="game.title === 'Playing Numbers'"
-                [routerLink]="['/numbers']"
-                >Play</ion-button
-              >
-              <ion-button
-                *ngIf="game.title === 'Playing Letters'"
-                [routerLink]="['/game-counting']"
-                >Play</ion-button
-              >
-            </ion-card>
-          </ion-item>
-        </ion-list>
-      </div>
     </ion-card-content>
   </ion-card>
+
+  <div
+    class="gamesFound"
+    *ngIf="buttonClicked && foundGames !== undefined && foundGames.length > 0"
+  >
+    <!-- Display matched games in card format -->
+
+    <h2>Found Games:</h2>
+
+    <div *ngFor="let game of foundGames">
+      <ion-card class="list-games">
+        <ion-card-header>
+          <ion-card-title>{{ game.title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content> {{ game.description }} </ion-card-content>
+        <ion-button
+          *ngIf="game.title === 'ShapeMatch'"
+          [routerLink]="['/shape-match']"
+        >
+          <p>Play</p>
+          <ion-icon name="shapes-sharp"></ion-icon>
+        </ion-button>
+
+        <ion-button
+          *ngIf="game.title === 'Trash Game'"
+          [routerLink]="['/trash-game']"
+        >
+          <ion-icon name="trash-sharp"></ion-icon>
+          Play</ion-button
+        >
+        <ion-button
+          *ngIf="game.title === 'SoundsAnimals'"
+          [routerLink]="['/sound-animals']"
+        >
+          <ion-icon name="musical-note-sharp"></ion-icon>
+          Play</ion-button
+        >
+        <ion-button
+          *ngIf="game.title === 'Playing Numbers'"
+          [routerLink]="['/numbers']"
+        >
+          Play</ion-button
+        >
+        <ion-button
+          *ngIf="game.title === 'Playing Letters'"
+          [routerLink]="['/game-counting']"
+          >Play</ion-button
+        >
+      </ion-card>
+    </div>
+  </div>
 </ion-content>

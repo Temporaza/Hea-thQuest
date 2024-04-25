@@ -24,7 +24,7 @@ export class MarketPage implements OnInit {
   petMouthUrl: string;
   petBodyUrl: string;
 
-  petHatUrl: string | null;
+  // petHatUrl: string | null;
 
   selectedPetBodyUrl: string;
 
@@ -88,32 +88,32 @@ export class MarketPage implements OnInit {
 
       await this.fetchUserData(userId);
 
-      if (
-        (this.isWizardHatEquipped || this.isSantaHatEquipped) &&
-        this.petHatUrl
-      ) {
-        if (this.isWizardHatEquipped) {
-          this.petHatUrl = this.wizardPurpleUrl;
-        } else if (this.isSantaHatEquipped) {
-          this.petHatUrl = this.santaUrl;
-        }
-      } else {
-        this.petHatUrl = null;
-      }
+      // if (
+      //   (this.isWizardHatEquipped || this.isSantaHatEquipped) &&
+      //   this.petHatUrl
+      // ) {
+      //   if (this.isWizardHatEquipped) {
+      //     this.petHatUrl = this.wizardPurpleUrl;
+      //   } else if (this.isSantaHatEquipped) {
+      //     this.petHatUrl = this.santaUrl;
+      //   }
+      // } else {
+      //   this.petHatUrl = null;
+      // }
 
       const userDocRef = this.firestore.collection('users').doc(userId);
       const userDocSnapshot = await userDocRef.get().toPromise();
 
-      const storedEquippedHat = localStorage.getItem('equippedHat');
-      if (storedEquippedHat === 'wizardHat') {
-        this.equippedHat = 'wizardHat';
-        this.isWizardHatEquipped = true;
-        this.petHatUrl = this.wizardPurpleUrl;
-      } else if (storedEquippedHat === 'santaHat') {
-        this.equippedHat = 'santaHat';
-        this.isSantaHatEquipped = true;
-        this.petHatUrl = this.santaUrl;
-      }
+      // const storedEquippedHat = localStorage.getItem('equippedHat');
+      // if (storedEquippedHat === 'wizardHat') {
+      //   this.equippedHat = 'wizardHat';
+      //   this.isWizardHatEquipped = true;
+      //   this.petHatUrl = this.wizardPurpleUrl;
+      // } else if (storedEquippedHat === 'santaHat') {
+      //   this.equippedHat = 'santaHat';
+      //   this.isSantaHatEquipped = true;
+      //   this.petHatUrl = this.santaUrl;
+      // }
 
       if (userDocSnapshot.exists) {
         const userData = userDocSnapshot.data() as {
@@ -125,8 +125,8 @@ export class MarketPage implements OnInit {
           userData && userData.petBodyUrl
             ? userData.petBodyUrl
             : 'default-pet-body-url';
-        this.petHatUrl =
-          userData && userData.petHatUrl ? userData.petHatUrl : null;
+        // this.petHatUrl =
+        //   userData && userData.petHatUrl ? userData.petHatUrl : null;
 
         // Fetch other pet images
         this.petEyesUrl = await this.getDownloadUrl('mata', 'One.png');
@@ -156,11 +156,11 @@ export class MarketPage implements OnInit {
         this.isWetDogOwned = ownedPetBodies.includes('wetDog');
 
         // Check if the hat is equipped and update the flag
-        const ownedCosmetics = await this.getOwnedCosmetics();
+        // const ownedCosmetics = await this.getOwnedCosmetics();
 
         // Set the ownership flags based on the fetched data
-        this.isWizardHatOwned = ownedCosmetics.includes('wizardHat');
-        this.isSantaHatOwned = ownedCosmetics.includes('santaHat');
+        // this.isWizardHatOwned = ownedCosmetics.includes('wizardHat');
+        // this.isSantaHatOwned = ownedCosmetics.includes('santaHat');
       } else {
         console.log('User document does not exist.');
         // Handle the case when the user document does not exist
@@ -188,7 +188,7 @@ export class MarketPage implements OnInit {
         petEyesUrl: this.petEyesUrl,
         petMouthUrl: this.petMouthUrl,
         petBodyUrl: this.petBodyUrl,
-        petHatUrl: this.petHatUrl,
+        // petHatUrl: this.petHatUrl,
         // Add other properties as needed
       });
 
@@ -203,7 +203,7 @@ export class MarketPage implements OnInit {
         }`
       );
 
-      console.log(`Saved Pet Hat URL: ${this.petHatUrl}`);
+      // console.log(`Saved Pet Hat URL: ${this.petHatUrl}`);
     } catch (error) {
       console.error('Error saving data:', error);
     }
@@ -319,7 +319,7 @@ export class MarketPage implements OnInit {
           {
             totalPoints: this.totalPoints,
             ownedPetBodies: this.getOwnedPetBodies(),
-            ownedCosmetics: this.getOwnedCosmetics(),
+            // ownedCosmetics: this.getOwnedCosmetics(),
             petBodyUrl: this.petBodyUrl,
           },
           { merge: true }
@@ -403,8 +403,7 @@ export class MarketPage implements OnInit {
       this.isSantaHatOwned = userData.ownedCosmetics.includes('santaHat');
     }
 
-    // Set the petHatUrl
-    this.petHatUrl = userData.petHatUrl || null;
+    // this.petHatUrl = userData.petHatUrl || null;
   }
 
   async buyHat(hatName: string, price: number) {
@@ -438,40 +437,40 @@ export class MarketPage implements OnInit {
     }
   }
 
-  async equipWizardHat() {
-    try {
-      this.equippedHat = 'wizardHat';
-      this.isWizardHatEquipped = true;
-      this.petHatUrl = this.wizardPurpleUrl;
-      await this.updateUserData();
-      // Store the equipped hat in local storage
-      localStorage.setItem('equippedHat', 'wizardHat');
-    } catch (error) {
-      console.error('Error equipping Wizard Hat:', error);
-    }
-  }
+  // async equipWizardHat() {
+  //   try {
+  //     this.equippedHat = 'wizardHat';
+  //     this.isWizardHatEquipped = true;
+  //     this.petHatUrl = this.wizardPurpleUrl;
+  //     await this.updateUserData();
+  //     // Store the equipped hat in local storage
+  //     localStorage.setItem('equippedHat', 'wizardHat');
+  //   } catch (error) {
+  //     console.error('Error equipping Wizard Hat:', error);
+  //   }
+  // }
 
-  async equipSantaHat() {
-    try {
-      this.equippedHat = 'santaHat';
-      this.isSantaHatEquipped = true;
-      this.petHatUrl = this.santaUrl;
-      await this.updateUserData();
-      // Store the equipped hat in local storage
-      localStorage.setItem('equippedHat', 'santaHat');
-    } catch (error) {
-      console.error('Error equipping Santa Hat:', error);
-    }
-  }
-  getOwnedCosmetics(): string[] {
-    const ownedCosmetics: string[] = [];
-    if (this.isWizardHatOwned) {
-      ownedCosmetics.push('wizardHat');
-    }
-    if (this.isSantaHatOwned) {
-      ownedCosmetics.push('santaHat');
-    }
-    // Add similar conditions for other cosmetics if needed
-    return ownedCosmetics;
-  }
+  // async equipSantaHat() {
+  //   try {
+  //     this.equippedHat = 'santaHat';
+  //     this.isSantaHatEquipped = true;
+  //     // this.petHatUrl = this.santaUrl;
+  //     await this.updateUserData();
+  //     // Store the equipped hat in local storage
+  //     localStorage.setItem('equippedHat', 'santaHat');
+  //   } catch (error) {
+  //     console.error('Error equipping Santa Hat:', error);
+  //   }
+  // }
+  // getOwnedCosmetics(): string[] {
+  //   const ownedCosmetics: string[] = [];
+  //   if (this.isWizardHatOwned) {
+  //     ownedCosmetics.push('wizardHat');
+  //   }
+  //   if (this.isSantaHatOwned) {
+  //     ownedCosmetics.push('santaHat');
+  //   }
+  //   // Add similar conditions for other cosmetics if needed
+  //   return ownedCosmetics;
+  // }
 }

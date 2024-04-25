@@ -46,6 +46,11 @@ export class ConsultationPage implements OnInit, AfterViewInit {
   @ViewChildren('pieCanvas', { read: ElementRef })
   pieCanvases: QueryList<ElementRef>;
 
+  userTaskDataMap: Map<
+    string,
+    { description: string; count: number; percentage: number }[]
+  > = new Map();
+
   constructor(
     private firestore: AngularFirestore,
     private authFire: AngularFireAuth,
@@ -253,13 +258,16 @@ export class ConsultationPage implements OnInit, AfterViewInit {
                 (count) => parseFloat(((count / totalCount) * 100).toFixed(2))
               );
 
-              this.taskData = Array.from(taskCounts.keys()).map(
-                (description, index) => ({
+              this.userTaskDataMap.set(
+                uid,
+                Array.from(taskCounts.keys()).map((description, index) => ({
                   description,
                   count: taskCounts.get(description) || 0,
                   percentage: percentageData[index],
-                })
+                }))
               );
+
+              this.taskData = this.userTaskDataMap.get(uid) || [];
 
               const data = {
                 labels: Array.from(taskCounts.keys()),
@@ -281,9 +289,9 @@ export class ConsultationPage implements OnInit, AfterViewInit {
               };
 
               const options: any = {
-                borderWidth: 10,
-                borderRadius: 2,
-                hoverBorderWidth: 0,
+                borderWidth: 5,
+                borderRadius: 15,
+                hoverBorderWidth: 10,
                 plugins: {
                   legend: {
                     display: false,

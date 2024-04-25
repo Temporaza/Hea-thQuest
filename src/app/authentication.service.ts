@@ -22,6 +22,9 @@ export class AuthenticationService {
     email: string,
     password: string,
     fullname: string,
+    age: number,
+    birthday: string,
+    petName: string,
     parentEmail?: string
   ) {
     // return await this.ngFireAuth.createUserWithEmailAndPassword(email, password)
@@ -34,7 +37,10 @@ export class AuthenticationService {
         email: user.email,
         fullname: fullname,
         role: 'user',
-        usersUID: user.uid, // Assign the 'doctor' role
+        usersUID: user.uid,
+        age: age,
+        birthday: birthday,
+        petName: petName,
         petHealth: 100,
       };
 

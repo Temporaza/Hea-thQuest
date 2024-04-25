@@ -38,18 +38,24 @@
 </ion-menu>
 
 <ion-content [fullscreen]="true" class="background">
-  <div class="options">
-    <audio id="backgroundMusic" autoplay loop controls style="display: none">
-      <source src="/assets/Happy Short 1.wav" type="audio/wav" />
-      Your browser does not support the audio element.
-    </audio>
-
-    <!-- Toggle button for audio control -->
-    <div class="audio">
-      <ion-button class="music" (click)="toggleAudio()">
-        <ion-icon name="volume-mute" *ngIf="!isAudioPlaying"></ion-icon>
-        <ion-icon name="volume-high" *ngIf="isAudioPlaying"></ion-icon>
-      </ion-button>
+  <div class="top-btns">
+    <div class="options">
+      <audio id="backgroundMusic" autoplay loop controls style="display: none">
+        <source src="/assets/Happy Short 1.wav" type="audio/wav" />
+        Your browser does not support the audio element.
+      </audio>
+      <!-- Toggle button for audio control -->
+      <div class="audio">
+        <ion-button class="music" (click)="toggleAudio()">
+          <ion-icon name="volume-mute" *ngIf="!isAudioPlaying"></ion-icon>
+          <ion-icon name="volume-high" *ngIf="isAudioPlaying"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+    <div class="petName">
+      <div class="pet">
+        <h3>{{ petName }}</h3>
+      </div>
     </div>
   </div>
 
@@ -67,7 +73,7 @@
   </div>
 
   <div class="pet-container" (click)="handlePetClick()">
-    <img [src]="petHatUrl" class="pet-hat" />
+    <!-- <img [src]="petHatUrl" class="pet-hat" /> -->
     <img [src]="petEyesUrl" class="pet-eyes" />
     <img [src]="petMouthUrl" class="pet-mouth" />
     <img [src]="petBodyUrl" class="pet-body" />
@@ -75,12 +81,6 @@
 
   <div class="health-bar" (click)="updatePetHealth(petHealth - 10)">
     <div class="health-bar-inner" [style.width]="petHealth + '%'"></div>
-  </div>
-
-  <div class="petName">
-    <div class="pet">
-      <h3>Mojacko</h3>
-    </div>
   </div>
 
   <div class="food" (click)="handleSaladClick()">

@@ -247,7 +247,23 @@ export class VaccinationPage implements OnInit {
   }
 
   openSignupModal() {
-    this.router.navigate(['/signup']);
+    if (this.usersData.length >= 1) {
+      // If maximum users reached, display an alert
+      this.presentMaxUsersAlert();
+    } else {
+      // If not reached, navigate to the signup page
+      this.router.navigate(['/signup']);
+    }
+  }
+
+  async presentMaxUsersAlert() {
+    const alert = await this.alertController.create({
+      header: 'Maximum Users Reached',
+      message:
+        'You have reached the maximum limit of users for the free version. Upgrade to our premium version for additional features.',
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   // async logUserId(userId: string) {
@@ -257,6 +273,7 @@ export class VaccinationPage implements OnInit {
   //     console.error('Error logging user ID:', error);
   //   }
   // }
+
   async openLoginPageModal(userId: string) {
     // Check if any of the relevant fields (age, height, weight, BMI, status) are empty
     const userData = this.usersData.find((user) => user.usersUID === userId);
@@ -316,8 +333,8 @@ export class VaccinationPage implements OnInit {
         return 'underweight';
       case 'Overweight':
         return 'overweight';
-      case 'Obese':
-        return 'obese';
+      case 'Obesity':
+        return 'obesity';
       default:
         return ''; // Default class
     }

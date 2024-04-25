@@ -30,10 +30,10 @@
                     placeholder="Select Type"
                   >
                     <ion-select-option value="lineGraph"
-                      >Line Graph</ion-select-option
+                      >BMI Graph</ion-select-option
                     >
                     <ion-select-option value="pieGraph"
-                      >Pie Graph</ion-select-option
+                      >Tasks Graph</ion-select-option
                     >
                   </ion-select>
                 </div>
@@ -41,9 +41,8 @@
 
               <div class="childs" *ngFor="let user of usersData">
                 <ion-card-header class="card-header">
-                  <ion-card-title class="card-title"
-                    >Name: {{ user.fullname }}</ion-card-title
-                  >
+                  <h4>{{ user.fullname }}</h4>
+                  <ion-card-title class="card-title">Name:</ion-card-title>
                   <!-- Dropdown button for graph selection -->
                 </ion-card-header>
 
@@ -90,7 +89,9 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let task of taskData">
+                        <tr
+                          *ngFor="let task of userTaskDataMap.get(user.uid) || []"
+                        >
                           <td class="align-left">{{ task.description }}</td>
                           <td class="align-center">{{ task.count }}</td>
                           <td class="align-center">{{ task.percentage }}%</td>

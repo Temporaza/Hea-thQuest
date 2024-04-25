@@ -275,31 +275,40 @@ const routes: Routes = [
       import('./modals/parents-profile-page/parents-profile-page.module').then(
         (m) => m.ParentsProfilePagePageModule
       ),
-  },  {
+  },
+  {
     path: 'trash',
-    loadChildren: () => import('./pages/trash/trash.module').then( m => m.TrashPageModule)
+    loadChildren: () =>
+      import('./pages/trash/trash.module').then((m) => m.TrashPageModule),
   },
   {
     path: 'email-verification-required',
-    loadChildren: () => import('./ParentsPanel/email-verification-required/email-verification-required.module').then( m => m.EmailVerificationRequiredPageModule)
+    loadChildren: () =>
+      import(
+        './ParentsPanel/email-verification-required/email-verification-required.module'
+      ).then((m) => m.EmailVerificationRequiredPageModule),
   },
   {
     path: 'forgot-password',
-    loadChildren: () => import('./ParentsPanel/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
+    loadChildren: () =>
+      import('./ParentsPanel/forgot-password/forgot-password.module').then(
+        (m) => m.ForgotPasswordPageModule
+      ),
   },
   {
     path: 'data-privacy',
-    loadChildren: () => import('./modals/data-privacy/data-privacy.module').then( m => m.DataPrivacyPageModule)
+    loadChildren: () =>
+      import('./modals/data-privacy/data-privacy.module').then(
+        (m) => m.DataPrivacyPageModule
+      ),
   },
   {
     path: 'exercise-explanation',
-    loadChildren: () => import('./modals/exercise-explanation/exercise-explanation.module').then( m => m.ExerciseExplanationPageModule)
+    loadChildren: () =>
+      import('./modals/exercise-explanation/exercise-explanation.module').then(
+        (m) => m.ExerciseExplanationPageModule
+      ),
   },
-  {
-    path: 'pet-name',
-    loadChildren: () => import('./modals/pet-name/pet-name.module').then( m => m.PetNamePageModule)
-  },
-
 ];
 
 @NgModule({

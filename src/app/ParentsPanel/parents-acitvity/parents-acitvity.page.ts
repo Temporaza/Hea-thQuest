@@ -222,6 +222,11 @@ export class ParentsAcitvityPage implements OnInit {
         return;
       }
 
+      if (!this.selectedUserId || !this.selectedExercise || !this.points) {
+        this.showErrorAlert('Please fill in all required fields.');
+        return;
+      }
+
       const selectedUser = this.usersData.find(
         (user) => user.id === this.selectedUserId
       );
@@ -237,10 +242,9 @@ export class ParentsAcitvityPage implements OnInit {
       if (currentUser) {
         const parentId = (await currentUser).uid;
 
-        // Create the task object with parentId
         const task = {
           userId: userId,
-          parentId: parentId, // Add parentId here
+          parentId: parentId,
           description: this.selectedExercise,
           otherTasks: this.otherTasks,
           status: 'pending',
@@ -249,7 +253,6 @@ export class ParentsAcitvityPage implements OnInit {
           confirmed: false,
         };
 
-        // Add the task to the 'parents' collection
         const parentTaskRef = await this.firestore
           .collection('parents')
           .doc(parentId)

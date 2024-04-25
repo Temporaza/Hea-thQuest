@@ -30,4 +30,18 @@ ion-content{
   .list-games{
     margin: 3vh auto;
     text-align: center;
+    width: 70%;
+  }
+
+  h2{
+    border: solid 1px;
+    background: lightseagreen;
+    width: 60%;
+    margin: 0 auto;
+    border-radius: 10px;
+  }
+
+  ion-button{
+      width: 150px;
+      margin: 10px auto;
   }

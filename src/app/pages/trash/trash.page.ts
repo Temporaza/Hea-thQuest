@@ -43,7 +43,10 @@ export class TrashPage implements OnInit {
 
   paperRect: DOMRect | undefined;
 
-  constructor(private alertController: AlertController) {}
+  constructor(
+    private alertController: AlertController,
+    private elementRef: ElementRef
+  ) {}
 
   async ngOnInit() {}
 
@@ -51,6 +54,55 @@ export class TrashPage implements OnInit {
     this.setRecycleBinRect();
     this.setWasteBinRect();
     this.setHazardBinRect();
+    this.setupDraggableBoundaries();
+  }
+
+  setupDraggableBoundaries() {
+    const draggableElements =
+      this.elementRef.nativeElement.querySelectorAll('.draggable');
+
+    draggableElements.forEach((element: HTMLElement) => {
+      element.addEventListener('dragend', (event: DragEvent) => {
+        this.handleDragEnd(event, element);
+      });
+    });
+  }
+
+  handleDragEnd(event: DragEvent, element: HTMLElement) {
+    const rect = element.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const isMobileResolution = viewportWidth <= 768; // Define mobile resolution width
+
+    // Adjust left position if it's out of bounds
+    if (rect.left < 0) {
+      element.style.left = '0px';
+    } else if (rect.right > viewportWidth) {
+      if (!isMobileResolution) {
+        element.style.left = `${viewportWidth - rect.width}px`;
+      } else {
+        // If mobile resolution, limit right boundary to viewport width
+        element.style.left = `${Math.min(
+          rect.left,
+          viewportWidth - rect.width
+        )}px`;
+      }
+    }
+
+    // Adjust top position if it's out of bounds
+    if (rect.top < 0) {
+      element.style.top = '0px';
+    } else if (rect.bottom > viewportHeight) {
+      if (!isMobileResolution) {
+        element.style.top = `${viewportHeight - rect.height}px`;
+      } else {
+        // If mobile resolution, limit bottom boundary to viewport height
+        element.style.top = `${Math.min(
+          rect.top,
+          viewportHeight - rect.height
+        )}px`;
+      }
+    }
   }
 
   async drop(itemName: string) {
@@ -66,6 +118,7 @@ export class TrashPage implements OnInit {
     if (isInCorrectBin) {
       // Show alert if the item is in the correct bin
       await this.showAlert('Correct Bin', `${itemName} is in the correct bin.`);
+      console.log(`${itemName} is in the correct bin.`);
     }
   }
 
@@ -88,13 +141,10 @@ export class TrashPage implements OnInit {
       itemRect = this.draggablePaintRef.nativeElement.getBoundingClientRect();
     } else if (itemName === 'apple') {
       itemRect = this.draggableAppleRef.nativeElement.getBoundingClientRect();
-      console.log('Apple is for waste bin.');
     } else if (itemName === 'bottle') {
       itemRect = this.draggableBottleRef.nativeElement.getBoundingClientRect();
-      console.log('Bottle is for recycle bin.');
     } else if (itemName === 'spray') {
       itemRect = this.draggableSprayRef.nativeElement.getBoundingClientRect();
-      console.log('Spray is for hazard bin.');
     }
 
     if (!itemRect || !recycleBinRect || !wasteBinRect || !hazardBinRect) {
@@ -127,12 +177,15 @@ export class TrashPage implements OnInit {
       console.log(
         `Overlap detected. Item: ${itemName} reached the recycle bin.`
       );
+      console.log(`${itemName} placed in the correct bin.`);
     } else if (wasteBinOverlap) {
       console.log(`Overlap detected. Item: ${itemName} reached the waste bin.`);
+      console.log(`${itemName} placed in the correct bin.`);
     } else if (hazardBinOverlap) {
       console.log(
         `Overlap detected. Item: ${itemName} reached the hazard bin.`
       );
+      console.log(`${itemName} placed in the correct bin.`);
     } else {
       console.log(`Incorrect bin. Item: ${itemName} placed in the wrong bin.`);
     }
